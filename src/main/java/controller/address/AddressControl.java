@@ -1,4 +1,4 @@
-package controller;
+package controller.address;
 
 import java.io.IOException;
 import dao.AccountDao;
@@ -19,22 +19,30 @@ public class AddressControl extends HttpServlet {
             throws ServletException, IOException {
     	HttpSession session = request.getSession();
     	Account a = (Account) session.getAttribute("account");
-    	
-//    	PrintWriter out = response.getWriter();
-    	int idA = a.getIdA();
-    	AccountDao daoAccount = new AccountDao();
-    	Address aRess = daoAccount.getAddress(idA);
-    	if(aRess == null) aRess = new Address();
-    	request.setAttribute("address", aRess);
-    	request.getRequestDispatcher("address.jsp").forward(request, response);
-//    	out.println("none");
-//    	if(a == null) {
-//    		out.println("none");
-//    	}
-//    	else {
-//    		out.println(a.getIdA());
-//    	}
-//        	response.sendRedirect("home");
+    	if(a==null) {
+    		response.sendRedirect("login");
+    	}
+    	else {
+	//    	PrintWriter out = response.getWriter();
+    		try {
+	    		int idA = a.getIdA();
+	    		AccountDao daoAccount = new AccountDao();
+	    		Address aRess = daoAccount.getAddress(idA);
+	    		if(aRess == null) aRess = new Address();
+	    		request.setAttribute("address", aRess);
+	    		request.getRequestDispatcher("address.jsp").forward(request, response);
+    		} catch (Exception e) {
+				// TODO: handle exception
+			}
+	//    	out.println("none");
+	//    	if(a == null) {
+	//    		out.println("none");
+	//    	}
+	//    	else {
+	//    		out.println(a.getIdA());
+	//    	}
+	//        	response.sendRedirect("home");
+    	}
     	
     }
 

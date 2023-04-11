@@ -18,7 +18,7 @@
 </head>
 <body style="background-color: #f5f5f5;">
     <div class="main" style="background-color: #F5F5F5">
-        <jsp:include page="navi.jsp"></jsp:include>
+        <jsp:include page="navi_cart.jsp"></jsp:include>
 
         <div class="container">
             <div class="grid wide">
@@ -53,6 +53,7 @@
                 </div>
                 <div class="">
                     <div class="">
+                    	<c:forEach items="${listCart}" var="o">
                         <div class="l-12 m-12 c-12">
                             <div class="container_cart BjIo5w">
                                 <div class="container_cart-wrap">
@@ -64,11 +65,12 @@
                                             </label> 
                                         </div>
                                         <div class="col l-2 m-3 c-3">
-                                            <img class="container_cart-img" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp" alt="">
+                                      
+                                            <img class="container_cart-img" src="upload/${o.product.imageP}" alt="">
                                         </div>
                                         <div class="col l-4 m-8 c-8">
                                             <div class="container_cart-text">
-                                                <h4 class="container_cart-text-name">Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo vThức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo </h4>
+                                                <h4 class="container_cart-text-name">${o.product.nameP}</h4>
                                                 <div style="margin-top: 8px;">
                                                     <div class="container_cart-text-item">Kích Thước: <span>M</span></div>
                                                     <div class="container_cart-text-item">Màu Sắc: <span>M</span></div>
@@ -82,7 +84,8 @@
                                                             <button class="container_cart-item-btn">
                                                                 <i class="fa-solid fa-minus"></i>
                                                             </button>
-                                                            <input type="text" class="container_cart-item-input" value="1" role="spinbutton" aria-valuenow="1">
+                                                            
+                                                            <input type="text" class="container_cart-item-input" value="${o.quantity}" role="spinbutton" aria-valuenow="1">
                                                             <button class="container_cart-item-btn">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
@@ -91,12 +94,12 @@
                                                 </div>
                                                 <div class="col l-0 m-6 c-0">
                                                     <div class="container_cart-list">
-                                                        <span class="container_cart-list-pay">120.000 đ</span>
+                                                        <span class="container_cart-list-pay">${o.product.price} đ</span>
                                                     </div>
                                                 </div>
                                                 <div class="col l-0 m-1 c-0">
                                                     <div class="container_cart-list">
-                                                        <a class="container_cart-list-delete" href=""><i class="fas fa-trash fa-lg"></i></a>
+                                                        <a class="container_cart-list-delete" href="/petshop/cart-delete?idp=${o.product.idP}&ida=${o.idA}&idcheck=1"><i class="fas fa-trash fa-lg"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -109,7 +112,8 @@
                                                             <button class="container__right-purchase-input-btn" id="container__left">
                                                                 <i class="fa-solid fa-minus"></i>
                                                             </button>
-                                                            <input type="text" class="container__right-purchase-input-text" value="1" role="spinbutton" aria-valuenow="1">
+                                                            
+                                                            <input type="text" id="quantity-input" class="container__right-purchase-input-text" value="${o.quantity}" role="spinbutton" aria-valuenow="1">
                                                             <button class="container__right-purchase-input-btn" id="container__right">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
@@ -121,18 +125,19 @@
                                         </div>
                                         <div class="col l-2 m-0 c-5">
                                             <div class="container_cart-list">
-                                                <span class="container_cart-list-pay">120.000.000 đ</span>
+                                                <span class="container_cart-list-pay">${o.product.price} đ</span>
                                             </div>
                                         </div>
                                         <div class="col l-1 m-0 c-1">
                                             <div class="container_cart-list">
-                                                <a class="container_cart-list-delete" href=""><i class="fas fa-trash fa-lg"></i></a>
+                                                <a class="container_cart-list-delete" href="/petshop/cart-delete?idp=${o.product.idP}&ida=${o.idA}&idcheck=1"><i class="fas fa-trash fa-lg"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        </c:forEach>
                     </div>
 
                 </div>
@@ -168,6 +173,51 @@
             </div>
             <jsp:include page="product.jsp"/>
          	<jsp:include page="footer.jsp"/>
+         	<!--  
+         	<script type="text/javascript">
+         // Lấy danh sách sản phẩm trong giỏ hàng từ cookie
+         	var cartItems = getCartItemsFromCookies();
+
+         	// Cập nhật số lượng sản phẩm khi người dùng thay đổi giá trị input
+         	function updateQuantity(idP, newQuantity) {
+         	    for (var i = 0; i < cartItems.length; i++) {
+         	        if (cartItems[i].product.idP == idP) {
+         	            cartItems[i].quantity = newQuantity;
+         	            break;
+         	        }
+         	    }
+         	    
+         	    // Lưu lại danh sách sản phẩm trong giỏ hàng vào cookie
+         	    saveCartItemsToCookies(cartItems);
+         	    
+         	    // Cập nhật tổng tiền hiển thị trên trang
+         	    updateTotalPrice();
+         	}
+
+         	// Cập nhật tổng tiền hiển thị trên trang
+         	function updateTotalPrice() {
+         	    var totalPrice = 0;
+         	    for (var i = 0; i < cartItems.length; i++) {
+         	        totalPrice += cartItems[i].product.price * cartItems[i].quantity;
+         	    }
+         	    document.getElementById("total-price").innerHTML = totalPrice;
+         	}
+
+         	// Lắng nghe sự kiện khi người dùng thay đổi số lượng sản phẩm
+         	var quantityInputs = document.getElementsByClassName("quantity-input");
+         	for (var i = 0; i < quantityInputs.length; i++) {
+         	    quantityInputs[i].addEventListener("change", function() {
+         	        var idP = this.dataset.productId;
+         	        var newQuantity = this.value;
+         	        updateQuantity(idP, newQuantity);
+         	    });
+         	}
+
+         	// Khởi tạo trang với danh sách sản phẩm trong giỏ hàng và tổng tiền hiển thị
+         	updateTotalPrice();
+
+         	</script>
+         	-->
         </div>
     </div>
 </body>

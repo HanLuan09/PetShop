@@ -30,7 +30,7 @@
                                         <div class="UuFd15">
                                         </div>
                                         <div class="container__left-img">
-                                            <div class="VWiifV qO2bZw" style="background-image: url(${detail.imageP}); background-size: contain; background-repeat: no-repeat;"></div>
+                                            <div class="VWiifV qO2bZw" style="background-image: url(upload/${detail.imageP}); background-size: contain; background-repeat: no-repeat;"></div>
                                         </div>
                                     </div>
                                         <!--  -->
@@ -85,7 +85,7 @@
                                         </div>
                                         <!-- end price -->
         
-                                        <!-- phân loại kích thước màu sắc -->
+                                        <!-- phân loại kích thước màu sắc 
                                         <div class="container__header">
                                         	<c:if test="${not empty listSize}">
                                         	
@@ -110,10 +110,12 @@
                                                 </div>
                                             </div>
                                             </c:if>
-                                        </div>
+                                        </div>-->
                                         
                                         <!-- end phân loại kích thước màu sắc  -->
                                         <!-- số lương và đặt hàng -->
+                                        <form action="cart-add" method="post">
+                                        <input name="idp" type="hidden" value="${detail.idP}">
                                         <div class="container__right-purchase" style="display: block;">
                                             <div class="container__right-purchase-list">
                                                 <div class="flex flex-column">
@@ -122,11 +124,11 @@
                                                         <div style="display: flex; flex-direction: row; align-items: center;">
                                                             <div style="margin-right: 15px;">
                                                                 <div class="container__right-purchase-input" style="display: flex; flex-direction: row;">
-                                                                    <button class="container__right-purchase-input-btn" id="container__left">
+                                                                    <button type="button" class="container__right-purchase-input-btn" id="container__left">
                                                                         <i class="fa-solid fa-minus"></i>
                                                                     </button>
-                                                                    <input type="text" class="container__right-purchase-input-text" value="1" role="spinbutton" aria-valuenow="1">
-                                                                    <button class="container__right-purchase-input-btn" id="container__right">
+                                                                    <input name="quantity" type="text" class="container__right-purchase-input-text" value="1" role="spinbutton" aria-valuenow="1" readonly>
+                                                                    <button type="button" class="container__right-purchase-input-btn" id="container__right">
                                                                         <i class="fa-solid fa-plus"></i>
                                                                     </button>
                                                                 </div>
@@ -141,11 +143,13 @@
                                                 <div class="container__right-purchase-wrap">
                                                     <div class="container__right-purchase-btn" style="display: flex; flex-direction: row;">
                                                      <!-- đã có tài khoản -->
-                                                    	<c:if test="${sessionScope.account != null}">
-	                                                        <button class="btn btn-tinted btn--l container__right-purchase-btn__cart iFo-rx" type="button"aria-disabled="false" onclick="location.href='cart?pid=${detail.idP}';" >
+                                                    	<c:if test="${sessionScope.account != null}"> 
+	                                                        <button type="submit" id="add-to-cart-button" class="btn btn-tinted btn--l container__right-purchase-btn__cart iFo-rx" type="button"aria-disabled="false">
 	                                                            <span>Thêm vào giỏ hàng</span>
 	                                                        </button>
-	                                                        <button class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" type="button" onclick="location.href='cart.jsp';" aria-disabled="false" onclick="location.href='cart.jsp';">Mua ngay</button>
+	                                                        
+	                                                        <button type="button" id="btn-purchase--buy" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" type="button" onclick="location.href='cart.jsp';" aria-disabled="false">Mua ngay</button>
+	                                                        
                                                         </c:if>
                                                         <!-- chưa có tài khoản -->
                                                         <c:if test="${sessionScope.account == null}">
@@ -178,6 +182,7 @@
 				                                }
                         					</script>
                                         </div>
+                                        </form>
                                         <!-- end số lượng và đặt hàng -->
                                     </div>
                             </div>
@@ -186,8 +191,19 @@
                 </div>
                 <script type="text/javascript" src="./javascript/base.js"></script>
                 <script src="./javascript/main.js"></script>
-                <!-- xử lý chọn 1 -->
                 
+                <!-- button mua hàng -->
+                <script type="text/javascript">
+	                var quantity = document.querySelector('input[name="quantity"]').value;
+	                var button = document.querySelector('#btn-purchase--buy');
+	                if(button!=undefined){
+		                button.addEventListener('click', function() {
+		                	location.href = 'cart?idp='+${detail.idP}+'&quantity='+quantity;
+						});
+	                }
+		             
+	            </script>
+	            <!-- xử lý chọn 1 -->
                 <script src="./javascript/validate.js"></script>
                 <script>
                 	
@@ -226,11 +242,38 @@
             
                 <jsp:include page="product.jsp"/>
                 <jsp:include page="footer.jsp"/>
+		</div>
+        <div id="add-to-cart-popup" class="hidden">
+            <div class="add-to-cart-icon">
+                <i class="fa-regular fa-circle-check"></i>
             </div>
-            <!-- end -->
-            
+            <div class="add-to-cart-text">
+                <p>Sản phẩm đã được thêm vào giỏ hàng thành công.</p>
+            </div>
         </div>
-        
+        <script>
+            // Lấy phần tử thông báo pop-up
+			var popup = document.getElementById("add-to-cart-popup");
+			
+			// Hàm hiển thị thông báo pop-up
+			function showPopup() {
+			  // Hiển thị thông báo
+			  popup.classList.add("show");
+			
+			  // Sau 3 giây, ẩn thông báo
+			  setTimeout(function() {
+			    popup.classList.remove("show");
+			  }, 6000);
+			}
+			
+			// Xử lý sự kiện thêm sản phẩm vào giỏ hàng
+			var addToCartButton = document.getElementById("add-to-cart-button");
+			if(addToCartButton!=undefined){
+				addToCartButton.addEventListener("click", function() {
+				  showPopup();
+				});
+			}
+        </script>  
     </div>
 </body>
 </html>

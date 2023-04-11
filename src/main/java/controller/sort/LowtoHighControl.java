@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
 import model.Product;
+import model.ProductDetails;
 
 // thấp đến cao
 @WebServlet(name = "LowtoHighControl", urlPatterns = {"/sort-low"})
@@ -23,7 +24,7 @@ public class LowtoHighControl extends HttpServlet {
 		DAO dao = new DAO();
 		List<Category> listC = dao.getAllCategory();
         request.setAttribute("listCC", listC);
-        List<Product> list = daoP.getAllProductLowtoHigh();
+        List<ProductDetails> list = daoP.getAllProductLowtoHigh();
         request.setAttribute("listP", list);
         request.getRequestDispatcher("category_product.jsp").forward(request, response);
        

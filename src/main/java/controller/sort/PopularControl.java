@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
 import model.Product;
+import model.ProductDetails;
 
 // phổ biến
 @WebServlet(name = "PopularControl", urlPatterns = {"/sort-popular"})
@@ -23,7 +24,7 @@ public class PopularControl extends HttpServlet {
 		DAO dao = new DAO();
 		List<Category> listC = dao.getAllCategory();
         request.setAttribute("listCC", listC);
-        List<Product> list = daoP.getAllProductPopular();
+        List<ProductDetails> list = daoP.getAllProductPopular();
         request.setAttribute("listP", list);
         request.getRequestDispatcher("category_product.jsp").forward(request, response);
        

@@ -29,6 +29,7 @@
     padding: 19px 16px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.05);
 }
+.category-list--product,
 .category-list {
     padding-left: 0;
     list-style: none;

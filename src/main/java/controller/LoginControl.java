@@ -29,11 +29,6 @@ public class LoginControl extends HttpServlet {
     			request.setAttribute("cookiePass", o.getValue());
     		}
     	}
-//    	Lưu URL của trang đang được truy cập vào session
-    	HttpSession session = request.getSession();
-    	String previousUrl = request.getRequestURI();
-    	session.setAttribute("previousUrl", previousUrl);
-//    	
     	request.getRequestDispatcher("login_register.jsp").forward(request, response);
     }
 

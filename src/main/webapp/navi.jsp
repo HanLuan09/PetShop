@@ -71,81 +71,46 @@
                     </div>
                     <!-- end search -->
 
-                    <!-- nav 2 -->
                     <ul class="header__list2">
-                        
+      
                         <div class="header__nav">
                             <div class="header__cart hide-on-mobile-tablet">
-                                <a href="#" class="header__cart-icon header__nav-icon"><i class="fa fa-shopping-cart"></i></a>
-                                <span class="header__cart-notice">10</span>
+                                <a href="/petshop/cart-get" class="header__cart-icon header__nav-icon"><i class="fa fa-shopping-cart"></i></a>
+                                <span class="header__cart-notice">${sumCart}</span>
                                  <!-- Chưa có san phẩm header__cart-list--no-cart -->
                                 <div class="header__cart-list header__cart-list--no-cart">
-                                    <img src="./img/no_cart.png" alt="" class="header__cart-no-cart-img">
+                                	<c:if test="${sumCart==0}">
+                                    	<img src="./img/no_cart.png" alt="" class="header__cart-no-cart-img">
+                                    </c:if>
                                     <!-- Có giỏ hàng -->
+                                    <c:if test="${sumCart !=0}">
                                     <h4 class="header__cart-heading">Sản phẩm đã thêm</h4>
-                                    <ul class="header__cart-list-ul">
+                                    <ul class="header__cart-list-ul category-list">
                                         <!-- item -->
+                                        <c:forEach items="${listCartNavi}" var="o">
                                         <li class="header__cart-item">
-                                            <img src="https://superbrain.edu.vn/wp-content/uploads/2020/05/icon-thuong-thuong-phong-cach-rieng-cua-Superbrain-7.jpg" alt="" class="header__cart-img">
+                                            <img src="upload/${o.product.imageP}" alt="" class="header__cart-img">
                                             <div class="header__cart-item-info">
                                                 <div class="header__cart-item-head">
-                                                    <h5 class="header__cart-item-name">Bộ kem đặc trị vùng mắt</h5>
+                                                    <h5 class="header__cart-item-name">${o.product.nameP}</h5>
                                                     <div class="header__cart-item-wrap">
-                                                        <span class="header__cart-item-price">2.000.000 đ</span>
+                                                        <span class="header__cart-item-price">${o.product.price} đ</span>
                                                         <span class="header__cart-item-multipl">x</span>
-                                                        <span class="header__cart-item-qnt">1</span>
+                                                        <span class="header__cart-item-qnt">${o.quantity}</span>
                                                     </div>
                                                 </div>
                                                 <div class="header__cart-item-body">
                                                     <span class="header__cart-item-description">
                                                         Phân loại Bạc
                                                     </span>
-                                                    <span class="header__cart-item-remove">Xóa</span>
+                                                    <a href="/petshop/cart-delete?idp=${o.product.idP}&ida=${o.idA}&idcheck=0"><span class="header__cart-item-remove">Xóa</span></a>
                                                 </div>
                                             </div>
                                         </li>
-                                        <!-- item -->
-                                        <li class="header__cart-item">
-                                            <img src="https://superbrain.edu.vn/wp-content/uploads/2020/05/icon-thuong-thuong-phong-cach-rieng-cua-Superbrain-7.jpg" alt="" class="header__cart-img">
-                                            <div class="header__cart-item-info">
-                                                <div class="header__cart-item-head">
-                                                    <h5 class="header__cart-item-name">Bộ kem đặc trị vùng mắt</h5>
-                                                    <div class="header__cart-item-wrap">
-                                                        <span class="header__cart-item-price">2.000.000 đ</span>
-                                                        <span class="header__cart-item-multipl">x</span>
-                                                        <span class="header__cart-item-qnt">1</span>
-                                                    </div>
-                                                </div>
-                                                <div class="header__cart-item-body">
-                                                    <span class="header__cart-item-description">
-                                                        Phân loại Bạc
-                                                    </span>
-                                                    <span class="header__cart-item-remove">Xóa</span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- item -->
-                                        <li class="header__cart-item">
-                                            <img src="https://superbrain.edu.vn/wp-content/uploads/2020/05/icon-thuong-thuong-phong-cach-rieng-cua-Superbrain-7.jpg" alt="" class="header__cart-img">
-                                            <div class="header__cart-item-info">
-                                                <div class="header__cart-item-head">
-                                                    <h5 class="header__cart-item-name">Bộ kem đặc trị vùng mắt</h5>
-                                                    <div class="header__cart-item-wrap">
-                                                        <span class="header__cart-item-price">2.000.000 đ</span>
-                                                        <span class="header__cart-item-multipl">x</span>
-                                                        <span class="header__cart-item-qnt">1</span>
-                                                    </div>
-                                                </div>
-                                                <div class="header__cart-item-body">
-                                                    <span class="header__cart-item-description">
-                                                        Phân loại Bạc
-                                                    </span>
-                                                    <span class="header__cart-item-remove">Xóa</span>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        </c:forEach>
                                     </ul>
-                                    <button class="header__cart-viewcart btn btn--primary">Xem giỏ hàng</button>
+                                    <button class="header__cart-viewcart btn btn--primary" onclick="location.href='cart-get';">Xem giỏ hàng</button>
+                                    </c:if>
                                 </div>
                             </div>
                             <!-- end cart  -->

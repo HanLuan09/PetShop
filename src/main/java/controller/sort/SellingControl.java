@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
 import model.Product;
+import model.ProductDetails;
 
 //Bán chạy
 @WebServlet(name = "SellingControl", urlPatterns = {"/sort-sell"})
@@ -23,7 +24,7 @@ public class SellingControl extends HttpServlet {
 		DAO dao = new DAO();
 		List<Category> listC = dao.getAllCategory();
         request.setAttribute("listCC", listC);
-        List<Product> list = daoP.getAllProductSelling();
+        List<ProductDetails> list = daoP.getAllProductSelling();
         request.setAttribute("listP", list);
         request.getRequestDispatcher("category_product.jsp").forward(request, response);
        

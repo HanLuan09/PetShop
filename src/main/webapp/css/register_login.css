@@ -254,7 +254,7 @@ img, input {
 .mod-input span {
     font-size: 1.2rem;
     position: absolute;
-    top: -5px;
+    top: 50px;
     line-height: 16px;
     color: #f44336;
     visibility: visible;

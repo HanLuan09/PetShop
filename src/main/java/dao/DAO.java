@@ -26,7 +26,7 @@ public class DAO {
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getInt(9), 0));
+                        rs.getInt(9)));
             }
             conn.close();
             ps.close();
@@ -37,10 +37,10 @@ public class DAO {
         return list;
     }
 
-//  Lấy tất cả chó cưng
-	  public List<Product> getAllProductDog() {
+//  Lấy tất cả chó mèo cưng
+	  public List<Product> getAllProductDogCat() {
 	      List<Product> list = new ArrayList<Product>();
-	      String query = "select * from Product where CateID=1";
+	      String query = "select * from Product where CateID=1 or CateID=2";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
@@ -54,7 +54,7 @@ public class DAO {
 	                      rs.getInt(6),
 	                      rs.getInt(7),
 	                      rs.getInt(8),
-	                      rs.getInt(9), 0));
+	                      rs.getInt(9)));
 	          }
 	          conn.close();
 	          ps.close();
@@ -64,45 +64,22 @@ public class DAO {
 	      
 	      return list;
 	  }
-//    Lấy tất cả sản phẩm Cat
-	    public List<Product> getAllProductCat() {
-	        List<Product> list = new ArrayList<Product>();
-	        String query = "select * from Product where CateID=2";
-	        try {
-	            conn = new DbContext().getConnection();//mo ket noi voi sql
-	            ps = conn.prepareStatement(query);
-	            rs = ps.executeQuery();
-	            while (rs.next()) {
-	                list.add(new Product(rs.getInt(1),
-	                        rs.getString(2),
-	                        rs.getString(3),
-	                        rs.getString(4),
-	                        rs.getString(5),
-	                        rs.getInt(6),
-	                        rs.getInt(7),
-	                        rs.getInt(8),
-	                        rs.getInt(9), 0));
-	            }
-	            conn.close();
-	            ps.close();
-	            rs.close();
-	        } catch (Exception e) {
-	        }
-	        
-	        return list;
-	    }
+
 //	    Lấy tất cả sản phẩm còn lại 
-	    public List<Product> getAllProductRemaining() {
-	        List<Product> list = new ArrayList<Product>();
-	        String query = "select * from Product\r\n"
-	        		+ "EXCEPT select * from Product where CateID=1\r\n"
-	        		+ "EXCEPT select * from Product where CateID=2";
+	    public List<ProductDetails> getAllProductRemaining() {
+	        List<ProductDetails> list = new ArrayList<ProductDetails>();
+	        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating\r\n"
+	        		+ "FROM Product p\r\n"
+	        		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
+	        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+	        		+ "where CateID > 2\r\n"
+	        		+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount,  p.Price, p.Amount, p.cateId";
 	        try {
 	            conn = new DbContext().getConnection();//mo ket noi voi sql
 	            ps = conn.prepareStatement(query);
 	            rs = ps.executeQuery();
 	            while (rs.next()) {
-	                list.add(new Product(rs.getInt(1),
+	                list.add(new ProductDetails(rs.getInt(1),
 	                        rs.getString(2),
 	                        rs.getString(3),
 	                        rs.getString(4),
@@ -110,7 +87,9 @@ public class DAO {
 	                        rs.getInt(6),
 	                        rs.getInt(7),
 	                        rs.getInt(8),
-	                        rs.getInt(9), 0));
+	                        rs.getInt(9),
+	                        rs.getInt(10),
+	                        rs.getFloat(11)));
 	            }
 	            conn.close();
 	            ps.close();
@@ -179,7 +158,7 @@ public class DAO {
                         rs.getInt(6),
                         rs.getInt(7),
                         rs.getInt(8),
-                        rs.getInt(9), 0);
+                        rs.getInt(9));
             }
             conn.close();
             ps.close();
@@ -335,7 +314,7 @@ public class DAO {
 	                        rs.getInt(6),
 	                        rs.getInt(7),
 	                        rs.getInt(8),
-	                        rs.getInt(9), 0);
+	                        rs.getInt(9));
 	          }
 	          conn.close();
 	          ps.close();
@@ -347,11 +326,11 @@ public class DAO {
     public static void main(String[] args) {
         DAO dao = new DAO();
         
-        Product p = dao.checkNameProduct("Chó Corgi");
+        List<ProductDetails> listp = dao.getAllProductRemaining();
         int x = dao.getNumberOfProductsSold("2");
-        System.out.println(p);
-//        for(Product o: listP) {
-//        	System.out.println(o);
-//        }
+        
+        for(Product o: listp) {
+        	System.out.println(o);
+        }
     }
 }

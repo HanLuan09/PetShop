@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
 import model.Product;
+import model.ProductDetails;
 
 //mới nhất
 
@@ -24,7 +25,7 @@ public class LatestControl extends HttpServlet {
 		DAO dao = new DAO();
 		List<Category> listC = dao.getAllCategory();
         request.setAttribute("listCC", listC);
-        List<Product> list = daoP.getAllProductLatest();
+        List<ProductDetails> list = daoP.getAllProductLatest();
         request.setAttribute("listP", list);
         request.getRequestDispatcher("category_product.jsp").forward(request, response);
        

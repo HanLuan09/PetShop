@@ -11,7 +11,7 @@
 	                                	<c:forEach items="${listP}" var="o">
 	                                    <div class="col l-2 m-4 c-6 home-product-list">
 	                                        <a class="home-product-item" href="detail?pid=${o.idP}&cid=${o.cateId}">
-	                                            <div class="home-product-item__img" style="background-image: url(${o.imageP});"></div>
+	                                            <div class="home-product-item__img" style="background-image: url(upload/${o.imageP});"></div>
 	                                            <h5 class="home-product-item__name">${o.nameP}</h5>
 	                                            <div class="home-product-item__price">
 	                                                <span class="home-product-item__price-old">${o.price} đ</span>

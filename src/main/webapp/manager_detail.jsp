@@ -36,7 +36,7 @@
     </style>
 </head>
 <body>
-	<form id="form" action="${idProduct>0 ? "save" : "add"}" method="post">
+	<form id="form" action="${idProduct>0 ? "save" : "add"}" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="idP" id ="idBook" value = "${idProduct}">
     <div class="main">
        <div class="container">
@@ -110,7 +110,7 @@
                                 
                             </div>
                             <div class="container-img">
-                                <img id="preview-image" src="${productId.imageP}" alt="" style=" width: 100%; height: 100%; background-size: contain; background-repeat: no-repeat;">
+                                <img id="preview-image" src="upload/${productId.imageP}" alt="" style=" max-width: 100%; max-height: 100%; background-size: contain; background-repeat: no-repeat;">
                             </div>
                         </div>
                         <script>

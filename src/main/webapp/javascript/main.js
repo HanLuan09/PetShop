@@ -1,4 +1,5 @@
 //udate giá trong detail
+/*
 var sizes = document.querySelectorAll('.container__header-btn-1');
 var ratioSize = document.querySelectorAll('.container__header-size');
 const p = document.getElementById("price-old");
@@ -19,7 +20,7 @@ sizes.forEach((tab, index) => {
 		switchSize(index);
 	});
 });
-
+*/
 // tăng số lượng sản phẩm
 const minusBtn = document.querySelector('#container__left');
 const plusBtn = document.querySelector('#container__right');
@@ -43,5 +44,4 @@ minusBtn.addEventListener('click', () => {
 plusBtn.addEventListener('click', () => {
   	increaseQuantity();
 });
-
         

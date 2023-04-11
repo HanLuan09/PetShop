@@ -99,8 +99,25 @@ public class AccountDao {
 	      }
 	      return null;
   	}
+  	public void addAddress(int id, String name , String phone, String address) {
+  		String query = "INSERT INTO DBO.[Address]([IdA], [Name], [Phone], [Address]) VALUES(?, ?, ?, ?)";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setInt(1, id);
+	          ps.setString(2, name);
+	          ps.setString(3, phone);
+	          ps.setString(4, address);
+	          ps.executeUpdate();
+	          
+	          conn.close();
+	          ps.close();
+	      } catch (Exception e) {
+	      }
+	     
+  	}
 //  	
-  	public int addOrder (Order o) {
+  	public void addOrder (Order o) {
   		int result = 0;
   		String query = "INSERT INTO DBO.[Order]([CreatedDate], [IdA], [Status]) VALUES(?, ?, ?)";
 	      try {
@@ -108,14 +125,13 @@ public class AccountDao {
 	          ps = conn.prepareStatement(query);
 	          ps.setDate(1, o.getCreatedDate());
 	          ps.setInt(2, o.getIdA());
-	          ps.setInt(3, o.getStatus());
+	          ps.setInt(3, 0);
 	          result = ps.executeUpdate();
 	          
 	          conn.close();
 	          ps.close();
 	      } catch (Exception e) {
 	      }
-	      return result;
   	}
   	public List<Order> getOrder (String idA) {
   		List<Order> list = new ArrayList<>();

@@ -12,13 +12,12 @@ public class Product {
 	private int price;
 	private int priceNew;
 	private int cateId;
-	private int sumPrice;
 	public Product() {
 		
 	}
-	
 	public Product(int idP, String nameP, String imageP, String describe, String origin, int amount, int discount,
-			int price, int cateId, int sumPrice) {
+			int price, int cateId) {
+		super();
 		this.idP = idP;
 		this.nameP = nameP;
 		this.imageP = imageP;
@@ -29,7 +28,6 @@ public class Product {
 		this.price = price;
 		this.priceNew = (int) (this.price - (this.price * (this.discount / 100.0)));
 		this.cateId = cateId;
-		this.sumPrice = sumPrice;
 	}
 	public int getIdP() {
 		return idP;
@@ -79,34 +77,24 @@ public class Product {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getCateId() {
-		return cateId;
-	}
-	public void setCateId(int cateId) {
-		this.cateId = cateId;
-	}
-	
 	public int getPriceNew() {
 		return priceNew;
 	}
 	public void setPriceNew(int priceNew) {
 		this.priceNew = priceNew;
 	}
-	
-	public int getSumPrice() {
-		return sumPrice;
+	public int getCateId() {
+		return cateId;
 	}
-
-	public void setSumPrice(int sumPrice) {
-		this.sumPrice = sumPrice;
+	public void setCateId(int cateId) {
+		this.cateId = cateId;
 	}
-
 	@Override
 	public String toString() {
-	    return "Product{" + "idP=" + idP + ", nameP=" + nameP
-	    		+ ", imageP=" + imageP + ", describe=" + describe
-	    		+ ", origin=" + origin + ", amount=" + amount
-	    		+ ", discount=" + discount + ", price=" + price
-	    		+ ", priceNew=" + priceNew + ", cateId=" + cateId + '}';
+		return "Product [idP=" + idP + ", nameP=" + nameP + ", imageP=" + imageP + ", describe=" + describe
+				+ ", origin=" + origin + ", amount=" + amount + ", discount=" + discount + ", price=" + price
+				+ ", priceNew=" + priceNew + ", cateId=" + cateId + "]";
 	}
+	
+	
 }

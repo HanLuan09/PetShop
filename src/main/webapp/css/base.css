@@ -451,7 +451,7 @@ img, input {
     position: absolute;
     right: calc(100% - 45px);
     top: calc(100% - 45px);
-    padding: 4px;
+    padding: 3px 5.6px;
     background-color: #F5F5F5;
     color: #EE4D20;
     font-size: 1.1rem;
@@ -494,7 +494,7 @@ img, input {
 /* ảnh chưa có sản phẩm hiện lên */
 .header__cart-list--no-cart .header__cart-no-cart-img {
     width: 100%;
-    /* display: block; */
+    display: block; 
 }
 /*  */
 .header__cart-list::before {
@@ -555,10 +555,16 @@ img, input {
     justify-content: space-between;
 }
 .header__cart-item-name {
+	max-width: 200px;
     font-size: 1.4rem;
     font-weight: 500;
     color: var(--text-color);
     margin: 0;
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 }
 .header__cart-item-price {
     font-size: 1.4rem;

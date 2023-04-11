@@ -98,7 +98,7 @@
                         <div class="col l-2 m-0 c-0">
                             <nav class="category">
                                 <h3 class="category__heading">Danh mục</h3>
-                                <ul class="category-list">
+                                <ul class="category-list--product">
                                 	<c:forEach items="${listCC}" var="o">
 						                <li class="category-item">
                                         	<a href="category?cid=${o.cid}" class="category-item__link ${active == o.cid ? "category-item--active" : ""}">${o.cname}</a>
@@ -135,7 +135,7 @@
                                             <c:forEach items="${listP}" var="o">
 		                                    <div class="col l-2-4 m-4 c-6 home-product-list">
 		                                        <a class="home-product-item" href="detail?pid=${o.idP}&cid=${o.cateId}">
-		                                            <div class="home-product-item__img" style="background-image: url(${o.imageP});"></div>
+		                                            <div class="home-product-item__img" style="background-image: url(upload/${o.imageP});"></div>
 		                                            <h5 class="home-product-item__name">${o.nameP}</h5>
 		                                            <div class="home-product-item__price">
 		                                                <span class="home-product-item__price-old">${o.price} đ</span>

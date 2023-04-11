@@ -23,7 +23,7 @@
             
             <div class="modal__body">
                 
-                <form action="" method="POST" class="form-pay" id="form-pay">
+                <form action="save-address" method="POST" class="form-pay" id="form-pay">
                 <div class="auth-form" id="auth-form-pay">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
@@ -36,7 +36,7 @@
                                     <input name="name" type="text" id="name" class="auth-form__input" placeholder="Họ và tên" value="${address.name}"> 
                                     <span class="form-message"></span> 
                                 </div>
-                                <div>
+                                <div class="auth-form__group">
                                     <input name="phone" type="text" id="phone" class="auth-form__input" placeholder="Số điện thoại" value="${address.phone}"> 
                                     <span class="form-message"></span> 
                                 </div>
@@ -84,7 +84,7 @@
     
                         <div class="auth-form__controls">
                             <button class="btn auth-form__controls-back btn--normal">Trở lại</button>
-                            <button class="btn btn--primary">Hoàn thành</button>
+                            <button class="btn btn--primary" type="submit">Hoàn thành</button>
                         </div>
     
                     </div>
@@ -104,6 +104,7 @@
                     <li class="mod-tabs-item active">ĐỊA CHỈ</li>
                     <!--<li class="mod-tabs-item">THANH TOÁN</li>-->
                 </ul>
+                <form action="save-address" method="POST" id="form-pay--mb">
                 <div class="mod-tabs-content-list">
                     <div class="mod-tabs-content mod-tabs-content--block">
                         <div class="login">
@@ -111,21 +112,21 @@
                                 <div class="login-form">
                                     <div class="mod-input">
                                         <label for="username" class="mod-input-label">Họ và tên</label>
-                                        <input type="text" class="mod-input-text">
+                                        <input type="text" name="name" id="name-mb" class="mod-input-text">
                                         <b></b>
-                                        <span></span>
+                                        <span class="form-message"></span> 
                                     </div>
                                     <div class="mod-input">
                                         <label for="username" class="mod-input-label">Số điện thoại</label>
-                                        <input type="text" class="mod-input-text">
+                                        <input type="text" name="phone" id="phone-mb" class="mod-input-text">
                                         <b></b>
-                                        <span></span>
+                                       <span class="form-message"></span> 
                                     </div>
                                     <div class="mod-input">
                                         <label for="username" class="mod-input-label">Địa chỉ</label>
-                                        <input type="text" class="mod-input-text">
+                                        <input type="text" name="address" id="address-mb" class="mod-input-text">
                                         <b></b>
-                                        <span></span>
+                                        <span class="form-message"></span> 
                                     </div>
                                     <div class="auth-form__aside">
 			                            <p style="font-size: 1.4rem; font-weight: 400; color: #333;">Loại địa chỉ:</p>
@@ -163,46 +164,12 @@
                                 </div>
                             </div>
                             <div class="login-btn">
-                                <button class="mod-button">HOÀN THÀNH</button>
+                                <button class="mod-button" type="submit">HOÀN THÀNH</button>
                             </div>     
                         </div>
                     </div>
-                    <!--  <div class="mod-tabs-content">
-                        <div class="login">
-                            <div class="login-main">
-                                <div class="login-form">
-                                    <div class="mod-input">
-                                        <label class="mod-input-label">Tên đăng nhập</label>
-                                        <input type="text" class="mod-input-text">
-                                        <b></b>
-                                        <span></span>
-                                    </div>
-                                    <div class="mod-input">
-                                        <label class="mod-input-label">Email của bạn</label>
-                                        <input type="text" class="mod-input-text">
-                                        <b></b>
-                                        <span></span>
-                                    </div>
-                                    <div class="mod-input">
-                                        <label class="mod-input-label">Nhập mật khẩu</label>
-                                        <input type="password" class="mod-input-text">
-                                        <b></b>
-                                        <span></span>
-                                    </div>
-                                    <div class="mod-input">
-                                        <label class="mod-input-label">Nhập lại mật khẩu</label>
-                                        <input type="password" class="mod-input-text">
-                                        <b></b>
-                                        <span></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="login-btn">
-                                <button class="mod-button">HOÀN THÀNH</button>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
+                </form>
             </div>
             <!-- end đăng ký đăng nhập -->
 			<script>
@@ -254,33 +221,7 @@
 	        switchTab(0);
 	        // end sự kiện dk, dn
 	        
-	        //lỗi
-	        // sử lý mess báo lỗi trên server trả về
-	        //var div = document.querySelector(".he1");
-	
-	        // Lấy các thẻ input trong thẻ div
-	        var inputsMess = document.querySelectorAll(".auth-form__input");
-	        console.log(inputsMess)
-	        // Lấy thẻ div có class là "mess"
-	      
-	        var mess = document.querySelector(".error-mess");
-	        console.log(mess)
-	        // Thêm sự kiện "input" cho các thẻ input
-	        inputsMess.forEach(function(input) {
-		        input.addEventListener("input", function() {
-		            // Xóa nội dung của thẻ div "mess"
-		            mess.innerHTML = "";
-		            console.log(mess.value)
-		        });
-	        });
-	        var inputs = document.getElementsByTagName("input");
-	        var errorMessage = document.querySelector(".error-mess");
-	        for (var i = 0; i < inputs.length; i++) {
-	            inputs[i].onclick = function() {
-	                errorMessage.innerText = "";
-	            }
-	        }
-	        ///lỗi
+	        
       
 	    </script>
         </div>
@@ -291,67 +232,30 @@
         //pc
         // regster
         Validator({
-            form: "#form-regster",
-            formGroupSelector: ".auth-form__group",
-            errorSelector: ".form-message",
-            rules: [
-                Validator.isRequired('#fullname'),
-                //Validator.isRequired('#email'),
-                Validator.isRequired('#password'),
-                Validator.isRequired('#password_comfirmation'),
-                //Validator.isEmail('#email'),
-                Validator.minLength('#password', 6),
-                Validator.isConfirmed('#password_comfirmation', function() {
-                    return document.querySelector("#form-regster #password").value;
-                }, 'Mật khẩu nhập lại không chính xác'),
-            ]
-            
-        });
-        // login
-        
-        Validator({
-            form: "#form-login",
+            form: "#form-pay",
             formGroupSelector: ".auth-form__group",
             errorSelector: ".form-message",
             rules: [
                 Validator.isRequired('#name'),
-                Validator.isRequired('#login_password'),
-            ]
-            // login
-        });
-        //end pc
-        // mt
-        // regster
-        Validator({
-            form: "#form-register--mod-tabs",
-            formGroupSelector: ".mod-input",
-            errorSelector: ".form-message",
-            rules: [
-                Validator.isRequired('#name--mod-tabs'),
-                Validator.isRequired('#password--mod-tabs'),
-                Validator.isRequired('#password_comfirmation--mod-tabs'),
-                Validator.minLength('#password--mod-tabs', 6),
-                Validator.isConfirmed('#password_comfirmation--mod-tabs', function() {
-                    return document.querySelector("#form-register--mod-tabs #password--mod-tabs").value;
-                }, 'Mật khẩu nhập lại không chính xác'),
+                Validator.isRequired('#phone'),
+                Validator.isRequired('#address'),
+               
             ]
             
         });
-        // login
         
         Validator({
-            form: "#form-login--mod-tabs",
+            form: "#form-pay--mb",
             formGroupSelector: ".mod-input",
             errorSelector: ".form-message",
             rules: [
-                Validator.isRequired('#login_name--mod-tabs'),
-                Validator.isRequired('#login_password--mod-tabs'),
+                Validator.isRequired('#name-mb'),
+                Validator.isRequired('#phone-mb'),
+                Validator.isRequired('#address-mb'),
             ]
-            // login
+            
         });
-        //end
-        
-                    
+         
     </script>
 </body>
 </html>

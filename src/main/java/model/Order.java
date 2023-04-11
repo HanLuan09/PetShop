@@ -55,14 +55,5 @@ public class Order {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
-//	public List<OrderDetails> getListO() {
-//		return listO;
-//	}
-//
-//	public void setListO(List<OrderDetails> listO) {
-//		this.listO = listO;
-//	}
-
 	
 }
