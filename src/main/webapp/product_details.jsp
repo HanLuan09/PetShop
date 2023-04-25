@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="./css/product_details.css">
     <link rel="stylesheet" href="./css/gird.css">
     <link rel="stylesheet" href="./css/responsive.css">
+    <!-- javascript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="main">
@@ -50,7 +53,7 @@
                                         <div class="container__home">
                                             <div class="flex X5u-5c">
                                                 <div class="home-right-rating">
-                                                    <div class="home-right-rating-gpa">4.8</div>
+                                                    <div class="home-right-rating-gpa">${detail.rating}</div>
                                                     <div class="home-right__rating-star">
                                                         <i class="home-right__rating--gold fa-solid fa-star"></i>
                                                         <i class="home-right__rating--gold fa-solid fa-star"></i>
@@ -61,11 +64,11 @@
                                                 </div>
                                             </div>
                                             <div class="home-right-quantity">
-                                                <div class="home-right-number">1.4k</div>
+                                                <div class="home-right-number">${countRating}</div>
                                                 <div>Đánh giá</div>
                                             </div>
                                             <div class="home-right-quantity">
-                                                <div class="home-right-number">${sumP}</div>
+                                                <div class="home-right-number">${detail.sumPrice}</div>
                                                 <div>Đã bán</div>
                                             </div>
                                         </div>
@@ -127,7 +130,7 @@
                                                                     <button type="button" class="container__right-purchase-input-btn" id="container__left">
                                                                         <i class="fa-solid fa-minus"></i>
                                                                     </button>
-                                                                    <input name="quantity" type="text" class="container__right-purchase-input-text" value="1" role="spinbutton" aria-valuenow="1" readonly>
+                                                                    <input name="quantity" id="quantity-input" type="text" class="container__right-purchase-input-text" value="1" role="spinbutton" aria-valuenow="1" readonly>
                                                                     <button type="button" class="container__right-purchase-input-btn" id="container__right">
                                                                         <i class="fa-solid fa-plus"></i>
                                                                     </button>
@@ -148,7 +151,7 @@
 	                                                            <span>Thêm vào giỏ hàng</span>
 	                                                        </button>
 	                                                        
-	                                                        <button type="button" id="btn-purchase--buy" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" type="button" onclick="location.href='cart.jsp';" aria-disabled="false">Mua ngay</button>
+	                                                        <button type="button" id="btn-purchase--buy" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" type="button" aria-disabled="false">Mua ngay</button>
 	                                                        
                                                         </c:if>
                                                         <!-- chưa có tài khoản -->
@@ -190,21 +193,8 @@
                     </div>
                 </div>
                 <script type="text/javascript" src="./javascript/base.js"></script>
-                <script src="./javascript/main.js"></script>
-                
-                <!-- button mua hàng -->
-                <script type="text/javascript">
-	                var quantity = document.querySelector('input[name="quantity"]').value;
-	                var button = document.querySelector('#btn-purchase--buy');
-	                if(button!=undefined){
-		                button.addEventListener('click', function() {
-		                	location.href = 'cart?idp='+${detail.idP}+'&quantity='+quantity;
-						});
-	                }
-		             
-	            </script>
-	            <!-- xử lý chọn 1 -->
                 <script src="./javascript/validate.js"></script>
+                <script src="./javascript/main.js"></script>
                 <script>
                 	
                     Validator2({
@@ -216,6 +206,22 @@
                         action: "container__header-btn--selecter"   
                     });
                     
+                    productNumber({
+                    	minus: "#container__left",
+                    	plus: "#container__right",
+                    	quantity: ".container__right-purchase-input-text"
+                    });
+                    <!-- button mua hàng -->
+                    var button = document.querySelector('#btn-purchase--buy');
+                    if(button != undefined){
+                        button.addEventListener('click', function() {
+                            // Lấy giá trị mới nhất của input
+                            var quantity = document.querySelector('#quantity-input').value;
+                            console.log(quantity);
+                            // Chuyển hướng đến trang giỏ hàng với các tham số cần thiết
+                            location.href = 'cart-pay?idp='+${detail.idP}+'&quantity='+quantity;
+                        });
+                    }
                 </script>
 
                 <!-- end -->
@@ -232,6 +238,75 @@
                                     </div>
                                     
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- nhận xét -->
+                <div class="container-wrap"></div>
+                <div class="grid wide">
+                    <div class="container-details">
+                        <div class="row c-gutter">
+                            <div style="width: 95%; background-color: #fffbf8; border: 1px solid #f9ede5; border-radius: 2px; padding: 1.875rem; margin: 1.875rem;">
+                                <div class="container-details-frame">Đánh giá sản phẩm</div>
+                                <div class="container-details-list">
+                                    <div class="content">
+                                        <div class="col l-2 m-2 c-1">
+                                            <div class="content__left-summary">
+                                                <div class="content__left-score">
+                                                    <span class="content__left-score-average">${detail.rating}</span>
+                                                    <span class="content__left-score-max">/5</span>
+                                                    <i class="home-product-item__rating--gold fa-solid fa-star"></i>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col l-10 c-10 m-11">
+                                            <div>
+                                                <button class="container__header-btn container__header-btn-1">Tất cả</button>
+                                                <c:forEach items="${listRCount}" var="o">
+	                                                <button class="container__header-btn container__header-btn-1">${o.rating} Sao (${o.count})</button>
+                                                </c:forEach>
+                                              
+                                            </div>
+                                            <div class="content__left-count">${countRating} Đánh giá</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="shopee-product-rating-list">
+                            <div class="shopee-product-rating-comment-list">
+                            	<c:forEach items="${listRA}" var="o">
+                                <div class="shopee-product-rating">
+                                    <div class="shopee-product-rating__avatar">
+                                        <div class="shopee-avatar">
+                                            <div class="shopee-avatar__placeholder">
+                                                <img src="upload/${o.imageA}" alt="" class="shopee-avatar__img">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="shopee-product-rating__main">
+                                        <div class="shopee-product-rating__author-name">${o.username}</div>
+                                        <div class="repeat-purchase-con">
+                                            <div class="home-product-item__rating">
+                                            	<c:forEach begin="1" end="${o.rating}" var="rating">
+	                                                <i class="home-product-item__rating--gold fa-solid fa-star"></i>
+                                            	</c:forEach>
+                                            	<c:if test="${o.rating<5}">
+	                                            	<c:forEach begin="${o.rating+1}" end="5" var="rating">
+		                                                <i class="fa-solid fa-star"></i>
+	                                            	</c:forEach>
+                                            	</c:if>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="shopee-product-rating__name">${o.comment}</div>
+
+                                    </div>
+                                </div>
+                            	</c:forEach>
                             </div>
                         </div>
                     </div>

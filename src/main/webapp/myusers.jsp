@@ -46,7 +46,7 @@
             <ul>
                 <li> 
                     <i class="fa-regular fa-pen-to-square"></i>
-                    <a href="">Đơn hàng của tôi</a>
+                    <a href="order">Đơn hàng của tôi</a>
                 </li>
                 <li>
                     <i class="fa-regular fa-heart"></i>

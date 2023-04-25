@@ -30,11 +30,18 @@
                 <img alt="categories" class="tabbar-item-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABICAMAAABBaBKgAAAAhFBMVEUAAAARERESEhISEhISEhIVFRUUFBQ9PT0SEhIRERESEhITExMVFRUXFxcREREREREVFRUZGRkYGBgRERERERESEhISEhITExMSEhIeHh4RERESEhIRERESEhISEhISEhISEhITExMSEhIRERERERESEhISEhIRERESEhIRERETExMRERF4dZduAAAAK3RSTlMAz4HYfjAnBPbiel8kCvyoHxQPr6FjU08rCPDUxrttaEY8N+60nJB1V0pCX01AnQAAANxJREFUWMPt1smOwkAMBNAKw9BZOgtJgLAvs0/9//9BkNLilBhQX5DfrS4ly74YSqnn2CranuBDGZEMLTyYsxV30Szikcx4Voqqf7qYUy5K0SuNSK4KH9Uo6nXV4GYhY5k4KaGUUuo1lKcp/JiFzEbwYZLx4gAPErbc2E2+fhPaLtDvyFbSxYB3GLpRTXJj3OZXlMq+MOQv/jVwTDGRsSmUUkq9iOR7v4QXnyQDL93/bO1dTpt3oemdz8IupFiOfsW16/jIs5ANzT3/YLhzydabQKg6YIixSyillMgZs0c+z0Ij3wAAAAAASUVORK5CYII=">
                 <span class="tabbar-text">Categories</span>
             </a> 
-            <!-- ${sessionScope.account == null ? "login":"cart"} -->
-            <a href="" class="tabbar-item selected home hp-exp-class">
+            <c:if test="${sessionScope.account == null}">
+            <a href="/petshop/login_register.jsp" class="tabbar-item selected home hp-exp-class">
                 <img alt="cart" class="tabbar-item-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABICAMAAABBaBKgAAAAmVBMVEUAAAASEhITExMWFhYUFBQSEhIdHR0RERESEhISEhITExMSEhIRERERERESEhIQEBARERETExMVFRUXFxczMzMREREeHh4RERESEhISEhITExMRERERERERERESEhISEhIRERERERESEhISEhIRERERERERERERERESEhITExMSEhIRERERERERERESEhISEhIUFBQSEhIRERGcDW4PAAAAMnRSTlMAoF8LMroRlNWAWoz3sHz7aEE9IAXjCMeYYhrow6WKb+2/VSzd0Zt1c0438bWSf0cmg1BFKdMAAAHfSURBVFjD7dfXcuJAEIXhxkoEIREkgUTGsATH/d//4bZcZe52J3StXFTZ322DwsyZ1oz8+HrBpvfhPC7kf/vFp8O4tUuTXtsZkMECjtKOZguP0o4VjKQdJ0ikHW+wlHY0KG2XI9uayFE7NmK0QG8mRjPYicI0y+FiW5elqLzAXExqSEVlD8+2iOSiUsNKjJ6gEY05ZNZ51DXWrvWPHWUXiSGvxCiDtShcrLmWPgxFYW1/pBC6ojCDi23MdMGucojFYgFT8TZ2edmlKn2ZbZnr0xdB3+X+A/FVPLkM416TvtDWMPXp28BKrAJN+oa2CdKnb2HZGunT9w5bMdGnr7ZNvT59HTiJiT59B7iKtJG+BtJCpI307Z03LyW8+35xfzvnv/ZqIFu4Oq/aZ/HwAAdxM829jh1BCZnHsWPpdUgpA3H0mMOrx/eFvojPz8/OmwTmPnMeAZ3AYVp2QFSIh2oHlKPKcuEkBYaVeAk6AOmwN3r4u/r0cgTIe4X46pc4mIWiUG26mKXDsWhN69d55x/W57dKvps4nISxqaQVJHxIAlNJJbgFpBuYShoJEA0iIDGVFOLPjtYHYlPJXwjRbescmkr+JredzgAmhtJ9PbXrWN9XQhxzfW+r0aWH/LgDfwCWrX+ukom9hgAAAABJRU5ErkJggg==">
                 <span class="tabbar-text">Cart</span>
             </a> 
+            </c:if>
+            <c:if test="${sessionScope.account != null}">
+            <a href="cart-get" class="tabbar-item selected home hp-exp-class">
+                <img alt="cart" class="tabbar-item-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABICAMAAABBaBKgAAAAmVBMVEUAAAASEhITExMWFhYUFBQSEhIdHR0RERESEhISEhITExMSEhIRERERERESEhIQEBARERETExMVFRUXFxczMzMREREeHh4RERESEhISEhITExMRERERERERERESEhISEhIRERERERESEhISEhIRERERERERERERERESEhITExMSEhIRERERERERERESEhISEhIUFBQSEhIRERGcDW4PAAAAMnRSTlMAoF8LMroRlNWAWoz3sHz7aEE9IAXjCMeYYhrow6WKb+2/VSzd0Zt1c0438bWSf0cmg1BFKdMAAAHfSURBVFjD7dfXcuJAEIXhxkoEIREkgUTGsATH/d//4bZcZe52J3StXFTZ322DwsyZ1oz8+HrBpvfhPC7kf/vFp8O4tUuTXtsZkMECjtKOZguP0o4VjKQdJ0ikHW+wlHY0KG2XI9uayFE7NmK0QG8mRjPYicI0y+FiW5elqLzAXExqSEVlD8+2iOSiUsNKjJ6gEY05ZNZ51DXWrvWPHWUXiSGvxCiDtShcrLmWPgxFYW1/pBC6ojCDi23MdMGucojFYgFT8TZ2edmlKn2ZbZnr0xdB3+X+A/FVPLkM416TvtDWMPXp28BKrAJN+oa2CdKnb2HZGunT9w5bMdGnr7ZNvT59HTiJiT59B7iKtJG+BtJCpI307Z03LyW8+35xfzvnv/ZqIFu4Oq/aZ/HwAAdxM829jh1BCZnHsWPpdUgpA3H0mMOrx/eFvojPz8/OmwTmPnMeAZ3AYVp2QFSIh2oHlKPKcuEkBYaVeAk6AOmwN3r4u/r0cgTIe4X46pc4mIWiUG26mKXDsWhN69d55x/W57dKvps4nISxqaQVJHxIAlNJJbgFpBuYShoJEA0iIDGVFOLPjtYHYlPJXwjRbescmkr+JredzgAmhtJ9PbXrWN9XQhxzfW+r0aWH/LgDfwCWrX+ukom9hgAAAABJRU5ErkJggg==">
+                <span class="tabbar-text">Cart</span>
+            </a> 
+            </c:if>
             <a href="myusers.jsp" class="tabbar-item selected home hp-exp-class">
                 <img alt="account" class="tabbar-item-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABICAMAAABBaBKgAAAApVBMVEUAAAAREREVFRU1NTURERESEhIZGRkREREgICARERESEhJ2dnYSEhIRERETExMTExMRERESEhIRERERERERERERERERERERERETExMWFhYVFRUTExMSEhIRERESEhISEhITExMYGBgRERESEhIRERESEhISEhISEhIRERESEhIREREWFhYRERESEhISEhISEhIRERESEhIRERESEhIRERERERERERGg6CSWAAAANnRSTlMA7jEE+/UPhwfhYwLLsE496qugkfjPtoQ1Ix0a5dRUOCcV2Y1nQyy9pVxIC8WbgXx3upVx269/hQZeAAACt0lEQVRYw+2Y2VLqQBCGCWQwm0AWgkRQFlkFxeV87/9oJ+jFyVCo3dGbU+V/Y1lMfdX9T3dPQ+NXteQtHteR77imN8vTYPhj3HawyrDkp1c/AZ6mhjPqd74Lvn98B4+eg27RbnnTZeewcjlqd/stcjCi1Hhg59/exIZScX3TvfVb6ttz/s+P9juLmuTrCPA34flPi8QF964W+epoRup9csAHnls1yAbc4PPi2R0N17sxgl73q8tIgAftDUYlWVAAc+BGh16D2xWcC3MwTVU9A4FsCozB9xQ9OIJUeHbowIsc/aiJ5A6ctngiGdiI42jN4EJ6OIV+KM/xBkwhnM8Gtg2FdjAQl8e4/KMK25edXMFAN9Qz6IoaMQPl+5QL231hpSe1cCcs6mft+wlZKBsfQUMpHyRdE1l3Ir75iSyCQoveg2T8OVZy4v6VrA4uqN+7gcxEUyPquSDqml4nMq/7x2NKXcoq5Ak6WnQfCplvA+377+J6shH5pETfCsdwAY6y+l4gkQ6ErZWuYDYIx84FrCv/dkx/ePrExX51/Z1AJmuFJZi2VbO9pb0PjiG2ezGWl9KDvbI6d2ElDR/cTiUHR16uGzDTCtsBos39+9bRyYHsxg56FgrR4RjmVYfGlDKr5GKfO5TqLar2GM2y2jnZU1sHwz+5afvkzY0acj2B37Zu7tDnXa+DiV3TgnXZIvUgPvGvWASHYDs5bcTM2vhklrCXFKoDUUs73CXRDEfQG9aY7iRf9Hi3B06zoVUYA9H1p0u7C6bON/XWHrsNT83IgZGKbEfF7IN2+ONaWWnVfaXU8txHk7fe8b7xc8iMDx5hz75Bvd2XH5dg0xGwBWQZW0+WsvVkKVtPVrD1ZD1bT9az9WQ9W0/Ws2OLLGFLl/2JRRaxt9KdduaqfgZr5klL/AxMG7/6n/QXkYFsym4cKFEAAAAASUVORK5CYII=">
                 <span class="tabbar-text">Account</span>
@@ -49,24 +56,27 @@
                         <!-- <li class="header-shoppet">ShopPet</li>    -->
                     </a>
                     <!-- search view -->
-                    <div class="header__search hide-on-mobile">    
+                    <div class="header__search hide-on-mobile">
+                    	    
                         <div class="header__search-input__wrap">
+                        	<form action="search" method="get">
                             <div class="header__search-box">
                                 <span class="header__search-icon"></span>
                                 <div class="header__search-content">
-                                    <input type="search" class="header__search-input" placeholder="Tìm kiếm tại đây"> 
+                                	<input oninput="searchName(this)" type="text" name="search" class="header__search-input" placeholder="Tìm kiếm tại đây">
+                                    
                                     <!-- search lịch sử tìm kiếm-->
-                                    <div class="header__search-history">
-                                        <h3 class="header__search-history-heading">Lịch sử tìm kiếm</h3>
-                                        <ul class="header__search-history-list">
+                                    <div class="header__search-history" id="search-history" style="display: none;">
+                                        <h3 class="header__search-history-heading">Tìm kiếm</h3>
+                                        <ul class="header__search-history-list" id="content-search">
                                             <li class="header__search-history-item"><a href="">luan</a></li>
                                             <li class="header__search-history-item"><a href="">hán</a></li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="header__search-button">Tìm kiếm</div>
-                                
+                                <button class="header__search-button" type="submit" style="border: 0">Tìm kiếm</button>
                             </div>
+	                        </form>
                         </div>
                     </div>
                     <!-- end search -->
@@ -94,7 +104,7 @@
                                                 <div class="header__cart-item-head">
                                                     <h5 class="header__cart-item-name">${o.product.nameP}</h5>
                                                     <div class="header__cart-item-wrap">
-                                                        <span class="header__cart-item-price">${o.product.price} đ</span>
+                                                        <span class="header__cart-item-price">${o.product.priceNew} đ</span>
                                                         <span class="header__cart-item-multipl">x</span>
                                                         <span class="header__cart-item-qnt">${o.quantity}</span>
                                                     </div>
@@ -117,7 +127,7 @@
                             <span class="header_nav_line  hide-on-mobile-tablet"></span>
                             <div class="header_user  hide-on-mobile-tablet">
                                 <div class="header__user-list">
-                                    <span class="header__user-text-petshop">Welcome to ShopPet!</span>
+                                    <span class="header__user-text-petshop">Welcome to PetShop!</span>
                                     <div class="header__user-item"> 
                                         <!-- chưa có tài khoản -->
                                         <c:if test="${sessionScope.account == null}">
@@ -130,11 +140,11 @@
                                         <!-- có tài khoản -->
                                         <c:if test="${sessionScope.account != null}">
                                         <div class="header__user-yesuser">
-                                            <img class="header__user-img" src="https://superbrain.edu.vn/wp-content/uploads/2020/05/icon-thuong-thuong-phong-cach-rieng-cua-Superbrain-7.jpg" alt="">
+                                            <img class="header__user-img" src="upload/${sessionScope.account.imageA}" alt="">
                                             <span class="header__user-name">Xin chào ${sessionScope.account.username}</span>    
                                             <ul class="header__user-item-users-menu">
                                                 <li class="header__user-item-users-item">
-                                                    <a href="">Tài khoản của tôi</a>
+                                                    <a href="order">Đơn hàng của tôi</a>
                                                 </li>
                                                 <c:if test="${sessionScope.account.isAdmin == 1}">
                                                 <li class="header__user-item-users-item">
@@ -165,6 +175,7 @@
 	                                  localStorage.setItem('buttonClicked', 'login');
 	                                });
                                 }
+                               
                         	</script>
                         </div>
                         <!--  -->
@@ -172,4 +183,58 @@
                 </div>
             </div>
         </header>
+        <script type="text/javascript">
+	        //search
+	        function searchName(param){
+			    var txtSearch =param.value;
+			    $.ajax({
+			        url: "/petshop/search-name",
+			        type: "get",
+			        data: {
+			            search: txtSearch
+			        },
+			        success: function (data) {
+			            var row = document.getElementById("content-search");
+			            row.innerHTML = data;
+			            
+			            var searchHistory = document.querySelectorAll('#content-search li');
+			            searchHistory.forEach((item) => {
+			            	var aTag = item.querySelector('a');
+			                var text = aTag.innerText.trim();
+			                console.log(text)
+			                aTag.href = "search?search="+text;
+			                aTag.addEventListener('click', (event) => {
+			                    // Ngăn chặn sự kiện lan truyền đến thẻ div cha
+			                    event.stopPropagation();
+			                   
+			                    // Thực hiện hành động của thẻ a
+			                    window.location.href = aTag.href;
+			                  });
+			                
+			           }); 
+			            
+			        },
+			        error: function(xhr){
+			            
+			        }
+			    })
+			}
+	        const input = document.querySelector('input.header__search-input');
+	        const div = document.querySelector('div.header__search-history');
+
+	        // Hiển thị div khi người dùng nhập vào input
+	        input.addEventListener('focus', () => {
+	          div.style.display = 'block';
+	        });
+
+	        // Ẩn div khi người dùng click ra ngoài thẻ input và thẻ div
+	        document.addEventListener('click', (event) => {
+	          if (!input.contains(event.target) && !div.contains(event.target)) {
+	            div.style.display = 'none';
+	          }
+	        });
+
+
+	        
+		</script>
         

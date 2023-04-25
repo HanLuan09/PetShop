@@ -395,6 +395,7 @@ img, input {
 /* hiên history */
 .header__search-history {
     display: none;
+    max-height: 260px;
 }
 .header__search-input:focus ~ .header__search-history {
     display: block;
@@ -666,7 +667,7 @@ img, input {
 }
 .header__user-img {
     /* cursor: default; */
-    width: 25px;
+    width: 20px;
     height: auto;
     margin-right: 5px;
     border-radius: 50%;
@@ -706,9 +707,6 @@ img, input {
 }
 
 .header__user-nouser {
-    display: block;
-}
-.header__user-yesuser {
     display: block;
 }
 /*  */

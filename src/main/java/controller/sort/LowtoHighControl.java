@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Category;
 import model.Product;
 import model.ProductDetails;
+import sevice.CartSumList;
 
 // thấp đến cao
 @WebServlet(name = "LowtoHighControl", urlPatterns = {"/sort-low"})
@@ -20,6 +21,10 @@ public class LowtoHighControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+//      hiên carat 
+        CartSumList cSumList = new CartSumList();
+        cSumList.viewCart(request);
+      
         ProductSortDao daoP = new ProductSortDao();
 		DAO dao = new DAO();
 		List<Category> listC = dao.getAllCategory();

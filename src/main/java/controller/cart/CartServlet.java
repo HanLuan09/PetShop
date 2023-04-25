@@ -1,6 +1,8 @@
 package controller.cart;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import dao.DAO;
 import jakarta.servlet.ServletException;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.*;
 import model.Account;
 import model.CartItem;
 import model.Product;
+import sevice.CartSevice;
 
 @WebServlet(name = "CartServlet", urlPatterns = {"/cart-add"})
 public class CartServlet extends HttpServlet {
@@ -27,12 +30,18 @@ public class CartServlet extends HttpServlet {
     		int quantity = Integer.parseInt(request.getParameter("quantity"));
     		Product product = dao.getProductById(idP+"");
     		if (product == null) {
-    			response.sendRedirect("error.jsp");
-    			return;
+    			PrintWriter out = response.getWriter();
+    			out.println("lỗi");
     		}
     		
 //        Lấy danh sách sản phẩm trong giỏ hàng từ cookie
-    		List<CartItem> cartItems =cartSevice.getCartItemsFromCookies(request);
+//    		xử lý try catch khi cookies ko có
+    		List<CartItem> cartItems;
+    		try {
+    			cartItems =cartSevice.getCartItemsFromCookies(request);
+    		}catch (Exception e) {
+    			cartItems = new ArrayList<>();
+			}
 //        Tìm kiếm sản phẩm trong danh sách sản phẩm trong giỏ hàng
     		CartItem cartItem = cartSevice.findCartItem(cartItems, idP, account.getIdA());
     		if (cartItem == null) {

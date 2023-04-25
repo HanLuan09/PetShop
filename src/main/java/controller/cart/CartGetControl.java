@@ -1,6 +1,7 @@
 package controller.cart;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import model.Account;
 import model.CartItem;
 import model.ProductDetails;
+import sevice.CartSevice;
 
 @WebServlet(name = "CartGetControl", urlPatterns = {"/cart-get"})
 public class CartGetControl extends HttpServlet{
@@ -27,16 +29,22 @@ public class CartGetControl extends HttpServlet{
     	if(account==null) {
     		response.sendRedirect("login");
     	}else {
-    		
+    		CartItem cartItem = new CartItem();
     		ProductSortDao daoP = new ProductSortDao();
     		List<ProductDetails> listP = daoP.getAllProductSumPrice();
     		Collections.sort(listP);
     		
     		CartSevice cartSevice = new CartSevice();
-    		List<CartItem> listCartItems = cartSevice.getCartItemsFromCookiesAccount(account.getIdA(), request);
-    		
+    		List<CartItem> listCartItems;
+    		try {
+    			listCartItems = cartSevice.getCartItemsFromCookiesAccount(account.getIdA(), request);
+    		}catch (Exception e) {
+    			listCartItems = new ArrayList<>();
+			}
     		request.setAttribute("listP", listP);
     		request.setAttribute("listCart", listCartItems);
+    		request.setAttribute("countP", cartItem.getCountP(listCartItems));
+    		request.setAttribute("sumPrice", cartItem.getSumPrice(listCartItems));
     		request.getRequestDispatcher("cart.jsp").forward(request, response); // Chuyển hướng đến trang giỏ hàng
     	}
     }

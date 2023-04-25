@@ -23,7 +23,7 @@
             
             <div class="modal__body">
                 
-                <form action="save-address" method="POST" class="form-pay" id="form-pay">
+                <form action="${addressCheck == 0 ? "add-address" : "save-address"}" method="POST" class="form-pay" id="form-pay">
                 <div class="auth-form" id="auth-form-pay">
                     <div class="auth-form__container">
                         <div class="auth-form__header">
@@ -104,7 +104,7 @@
                     <li class="mod-tabs-item active">ĐỊA CHỈ</li>
                     <!--<li class="mod-tabs-item">THANH TOÁN</li>-->
                 </ul>
-                <form action="save-address" method="POST" id="form-pay--mb">
+                <form action="${addressCheck == 0 ? "add-address" : "save-address"}" method="POST" id="form-pay--mb">
                 <div class="mod-tabs-content-list">
                     <div class="mod-tabs-content mod-tabs-content--block">
                         <div class="login">
@@ -112,19 +112,19 @@
                                 <div class="login-form">
                                     <div class="mod-input">
                                         <label for="username" class="mod-input-label">Họ và tên</label>
-                                        <input type="text" name="name" id="name-mb" class="mod-input-text">
+                                        <input type="text" name="name" id="name-mb" class="mod-input-text" value="${address.name}">
                                         <b></b>
                                         <span class="form-message"></span> 
                                     </div>
                                     <div class="mod-input">
                                         <label for="username" class="mod-input-label">Số điện thoại</label>
-                                        <input type="text" name="phone" id="phone-mb" class="mod-input-text">
+                                        <input type="text" name="phone" id="phone-mb" class="mod-input-text" value="${address.phone}">
                                         <b></b>
                                        <span class="form-message"></span> 
                                     </div>
                                     <div class="mod-input">
                                         <label for="username" class="mod-input-label">Địa chỉ</label>
-                                        <input type="text" name="address" id="address-mb" class="mod-input-text">
+                                        <input type="text" name="address" id="address-mb" class="mod-input-text" value="${address.address}">
                                         <b></b>
                                         <span class="form-message"></span> 
                                     </div>

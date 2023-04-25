@@ -7,7 +7,6 @@ public class Order {
 	private int idO;
 	private Date createdDate;
 	private int idA;
-	private int status;
 //	private List<OrderDetails> listO;
 	
 	public Order() {
@@ -15,13 +14,11 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(int idO, Date createdDate, int idA, int status) {
+	public Order(int idO, Date createdDate, int idA) {
 		super();
 		this.idO = idO;
 		this.createdDate = createdDate;
 		this.idA = idA;
-		this.status = status;
-//		this.listO = listO;
 	}
 
 	public int getIdO() {
@@ -46,14 +43,6 @@ public class Order {
 
 	public void setIdA(int idA) {
 		this.idA = idA;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 	
 }

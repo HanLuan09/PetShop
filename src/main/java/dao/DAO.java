@@ -68,7 +68,7 @@ public class DAO {
 //	    Lấy tất cả sản phẩm còn lại 
 	    public List<ProductDetails> getAllProductRemaining() {
 	        List<ProductDetails> list = new ArrayList<ProductDetails>();
-	        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating\r\n"
+	        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
 	        		+ "FROM Product p\r\n"
 	        		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
 	        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
@@ -89,7 +89,8 @@ public class DAO {
 	                        rs.getInt(8),
 	                        rs.getInt(9),
 	                        rs.getInt(10),
-	                        rs.getFloat(11)));
+	                        rs.getFloat(11),
+	                        rs.getInt(12)));
 	            }
 	            conn.close();
 	            ps.close();
@@ -142,8 +143,7 @@ public class DAO {
 //    end lấy tất cả danh mục
 //    Lấy 1 sản phẩm
     public Product getProductById(String id) {
-    	String query = "select * from product\n"
-                + "where idp = ?";
+    	String query = "SELECT * FROM Product where idp = ?";
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -167,28 +167,42 @@ public class DAO {
         }
         return null;
     }
-//    end lấy 1 sản phẩm
-//    số sản phẩm đã bán
-    public int getNumberOfProductsSold(String idP) {
-    	String query = "SELECT SUM(OrderDetails.Amount) AS 'sumPrice'\r\n"
-    			+ "FROM Product\r\n"
-    			+ "LEFT JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
-    			+ "where  Product.IdP = ?";
+    public ProductDetails getProductDetailById(String id) {
+    	String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+    			+ "FROM Product p\r\n"
+    			+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
+    			+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+    			+ "where p.idp = ?\r\n"
+    			+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount, p.Price, p.Amount, p.cateId";
+    	
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
-            ps.setString(1, idP);
+            ps.setString(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
-            	return rs.getInt(1);
+                return new ProductDetails(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8),
+                        rs.getInt(9),
+                        rs.getInt(10),
+                        rs.getFloat(11),
+                        rs.getInt(12));
             }
             conn.close();
             ps.close();
             rs.close();
         } catch (Exception e) {
         }
-        return 0;
+        return null;
     }
+//    end lấy 1 sản phẩm
+
 //    thêm mới
     public int addProduct(Product p) {
     	int result = 0;
@@ -298,12 +312,13 @@ public class DAO {
 	      }
     }
 //    check tên sản phẩm có trùng không
-    public Product checkNameProduct(String name) {
-    	String query = "select * from Product where NameP = ?";
+    public Product checkNameProduct(String name, int id) {
+    	String query = "select * from Product where NameP = ? and idP <> ?";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setString(1, name);
+	          ps.setInt(2, id);
 	          rs = ps.executeQuery();
 	          while (rs.next()) {
 	        	  return new Product(rs.getInt(1),
@@ -323,14 +338,35 @@ public class DAO {
 	      }
 	      return null;
     }
+    public int remainingProducts(int idP) {
+    	String query = "SELECT P.Amount - COALESCE(SUM(OD.Amount), 0) AS Remaining\r\n"
+    			+ "FROM Product AS P\r\n"
+    			+ "LEFT JOIN OrderDetails AS OD ON P.IdP = OD.IdP\r\n"
+    			+ "WHERE P.IdP = ?\r\n"
+    			+ "GROUP BY P.Amount;";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setInt(1, idP);
+	          rs = ps.executeQuery();
+	          while(rs.next()) {
+	        	  return rs.getInt(1);
+	          }
+	          conn.close();
+	          ps.close();
+	          rs.close();
+	          
+	      } catch (Exception e) {
+	      }
+	      return 0;
+    }
     public static void main(String[] args) {
         DAO dao = new DAO();
         
         List<ProductDetails> listp = dao.getAllProductRemaining();
-        int x = dao.getNumberOfProductsSold("2");
+        Product pr = dao.getProductById("3");
         
-        for(Product o: listp) {
-        	System.out.println(o);
-        }
+        System.out.println(dao.remainingProducts(6));
+        
     }
 }

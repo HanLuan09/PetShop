@@ -5,18 +5,17 @@ public class OrderDetails {
 	private int idP;
 	private int amount;
 	private int price;
-	
+	private int status;
 	public OrderDetails() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public OrderDetails(int idO, int idP, int amount, int price) {
+	public OrderDetails(int idO, int idP, int amount, int price, int status) {
 		super();
 		this.idO = idO;
 		this.idP = idP;
 		this.amount = amount;
 		this.price = price;
+		this.status = status;
 	}
 
 	public int getIdO() {
@@ -49,6 +48,14 @@ public class OrderDetails {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	@Override

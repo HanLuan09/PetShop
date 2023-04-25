@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class CartItem{
 	private Product product;
 	private int quantity;
@@ -30,6 +32,17 @@ public class CartItem{
 	}
 	public void setIdA(int idA) {
 		this.idA = idA;
+	}
+	public int getCountP(List<CartItem> list) {
+		return list.size();
+	}
+	
+	public long getSumPrice(List<CartItem> list) {
+		long sumPrice = 0;
+		for(CartItem o: list) {
+			sumPrice = sumPrice + (o.getQuantity() * o.getProduct().getPriceNew());
+		}
+		return sumPrice;
 	}
 	
 }

@@ -19,14 +19,13 @@ import model.Product;
 @WebServlet(name = "AddControl", urlPatterns = {"/add"})
 public class AddControl extends HttpServlet {
     
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     	response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
     	DAO dao = new DAO();
-    	Product checkP = dao.checkNameProduct(request.getParameter("nameP"));
+    	Product checkP = dao.checkNameProduct(request.getParameter("nameP"), 0);
     	if(checkP == null) {
     		try {
     			Part part = request.getPart("image");

@@ -35,7 +35,7 @@ public class ProductSortDao {
 	                      rs.getInt(7),
 	                      rs.getInt(8),
 	                      rs.getInt(9),
-	                      rs.getInt(10),0));
+	                      rs.getInt(10),0, 0));
 	          }
 	          conn.close();
 	          ps.close();
@@ -48,7 +48,7 @@ public class ProductSortDao {
 //  Lấy tất cả sản phẩm theo cate
 	  public List<ProductDetails> getAllProductCid(String cid) {
 	      List<ProductDetails> list = new ArrayList<ProductDetails>();
-	      String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating\r\n"
+	      String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating , COUNT(pr.rating) AS TotalRating\r\n"
 	      		+ "FROM Product p\r\n"
 	      		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
 	      		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
@@ -70,7 +70,8 @@ public class ProductSortDao {
 	                      rs.getInt(8),
 	                      rs.getInt(9),
 	                      rs.getInt(10),
-	                      rs.getFloat(11)));
+	                      rs.getFloat(11),
+	                      rs.getInt(12)));
 	          }
 	          conn.close();
 	          ps.close();
@@ -79,10 +80,47 @@ public class ProductSortDao {
 	      }
 	      return list;
 	  }
+	//  Lấy tất cả sản phẩm theo cate
+		  public List<ProductDetails> getAllProductSearch(String search) {
+		      List<ProductDetails> list = new ArrayList<ProductDetails>();
+		      String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating , COUNT(pr.rating) AS TotalRating\r\n"
+		      		+ "FROM Product p\r\n"
+		      		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
+		      		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+		      		+ "LEFT JOIN Category ca ON ca.cateId = p.cateId\r\n"
+		      		+ "where p.NameP like ? or ca.nameC like ?\r\n"
+		      		+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount,  p.Price, p.Amount, p.cateId";
+		      try {
+		          conn = new DbContext().getConnection();//mo ket noi voi sql
+		          ps = conn.prepareStatement(query);
+		          ps.setString(1, "%"+search+"%");
+		          ps.setString(2, "%"+search+"%");
+		          rs = ps.executeQuery();
+		          while (rs.next()) {
+		              list.add(new ProductDetails(rs.getInt(1),
+		                      rs.getString(2),
+		                      rs.getString(3),
+		                      rs.getString(4),
+		                      rs.getString(5),
+		                      rs.getInt(6),
+		                      rs.getInt(7),
+		                      rs.getInt(8),
+		                      rs.getInt(9),
+		                      rs.getInt(10),
+		                      rs.getFloat(11),
+		                      rs.getInt(12)));
+		          }
+		          conn.close();
+		          ps.close();
+		          rs.close();
+		      } catch (Exception e) {
+		      }
+		      return list;
+		  }
     //phổ biên
 	public List<ProductDetails> getAllProductPopular() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
-        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
         		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
@@ -103,7 +141,8 @@ public class ProductSortDao {
                         rs.getInt(8),
                         rs.getInt(9),
                         rs.getInt(10),
-                        rs.getFloat(11)));
+                        rs.getFloat(11),
+                        rs.getInt(12)));
                 
             }
             conn.close();
@@ -117,7 +156,7 @@ public class ProductSortDao {
 //	Bán chạy
 	public List<ProductDetails> getAllProductSelling() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, (SUM(od.Amount) * 1.0 / p.Amount) as SalesRatio\r\n"
+        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating, (SUM(od.Amount) * 1.0 / p.Amount) as SalesRatio\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
         		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
@@ -138,7 +177,8 @@ public class ProductSortDao {
                         rs.getInt(8),
                         rs.getInt(9),
                         rs.getInt(10),
-                        rs.getFloat(11)));
+                        rs.getFloat(11),
+                        rs.getInt(12)));
             }
             conn.close();
             ps.close();
@@ -152,7 +192,7 @@ public class ProductSortDao {
 	public List<ProductDetails> getAllProductLatest() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
         
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
         		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
@@ -173,7 +213,8 @@ public class ProductSortDao {
                         rs.getInt(8),
                         rs.getInt(9),
                         rs.getInt(10),
-                        rs.getFloat(11)));
+                        rs.getFloat(11),
+                        rs.getInt(12)));
             }
             conn.close();
             ps.close();
@@ -187,7 +228,7 @@ public class ProductSortDao {
 	public List<ProductDetails> getAllProductLowtoHigh() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
         
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
         		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
@@ -207,7 +248,7 @@ public class ProductSortDao {
                         rs.getInt(7),
                         rs.getInt(8),
                         rs.getInt(9),
-                        rs.getInt(10), 0));
+                        rs.getInt(10), 0, 0));
             }
             conn.close();
             ps.close();
@@ -221,7 +262,7 @@ public class ProductSortDao {
 	public List<ProductDetails> getAllProductHightoLow() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
         
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
         		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
@@ -241,7 +282,7 @@ public class ProductSortDao {
                         rs.getInt(7),
                         rs.getInt(8),
                         rs.getInt(9),
-                        rs.getInt(10), 0));
+                        rs.getInt(10), 0, 0));
             }
             conn.close();
             ps.close();
@@ -253,6 +294,9 @@ public class ProductSortDao {
     }
 	
 	public static void main(String[] args) {
-		
+		ProductSortDao dao= new ProductSortDao();
+		List<ProductDetails> list = dao.getAllProductSearch("chó");
+		for(ProductDetails o: list)
+		System.out.println(o);
 	}
 }

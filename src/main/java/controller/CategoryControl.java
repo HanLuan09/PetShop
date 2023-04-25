@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import controller.cart.CartSevice;
 import dao.DAO;
 import dao.ProductSortDao;
 import jakarta.servlet.ServletException;
@@ -17,6 +16,8 @@ import model.Account;
 import model.CartItem;
 import model.Category;
 import model.ProductDetails;
+import sevice.CartSevice;
+import sevice.CartSumList;
 
 @WebServlet(name = "CategoryControl", urlPatterns = {"/category"})
 public class CategoryControl extends HttpServlet{
@@ -25,17 +26,11 @@ public class CategoryControl extends HttpServlet{
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 //      hiển thị cart  
-        HttpSession session = request.getSession();
-    	Account account = (Account) session.getAttribute("account");
-    	if(account == null) {
-    		request.setAttribute("sumCart", 0);
-    	}else {
-    		CartSevice cartSevice = new CartSevice();
-    		List<CartItem> listCartItems = cartSevice.getCartItemsFromCookiesAccount(account.getIdA(), request);
-    		request.setAttribute("sumCart", listCartItems.size());
-    		request.setAttribute("listCartNavi", listCartItems);
-    	}
+        CartSumList cSumList = new CartSumList();
+        cSumList.viewCart(request);
+      
 //    	lấy url
+        HttpSession session = request.getSession();
     	String previousUrl = (String) session.getAttribute("previousUrl");
     	if (previousUrl != null && !previousUrl.isEmpty()) {
     	    // Xóa URL trước đó khỏi session

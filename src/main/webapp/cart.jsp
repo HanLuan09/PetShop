@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+    <title>PetShop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/main.css">
@@ -94,7 +94,7 @@
                                                 </div>
                                                 <div class="col l-0 m-6 c-0">
                                                     <div class="container_cart-list">
-                                                        <span class="container_cart-list-pay">${o.product.price} đ</span>
+                                                        <span class="container_cart-list-pay">${o.product.priceNew} đ</span>
                                                     </div>
                                                 </div>
                                                 <div class="col l-0 m-1 c-0">
@@ -109,12 +109,11 @@
                                                 <div style="display: flex; flex-direction: row; align-items: center;">
                                                     <div style="margin-right: 15px;">
                                                         <div class="container__right-purchase-input" style="display: flex; flex-direction: row;">
-                                                            <button class="container__right-purchase-input-btn" id="container__left">
+                                                            <button class="container__right-purchase-input-btn" id="container__left" onclick="location.href ='cart-save?idp='+${o.product.idP}+'&quantity='+${o.quantity-1};">
                                                                 <i class="fa-solid fa-minus"></i>
-                                                            </button>
-                                                            
-                                                            <input type="text" id="quantity-input" class="container__right-purchase-input-text" value="${o.quantity}" role="spinbutton" aria-valuenow="1">
-                                                            <button class="container__right-purchase-input-btn" id="container__right">
+                                                            </button>                                                         
+                                                            <input type="text" id="quantity-input" class="container__right-purchase-input-text" value="${o.quantity}" role="spinbutton" aria-valuenow="1" readonly>
+                                                            <button class="container__right-purchase-input-btn" id="container__right" onclick="location.href ='cart-save?idp='+${o.product.idP}+'&quantity='+${o.quantity+1};">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
                                                         </div>
@@ -125,7 +124,7 @@
                                         </div>
                                         <div class="col l-2 m-0 c-5">
                                             <div class="container_cart-list">
-                                                <span class="container_cart-list-pay">${o.product.price} đ</span>
+                                                <span class="container_cart-list-pay">${o.product.priceNew} đ</span>
                                             </div>
                                         </div>
                                         <div class="col l-1 m-0 c-1">
@@ -156,10 +155,10 @@
                                         </label>  
                                     </div>
                                     <div class="col l-4 m-0 c-0">
-                                        <div class="container__header-total">Chọn tất cả (<span>0</span>)</div>
+                                        <div class="container__header-total">Chọn tất cả (<span>${countP}</span>)</div>
                                     </div>
                                     <div class="col l-5 m-8 c-7">
-                                        <div class="container__header-total">Thanh toán: <span style="color: #FF0000">10.000.000 đ</span></div>
+                                        <div class="container__header-total">Thanh toán: <span style="color: #FF0000">${sumPrice} đ</span></div>
                                     </div>
                                     <div class="col l-2 m-3 c-4">
                                         <button class="btn btn--primary" onclick="location.href='address';">Mua hàng</button>
@@ -173,51 +172,7 @@
             </div>
             <jsp:include page="product.jsp"/>
          	<jsp:include page="footer.jsp"/>
-         	<!--  
-         	<script type="text/javascript">
-         // Lấy danh sách sản phẩm trong giỏ hàng từ cookie
-         	var cartItems = getCartItemsFromCookies();
-
-         	// Cập nhật số lượng sản phẩm khi người dùng thay đổi giá trị input
-         	function updateQuantity(idP, newQuantity) {
-         	    for (var i = 0; i < cartItems.length; i++) {
-         	        if (cartItems[i].product.idP == idP) {
-         	            cartItems[i].quantity = newQuantity;
-         	            break;
-         	        }
-         	    }
-         	    
-         	    // Lưu lại danh sách sản phẩm trong giỏ hàng vào cookie
-         	    saveCartItemsToCookies(cartItems);
-         	    
-         	    // Cập nhật tổng tiền hiển thị trên trang
-         	    updateTotalPrice();
-         	}
-
-         	// Cập nhật tổng tiền hiển thị trên trang
-         	function updateTotalPrice() {
-         	    var totalPrice = 0;
-         	    for (var i = 0; i < cartItems.length; i++) {
-         	        totalPrice += cartItems[i].product.price * cartItems[i].quantity;
-         	    }
-         	    document.getElementById("total-price").innerHTML = totalPrice;
-         	}
-
-         	// Lắng nghe sự kiện khi người dùng thay đổi số lượng sản phẩm
-         	var quantityInputs = document.getElementsByClassName("quantity-input");
-         	for (var i = 0; i < quantityInputs.length; i++) {
-         	    quantityInputs[i].addEventListener("change", function() {
-         	        var idP = this.dataset.productId;
-         	        var newQuantity = this.value;
-         	        updateQuantity(idP, newQuantity);
-         	    });
-         	}
-
-         	// Khởi tạo trang với danh sách sản phẩm trong giỏ hàng và tổng tiền hiển thị
-         	updateTotalPrice();
-
-         	</script>
-         	-->
+         	
         </div>
     </div>
 </body>

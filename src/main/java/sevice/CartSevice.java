@@ -1,4 +1,4 @@
-package controller.cart;
+package sevice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +30,11 @@ public class CartSevice {
 	                            cartItems.add(cartItem); // Thêm đối tượng CartItem vào danh sách sản phẩm trong giỏ hàng
 	                        }
 	                    }
-	                    break;
+	                    return cartItems;
 	                }
 	            }
 			}
-		    return cartItems;
+		    return null;
 	    }
 //	 	list cart theo tài khoản
 	 	public List<CartItem> getCartItemsFromCookiesAccount(int idA, HttpServletRequest request) {
@@ -43,6 +43,18 @@ public class CartSevice {
 	        List<CartItem> cartItems = new ArrayList<>();
 	        for(CartItem o: listC) {
 	        	if(o.getIdA()== idA) {
+	        		cartItems.add(o);
+	        	}
+	        }
+		    return cartItems;
+	    }
+//	 	list cart còn lại tài khoản
+	 	public List<CartItem> getCartItemsFromCookiesNotAccount(int idA, HttpServletRequest request) {
+	 		CartSevice cartSevice = new CartSevice();
+	 		List<CartItem> listC = cartSevice.getCartItemsFromCookies(request);
+	        List<CartItem> cartItems = new ArrayList<>();
+	        for(CartItem o: listC) {
+	        	if(o.getIdA()!= idA) {
 	        		cartItems.add(o);
 	        	}
 	        }

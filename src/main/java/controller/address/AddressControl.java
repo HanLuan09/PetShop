@@ -23,25 +23,22 @@ public class AddressControl extends HttpServlet {
     		response.sendRedirect("login");
     	}
     	else {
-	//    	PrintWriter out = response.getWriter();
     		try {
 	    		int idA = a.getIdA();
 	    		AccountDao daoAccount = new AccountDao();
 	    		Address aRess = daoAccount.getAddress(idA);
-	    		if(aRess == null) aRess = new Address();
+	    		int check = 1;
+	    		if(aRess == null) {
+	    			aRess = new Address();
+	    			check=0;
+	    		}
+	    		request.setAttribute("addressCheck", check);
 	    		request.setAttribute("address", aRess);
 	    		request.getRequestDispatcher("address.jsp").forward(request, response);
     		} catch (Exception e) {
 				// TODO: handle exception
 			}
-	//    	out.println("none");
-	//    	if(a == null) {
-	//    		out.println("none");
-	//    	}
-	//    	else {
-	//    		out.println(a.getIdA());
-	//    	}
-	//        	response.sendRedirect("home");
+	
     	}
     	
     }

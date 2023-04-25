@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Details</title>
+    <title>PetShop</title>
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/gird.css">
     <link rel="stylesheet" href="./css/manager_detail.css">
@@ -42,7 +42,7 @@
        <div class="container">
             <div class="grid wide " style="padding: 0 50px;">
                 <div class="row header">
-                    <h2><a class="header_text" href=""><b>Web Book</b></a></h2>
+                    <h2><a class="header_text" href=""><b>PetShop</b></a></h2>
                 </div>
                 
                 <div class="row container-wrap">

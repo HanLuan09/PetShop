@@ -17,7 +17,6 @@ public class Product {
 	}
 	public Product(int idP, String nameP, String imageP, String describe, String origin, int amount, int discount,
 			int price, int cateId) {
-		super();
 		this.idP = idP;
 		this.nameP = nameP;
 		this.imageP = imageP;

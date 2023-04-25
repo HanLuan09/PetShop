@@ -32,11 +32,10 @@ public class SaveControl extends HttpServlet {
     	DAO dao = new DAO();
     	String id= request.getParameter("idP");
         String name = request.getParameter("nameP");
-       
-        Product checkP = dao.checkNameProduct(name);
         Product p = dao.getProductById(id);
+        Product checkP = dao.checkNameProduct(name, Integer.parseInt(id));
         
-        if(checkP!=null && !name.toLowerCase().equals(checkP.getNameP().toLowerCase())) {
+        if(checkP!=null) {
         	request.setAttribute("errorMess", "Tên sản phẩm đã tồn tại");
     		request.getRequestDispatcher("edit?pid=" + id).forward(request, response);
         }else {
