@@ -311,6 +311,25 @@ public class DAO {
 	      } catch (Exception e) {
 	      }
     }
+//  xóa sản phẩm
+	  public int countProduct() {
+	  	String query = "select count(idp) from Product";
+		      try {
+		          conn = new DbContext().getConnection();//mo ket noi voi sql
+		          ps = conn.prepareStatement(query);
+		        
+		          rs = ps.executeQuery();
+		          while(rs.next()) {
+		        	  return rs.getInt(1);
+		          }
+		          conn.close();
+		          ps.close();
+		          rs.close();
+		          
+		      } catch (Exception e) {
+		      }
+		      return 0;
+	  }
 //    check tên sản phẩm có trùng không
     public Product checkNameProduct(String name, int id) {
     	String query = "select * from Product where NameP = ? and idP <> ?";

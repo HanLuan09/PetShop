@@ -233,8 +233,6 @@
                                     displayedProducts += 18;
                                     
                                     // Lấy danh sách các sản phẩm
-                                    
-                                   
                                     // Hiển thị các sản phẩm mới
                                     for (var i = 0; i < products.length; i++) {
                                         if (i < displayedProducts) {

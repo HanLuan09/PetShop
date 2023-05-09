@@ -83,8 +83,10 @@
                         </div>
     
                         <div class="auth-form__controls">
-                            <button class="btn auth-form__controls-back btn--normal">Trở lại</button>
+                            <button class="btn auth-form__controls-back btn--normal" type="button" onclick="location.href='cart-get';">Trở lại</button>
                             <button class="btn btn--primary" type="submit">Hoàn thành</button>
+                            <button class="btn auth-form__controls-back btn--primary2" type="button">Tiếp tục</button>
+                            <button class="btn btn--primary" type="button">Thay đổi</button>
                         </div>
     
                     </div>
@@ -165,6 +167,7 @@
                             </div>
                             <div class="login-btn">
                                 <button class="mod-button" type="submit">HOÀN THÀNH</button>
+                                <button class="mod-button" type="button">THAY ĐỔI ĐỊA CHỈ</button>
                             </div>     
                         </div>
                     </div>

@@ -21,7 +21,8 @@ public class AdminSearchController extends HttpServlet {
         //b1: get data from dao
         AdminDao adminDao = new AdminDao();
         List<AdminProduct> list = adminDao.getAllProductSearch(search);
-//        //b2: set data to jsp
+        int count = list.size();
+        request.setAttribute("count", count);
         request.setAttribute("listAminP", list);
         request.setAttribute("hsearch", search);
         request.getRequestDispatcher("manager_product.jsp").forward(request, response);

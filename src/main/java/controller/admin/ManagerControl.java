@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import dao.AdminDao;
+import dao.DAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,9 +18,12 @@ public class ManagerControl extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
+        DAO dao = new DAO();
         AdminDao adminDao = new AdminDao();
+        int count = dao.countProduct();
+        
         List<AdminProduct> list = adminDao.getAllProductCate();
-//        //b2: set data to jsp
+        request.setAttribute("count", count);
         request.setAttribute("listAminP", list);
         request.getRequestDispatcher("manager_product.jsp").forward(request, response);
         //404 -> url

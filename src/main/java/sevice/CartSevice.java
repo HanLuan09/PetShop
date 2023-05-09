@@ -81,6 +81,7 @@ public class CartSevice {
 
 	    // Hàm để tìm kiếm sản phẩm trong danh sách sản phẩm trong giỏ hàng theo tài khoản
 	    public CartItem findCartItem(List<CartItem> cartItems, int idP, int idA) {
+	    	if(cartItems == null) return null;
 	        for (CartItem cartItem : cartItems) {
 	        	if(cartItem.getIdA()==idA) {
 	        		if (cartItem.getProduct().getIdP() == idP) {

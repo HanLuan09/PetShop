@@ -107,20 +107,22 @@ table.table .avatar {
     min-width: 30px;
     min-height: 30px;
     color: #999;
-    margin: 0 2px;
+    margin: 0 8px;
     line-height: 30px;
     border-radius: 2px !important;
     text-align: center;
     padding: 0 6px;
 }
 .pagination li a:hover {
+	cursor: pointer;
     color: #666;
 }	
 .pagination li.active a, .pagination li.active a.page-link {
-    background: #03A9F4;
+    color: #fff; 
+  	background: linear-gradient(90deg,#ff933f,#f93782 69%,#f93782);
 }
 .pagination li.active a:hover {        
-    background: #0397d6;
+   background: linear-gradient(90deg,#f93782 69%,#f93782);
 }
 .pagination li.disabled i {
     color: #ccc;

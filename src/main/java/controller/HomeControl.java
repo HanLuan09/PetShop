@@ -31,6 +31,7 @@ public class HomeControl extends HttpServlet {
         List<Product> listDogCat = dao.getAllProductDogCat();
         Collections.sort(list);
 //        //b2: set data to jsp
+        
         request.setAttribute("listP", list);
         request.setAttribute("listDogCat", listDogCat);
         request.getRequestDispatcher("index.jsp").forward(request, response);
