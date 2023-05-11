@@ -83,6 +83,10 @@
         .home-product-add .home-product-list:nth-child(n+16) {
 		    display: none;
 		}
+		.home-product-item__rating--nogold {
+			color: #FF0000;
+		}
+		
     </style>
     <link rel="stylesheet" href="./css/responsive.css">
 </head>
@@ -134,7 +138,7 @@
                                         <div class="row sm-gutter home-product-add">
                                             <!-- lisi -->
                                             <c:forEach items="${listP}" var="o">
-		                                    <div class="col l-2-4 m-4 c-6 home-product-list">
+		                                    <div class="col l-2-4 m-4 c-6 home-product-list home-product-list--rating">
 		                                        <a class="home-product-item" href="detail?pid=${o.idP}&cid=${o.cateId}">
 		                                            <div class="home-product-item__img" style="background-image: url(upload/${o.imageP});"></div>
 		                                            <h5 class="home-product-item__name">${o.nameP}</h5>
@@ -143,14 +147,24 @@
 		                                                <span class="home-product-item__price-curent">${o.priceNew} đ</span>
 		                                            </div>
 		                                            <div class="home-product-item__action">
-		                                                
-		                                                <div class="home-product-item__rating">
-		                                                    <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-		                                                    <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-		                                                    <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-		                                                    <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-		                                                    <i class="home-product-item__rating--gold fa-solid fa-star"></i>
+		                                            	<div class="product-rating-value home-product-item__rating " style="display: none">${o.rating}</div>
+			                                            <div class="home-product-item__rating">
+		                                                    <div class="card-jfy-rating-layer top-layer checked home-product-item__rating--gold" style="width: 100%;">
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                    </div>
+		                                                    <div class="card-jfy-rating-layer">
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                        <i class="fa-solid fa-star"></i>
+		                                                    </div>
 		                                                </div>
+	                                                	<div class="product-rating-value home-product-item__rating" style="color: #999;">(${o.countRating})</div>
 		                                                <span class="home-product-item__rating-separate"></span>
 		                                                <span class="home-product-item__action-sold">Đã bán ${o.sumPrice}</span>
 		                                            </div>
@@ -165,7 +179,16 @@
 		                                    </div>
 		                                	</c:forEach>
                                         </div>
-                                        
+                                        <!--  <script type="text/javascript">
+                                        var productItems = document.querySelectorAll('.home-product-list--rating');
+                                        productItems.forEach(function(item) {
+                                            var ratingValue = parseFloat(item.querySelector('.product-rating-value').textContent);
+                                            var ratingWidth = ratingValue * 20; // Chuyển đổi từ điểm đánh giá (0-5) sang phần trăm (0-100)
+                                            var cardRatingLayer = item.querySelector('.top-layer');
+                                            cardRatingLayer.style.width = ratingWidth + '%';
+                                        });
+
+                                        </script>-->
                                     </div>
                                     <div class="pagination__add">
 		                                <!-- <a class="pagination__add-list" href="">Tải thêm</a> -->
@@ -213,8 +236,8 @@
 
                             </script>
             </div>
-            
 			<jsp:include page="footer.jsp"/>
+			
         </div>
         
     </div>

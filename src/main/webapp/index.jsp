@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="./css/slider.css">
     <link rel="stylesheet" href="./css/register_login.css">
     <link rel="stylesheet" href="./css/responsive.css">
-    <!-- javascript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- javascript 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -86,13 +86,19 @@
                         </div>
                         <div class="col l-10 m-12 c-12">
                             <!-- sản phảm -->
-                            <div class="home-product home-product--position">
+                            <div class="card-fs-content-header" style="background-color: #fff;">
+                                <div>
+                                    <span class="stardust-tabs-header__text" style="color: #ee4d2d; font-size: 1.5rem; font-weight: 500; margin-left: 10px;">Góc dành cho thú cưng</span>
+                                    <a href="category?cid=0" class="card-fs-content-button">Xem toàn bộ sản phẩm</a>
+                                </div>
+                            </div>
+                            <div class="home-product home-product--position" style="background-color: #fff;">
                                 <div class="home-product-pet">
                                     <div class="home-product-dog">
                                         <div class="row-nowrap sm-gutter">
-                                            <!-- lisi -->
+                                           <!-- lisi -->
                                             <c:forEach items="${listDogCat}" var="o">
-	                                            <div class="col l-2-4 m-4 c-6">
+	                                            <div class="col l-2-4 m-4 c-6 list__product-next">
 	                                                <a class="home-product-item" href="detail?pid=${o.idP}&cid=${o.cateId}">
 	                                                    <div class="home-product-item__img" style="background-image: url(upload/${o.imageP});"></div>
 	                                                    <h5 class="home-product-item__name">${o.nameP}</h5>
@@ -111,82 +117,124 @@
 	                                                </a>
 	                                            </div>
                                             </c:forEach>
-                                              
-                                        </div>
-                                        
+                                    	</div>       
                                     </div>
-                                      
-                                    
                                     <div class="home-product-dog-btn" >
                                         <div class="home-product-dog-item">
-                                            <i class="fa-solid fa-chevron-left" id="btnLeft-dog"></i>
+                                            <i class="fa-solid fa-chevron-left" id="btnLeft-dog" style="color: #ff0000"></i>
                                         </div>   
                                         <div class="home-product-dog-item">
-                                            <i class="fa-solid fa-chevron-right" id="btnRight-dog"></i>
+                                            <i class="fa-solid fa-chevron-right" id="btnRight-dog" style="color: #ff0000"></i>
                                         </div>
                                     </div>
                                 </div>
                                 <script>
-                                    // Lấy danh sách các khung danh mục sản phẩm
-                                    const productContainer1 = document.querySelector('.home-product-dog');
-                                    const productContainer2 = productContainer1.querySelector('.row-nowrap');
-                                    const productContainers = productContainer2.querySelectorAll('.col');
-                                    // const productContainers = productContainer3.querySelectorAll('.home-product-item');
-                                    // console.log(productContainers.length)
-                                    // Xác định vị trí của khung danh mục sản phẩm hiện tại
-                                    let currentPosition = 0;
+								  // Lấy danh sách các khung danh mục sản phẩm
+								  const productContainer1 = document.querySelector('.home-product-dog');
+								  const productContainer2 = productContainer1.querySelector('.row-nowrap');
+								  const productContainers = productContainer2.querySelectorAll('.col');
+								  let currentPosition = 0; // Xác định vị trí của khung danh mục sản phẩm hiện tại
+								
+								  // Lấy các nút chuyển đổi
+								  const leftButton = document.getElementById('btnLeft-dog');
+								  const rightButton = document.getElementById('btnRight-dog');
+								
+								  // Thêm transition CSS cho các container
+								  productContainers.forEach(container => {
+								    container.style.transition = 'transform 0.3s ease';
+								  });
+								
+								  // Xử lý sự kiện click của nút chuyển đến trái
+								  leftButton.addEventListener('click', () => {
+								    if (currentPosition > 0) {
+								      currentPosition--;
+								      updateContainerTransform();
+								      rightButton.style.display = 'flex';
+								      if (currentPosition === 0) {
+								        leftButton.style.display = 'none';
+								      }
+								    }
+								  });
+								
+								  // Xử lý sự kiện click của nút chuyển đến phải
+								  rightButton.addEventListener('click', () => {
+								    if (currentPosition < productContainers.length - 1) {
+								      currentPosition++;
+								      updateContainerTransform();
+								      leftButton.style.display = 'flex';
+								      if (currentPosition === productContainers.length - 5) {
+								        rightButton.style.display = 'none';
+								      }
+								    }
+								  });
+								
+								  // Ẩn nút chuyển đến trái khi hiển thị khung đầu tiên
+								  if (currentPosition === 0) {
+								    leftButton.style.display = 'none';
+								  }
+								
+								  // Cập nhật giá trị transform của container
+								  function updateContainerTransform() {
+								    productContainers.forEach(container => {
+								      container.style.transform = 'translateX(-'+currentPosition * container.offsetWidth+ 'px)';
+								    });
+								  }
+								
+								  // Hàm thực hiện animation mượt mà
+								  function animate() {
+								    requestAnimationFrame(animate);
+								    updateContainerTransform();
+								  }
+								
+								  // Bắt đầu animation
+								  animate();
+								</script>
                                 
-                                    // Lấy các nút chuyển đổi
-                                    const leftButton = document.getElementById('btnLeft-dog');
-                                    const rightButton = document.getElementById('btnRight-dog');
                                 
-                                    // Xử lý sự kiện click của nút chuyển đến trái
-                                    leftButton.addEventListener('click', () => {
-                                        if (currentPosition > 0) {
-                                            currentPosition--;
-                                            productContainers.forEach(container => {
-                                                container.style.transform = `translateX(-${currentPosition * container.offsetWidth}px)`;
-                                            });
-                                            rightButton.style.display = 'flex';
-                                            if (currentPosition === 0) {
-                                                leftButton.style.display = 'none';
-                                            }
-                                        }
-                                    });
-                                
-                                    // Xử lý sự kiện click của nút chuyển đến phải
-                                    rightButton.addEventListener('click', () => {
-                                        if (currentPosition < productContainers.length - 1) {
-                                            currentPosition++;
-                                            productContainers.forEach(container => {
-                                                container.style.transform = `translateX(-${currentPosition * container.offsetWidth}px)`;
-                                            });
-                                            leftButton.style.display = 'flex';
-                                            if (currentPosition === productContainers.length - 5) {
-                                                rightButton.style.display = 'none';
-                                            }
-
-                                        }
-                                        // console.log(currentPosition)
-                                    });
-                                    // console.log(currentPosition)
-                                    // Ẩn nút chuyển đến trái khi hiển thị khung đầu tiên
-                                    if (currentPosition === 0) {
-                                        leftButton.style.display = 'none';
-                                    }
-                                    
-                                </script>
-                                
+                                <!--  -->
                             </div>
         
                         </div>
                     </div>
                 </div>
-                
+                <!-- test danh mục-->
+                <div class="grid wide">
+                    <div class="row sm-gutter">
+                        <div class="col l-12 m-12" style="margin-bottom: 10px;">
+                            <div class="card-fs-content-header stardust-tabs-header" style="border-bottom: #d5d5d5 1px solid;">
+                                <div class="stardust-tabs-header__text">
+                                    <span style="font-size: 1.5rem">Sản phẩm hàng đầu</span>
+                                </div>
+                                
+                            </div>
+                            <div>
+                                <div class ="card-categories-ul">
+                                	<c:forEach items="${listBest}" var ="o">
+                                    <div class="card-categories-li align-left">
+                                        <a href="detail?pid=${o.idP}&cid=${o.cateId}" class="card-categories-li-content">
+                                            <div class="card-categories-image-container">
+                                                <img src="upload/${o.imageP}" alt="" class="image">
+                                            </div>
+                                            <div class="card-categories-name">
+                                                <spam class="card-categories-name__text">${o.nameP}</spam>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- đồ thú cưng -->
                 <div class="grid wide">
                     <div class="row sm-gutter">
                         <div class="col l-12 m-12">
+                        	<div class="card-fs-content-header stardust-tabs-header">
+                                <div class="stardust-tabs-header__text">
+                                    <span style="font-size: 1.5rem">Gợi ý hôm nay</span>
+                                </div>
+                            </div>
                             <div class="home-product">
                                 <div class="row sm-gutter home-product-add">
                                 	<c:forEach items="${listP}" var="o">

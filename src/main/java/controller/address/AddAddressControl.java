@@ -43,70 +43,17 @@ public class AddAddressControl extends HttpServlet {
     		String nameAddress = request.getParameter("address");
     		AccountDao daoAccount = new AccountDao();
     		daoAccount.addAddress(idA, name, phone, nameAddress);
-    		try {
-    			AccountDao daoA = new AccountDao();
-    			CartSevice cartSevice = new CartSevice();
-    			List<CartItem> listCartItems = cartSevice.getCartItemsFromCookiesAccount(idA, request);
-    			List<CartItem> listCItemsNot = cartSevice.getCartItemsFromCookiesNotAccount(idA, request);
-    			LocalDate localDate = LocalDate.now();
-		        Date date = java.sql.Date.valueOf(localDate);
-		        synchronized (daoA) {
-		            try {
-		                // Thêm đơn hàng mới vào database
-		                daoA.addOrder(date, idA);
-		                //mua ngay 
-		                String pay_idp = (String)session.getAttribute("pay-idp");
-		                String pay_quantity = (String)session.getAttribute("pay-quantity");
-		                if(pay_idp!= null && pay_quantity!=null && !pay_idp.equals("") && !pay_quantity.equals("")) {
-		                	try {
-								
-		                		DAO dao = new DAO();
-		                		Product product = dao.getProductById(pay_idp);
-		                		Order order = daoA.getOrderOneTop();
-		                		OrderDetails orderDetails = new OrderDetails();
-		                		orderDetails.setIdO(order.getIdO());
-		                		orderDetails.setIdP(product.getIdP());
-		                		orderDetails.setPrice(product.getPriceNew());
-		                		orderDetails.setAmount(Integer.parseInt(pay_quantity));
-		                		daoA.addOrderDetails(orderDetails);
-							} catch (Exception e) {
-							
-							}
-		                	
-		                }else {
-		                	// Lặp qua các mục trong giỏ hàng và thêm chi tiết đơn hàng tương ứng vào database
-		                	for(CartItem i: listCartItems) {
-		                		try {
-		                			// Lấy đơn hàng đầu tiên và thêm chi tiết đơn hàng
-		                			Order order = daoA.getOrderOneTop();
-		                			OrderDetails orderDetails = new OrderDetails();
-		                			orderDetails.setIdO(order.getIdO());
-		                			orderDetails.setIdP(i.getProduct().getIdP());
-		                			orderDetails.setPrice(i.getProduct().getPriceNew());
-		                			orderDetails.setAmount(i.getQuantity());
-		                			daoA.addOrderDetails(orderDetails);
-		                			
-		                			// Xóa giỏ hàng và lưu lại các mục chưa đặt hàng vào cookie
-		                			cartSevice.removeCookies(response);
-		                			cartSevice.saveCartItemsToCookies(response, listCItemsNot);
-		                		} catch (Exception e) {
-		                			// Xử lý ngoại lệ nếu cần
-		                		}
-		                	}
-		                }
-		                
-		                // Chuyển hướng đến trang địa chỉ giao hàng
-		                response.sendRedirect("home");
-		            } catch (Exception e) {
-		                // Xử lý ngoại lệ nếu cần
-		            }
-		        }
-		        
-    		}catch (Exception e) {
-				
-			}
-		} catch (Exception e) {
-			request.setAttribute("messAddress", "Không thể thêm địa chỉ!");
+    		String ipPSession = (String)session.getAttribute("pay-idp");
+        	String quantitySession = (String)session.getAttribute("pay-quantity");
+        	if(ipPSession!=null && quantitySession!=null) {
+        		response.sendRedirect("/petshop/petshop-orders?idp="+ipPSession+"&quantity="+quantitySession);
+        	}
+        	else {
+        		response.sendRedirect("/petshop/petshop-orders");
+        	}
+    		
+    	}catch (Exception e) {
+    		request.setAttribute("messAddress", "Không thể thay đổi địa chỉ!");
 			request.getRequestDispatcher("address").forward(request, response);
 		}
  

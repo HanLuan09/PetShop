@@ -6,11 +6,13 @@ public class CartItem{
 	private Product product;
 	private int quantity;
 	private int idA;
+	private long sumPrice;
 	public CartItem(Product product, int quantity, int idA) {
 		
 		this.product = product;
 		this.quantity = quantity;
 		this.idA = idA;
+		this.sumPrice = this.quantity * this.product.getPriceNew();
 	}
 	public CartItem() {
 		
@@ -35,6 +37,10 @@ public class CartItem{
 	}
 	public int getCountP(List<CartItem> list) {
 		return list.size();
+	}
+	
+	public long getSumPrice() {
+		return sumPrice;
 	}
 	
 	public long getSumPrice(List<CartItem> list) {

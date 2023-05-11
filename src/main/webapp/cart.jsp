@@ -22,6 +22,7 @@
 
         <div class="container">
             <div class="grid wide">
+            	<c:if test="${checkCItem >0}">
                 <div class="container__navi-cart hide-on-mobile-tablet">
                     <div class="l-12 m-12 c-12">
                         <div class="container_cart BjIo5w">
@@ -138,7 +139,7 @@
                         </div>
                         </c:forEach>
                     </div>
-
+					
                 </div>
                 <!--  -->
                 <div style="margin: 20px 0;"></div>
@@ -161,14 +162,21 @@
                                         <div class="container__header-total">Thanh toán: <span style="color: #FF0000">${sumPrice} đ</span></div>
                                     </div>
                                     <div class="col l-2 m-3 c-4">
-                                        <button class="btn btn--primary" onclick="location.href='address';">Mua hàng</button>
+                                        <button class="btn btn--primary" onclick="location.href='/petshop/petshop-orders';">Mua hàng</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+                </c:if>
+                <c:if test="${checkCItem ==0}">
+                	<div class ="snhf snlrc5">
+                		<div class="nxRQ" style="background-image: url(./img/nocart.png);"></div>
+                		<div class="zH4psk">Giỏ hàng của bạn còn trống</div>
+                		<a class="OpSzHa btn btn--primary" href="">Mua Ngay</a>
+                	</div>
+				</c:if>
             </div>
             <jsp:include page="product.jsp"/>
          	<jsp:include page="footer.jsp"/>

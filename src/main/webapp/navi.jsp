@@ -52,7 +52,7 @@
                 <div  class="header-main">
                     <!-- nav 1 -->
                     <a href="/petshop/home" class="header__list1">
-                        <img src="./img/shoppet.jpg" alt="" class="header-petshop">
+                        <img src="./img/petshop.png" alt="" class="header-petshop">
                         <!-- <li class="header-shoppet">ShopPet</li>    -->
                     </a>
                     <!-- search view -->

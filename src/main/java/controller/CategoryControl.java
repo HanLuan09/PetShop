@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,12 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Account;
-import model.CartItem;
 import model.Category;
 import model.ProductDetails;
-import sevice.CartSevice;
 import sevice.CartSumList;
+import sevice.SessionService;
 
 @WebServlet(name = "CategoryControl", urlPatterns = {"/category"})
 public class CategoryControl extends HttpServlet{
@@ -30,22 +29,22 @@ public class CategoryControl extends HttpServlet{
         cSumList.viewCart(request);
       
 //    	lấy url
-        HttpSession session = request.getSession();
-    	String previousUrl = (String) session.getAttribute("previousUrl");
-    	if (previousUrl != null && !previousUrl.isEmpty()) {
-    	    // Xóa URL trước đó khỏi session
-    	    session.removeAttribute("previousUrl");
-    	} 
-//    	String previousNewUrl = request.getRequestURI();
-    	String previousNewUrl = request.getRequestURI() + "?" + request.getQueryString();
-    	session.setAttribute("previousUrl", previousNewUrl);
+        SessionService sessionService = new SessionService();
+        sessionService.sesionURLService(request, response);
     	
         //da lay dc category id ve roi
         String cateId = request.getParameter("cid");
         DAO dao = new DAO();
         ProductSortDao daoP = new ProductSortDao();
         List<Category> listC = dao.getAllCategory();
-        List<ProductDetails> listP = daoP.getAllProductCid(cateId);
+        List<ProductDetails> listP = new ArrayList<>();
+        if(cateId.equals("0")) {
+        	listP = daoP.getAllProductCid("1");
+        	listP.addAll(daoP.getAllProductCid("2"));
+        }
+        else {
+        	listP = daoP.getAllProductCid(cateId);
+        }
         Collections.sort(listP);
         request.setAttribute("listCC", listC);
         // list all p theo cid vẫn đẩy theo listP

@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import model.Category;
 import model.ProductDetails;
 import sevice.CartSumList;
+import sevice.SessionService;
 
 @WebServlet(name = "SearchProductControl", urlPatterns = {"/search"})
 public class SearchProductControl extends HttpServlet {
@@ -30,14 +31,8 @@ public class SearchProductControl extends HttpServlet {
         cSumList.viewCart(request);
       
 //    	lấy url
-        HttpSession session = request.getSession();
-    	String previousUrl = (String) session.getAttribute("previousUrl");
-    	if (previousUrl != null && !previousUrl.isEmpty()) {
-    	    // Xóa URL trước đó khỏi session
-    	    session.removeAttribute("previousUrl");
-    	} 
-    	String previousNewUrl = request.getRequestURI() + "?" + request.getQueryString();
-    	session.setAttribute("previousUrl", previousNewUrl);
+        SessionService sessionService = new SessionService();
+        sessionService.sesionURLService(request, response);
 //    	search
         String searchUrl= request.getParameter("search");
         String search = searchUrl.replaceAll("%20", " ");

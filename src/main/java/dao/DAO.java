@@ -68,10 +68,11 @@ public class DAO {
 //	    Lấy tất cả sản phẩm còn lại 
 	    public List<ProductDetails> getAllProductRemaining() {
 	        List<ProductDetails> list = new ArrayList<ProductDetails>();
-	        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+	        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
 	        		+ "FROM Product p\r\n"
 	        		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-	        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+	        		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+	        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
 	        		+ "where CateID > 2\r\n"
 	        		+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount,  p.Price, p.Amount, p.cateId";
 	        try {
@@ -168,10 +169,11 @@ public class DAO {
         return null;
     }
     public ProductDetails getProductDetailById(String id) {
-    	String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+    	String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
     			+ "FROM Product p\r\n"
     			+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-    			+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+    			+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+    			+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
     			+ "where p.idp = ?\r\n"
     			+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount, p.Price, p.Amount, p.cateId";
     	
@@ -379,6 +381,7 @@ public class DAO {
 	      }
 	      return 0;
     }
+    
     public static void main(String[] args) {
         DAO dao = new DAO();
         

@@ -4,6 +4,7 @@
     --text-color: #333;
     --border-color: #dbdbdb;
     --primary-color: #EE4D2D;
+    --primary-color-header: #ff5533;
     --star-gold: #FFCE3E;
     --primary-color-rgba: rgb(238, 75, 43);
     --height-header: 90px;
@@ -206,8 +207,9 @@ img, input {
 }
 .header-main {
     height: var(--height-header);
-    /* background-color: var(--primary-color-rgba); */
-    background: linear-gradient(-180deg,#f53d2d,#f63);
+    /* background-color: var(--primary-color-rgba); 
+    background: linear-gradient(-180deg,#f53d2d,#f63);*/
+    background: #ff5533;
     display: flex;
     justify-content: space-between;
     position: fixed;
@@ -235,7 +237,6 @@ img, input {
     width: 80px;
     height: 70px;
     margin-left: 40px;
-    border-radius: 50%;
     display: inline-block;
 }
 

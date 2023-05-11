@@ -48,10 +48,11 @@ public class ProductSortDao {
 //  Lấy tất cả sản phẩm theo cate
 	  public List<ProductDetails> getAllProductCid(String cid) {
 	      List<ProductDetails> list = new ArrayList<ProductDetails>();
-	      String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating , COUNT(pr.rating) AS TotalRating\r\n"
+	      String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating , COUNT(pr.rating) AS TotalRating\r\n"
 	      		+ "FROM Product p\r\n"
 	      		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-	      		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+	      		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+	      		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
 	      		+ "where p.CateID = ?\r\n"
 	      		+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount,  p.Price, p.Amount, p.cateId";
 	      try {
@@ -83,10 +84,11 @@ public class ProductSortDao {
 	//  Lấy tất cả sản phẩm theo cate
 		  public List<ProductDetails> getAllProductSearch(String search) {
 		      List<ProductDetails> list = new ArrayList<ProductDetails>();
-		      String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating , COUNT(pr.rating) AS TotalRating\r\n"
+		      String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
 		      		+ "FROM Product p\r\n"
 		      		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-		      		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+		      		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+		      		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
 		      		+ "LEFT JOIN Category ca ON ca.cateId = p.cateId\r\n"
 		      		+ "where p.NameP like ? or ca.nameC like ?\r\n"
 		      		+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount,  p.Price, p.Amount, p.cateId";
@@ -120,10 +122,11 @@ public class ProductSortDao {
     //phổ biên
 	public List<ProductDetails> getAllProductPopular() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
-        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+        		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
         		+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount,  p.Price, p.Amount, p.cateId\r\n"
         		+ "ORDER BY SUM(od.Amount) DESC";
         try {
@@ -156,10 +159,11 @@ public class ProductSortDao {
 //	Bán chạy
 	public List<ProductDetails> getAllProductSelling() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating, (SUM(od.Amount) * 1.0 / p.Amount) as SalesRatio\r\n"
+        String query = "SELECT p.*, SUM(od.Amount), CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating, (SUM(od.Amount) * 1.0 / p.Amount) as SalesRatio\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+        		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
         		+ "GROUP BY p.IdP, p.NameP, p.ImageP, p.Describe, p.Origin, p.Amount, p.Discount, p.Price, p.CateID\r\n"
         		+ "ORDER BY SalesRatio DESC";
         try {
@@ -192,10 +196,11 @@ public class ProductSortDao {
 	public List<ProductDetails> getAllProductLatest() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
         
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount), CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+        		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
         		+ "GROUP BY p.IdP, p.NameP, p.ImageP, p.Describe, p.Origin, p.Amount, p.Discount, p.Price, p.CateID\r\n"
         		+ "ORDER BY p.idP DESC";
         try {
@@ -228,10 +233,11 @@ public class ProductSortDao {
 	public List<ProductDetails> getAllProductLowtoHigh() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
         
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount),CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+        		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
         		+ "GROUP BY p.IdP, p.NameP, p.ImageP, p.Describe, p.Origin, p.Amount, p.Discount, p.Price, p.CateID\r\n"
         		+ "ORDER BY (p.Price - (p.Price * (p.Discount / 100.0)))";
         try {
@@ -262,10 +268,11 @@ public class ProductSortDao {
 	public List<ProductDetails> getAllProductHightoLow() {
         List<ProductDetails> list = new ArrayList<ProductDetails>();
         
-        String query = "SELECT p.*, SUM(od.Amount), AVG(pr.rating) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+        String query = "SELECT p.*, SUM(od.Amount), CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
         		+ "FROM Product p\r\n"
         		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
-        		+ "LEFT JOIN ProductRating pr ON p.IdP = pr.IdP\r\n"
+        		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
+        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
         		+ "GROUP BY p.IdP, p.NameP, p.ImageP, p.Describe, p.Origin, p.Amount, p.Discount, p.Price, p.CateID\r\n"
         		+ "ORDER BY (p.Price - (p.Price * (p.Discount / 100.0))) DESC";
         try {

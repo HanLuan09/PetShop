@@ -32,6 +32,12 @@ public class AddressControl extends HttpServlet {
 	    			aRess = new Address();
 	    			check=0;
 	    		}
+	    		String ipPSession = (String)session.getAttribute("pay-idp");
+            	String quantitySession = (String)session.getAttribute("pay-quantity");
+            	
+            	request.setAttribute("checkiP", ipPSession);
+	    		request.setAttribute("checkQ", quantitySession);
+	    		
 	    		request.setAttribute("addressCheck", check);
 	    		request.setAttribute("address", aRess);
 	    		request.getRequestDispatcher("address.jsp").forward(request, response);

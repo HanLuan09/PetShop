@@ -12,6 +12,8 @@ public class CartSumList {
 	public void viewCart (HttpServletRequest request) {
 //      hiển thị cart  
         HttpSession session = request.getSession();
+        session.removeAttribute("pay-idp");
+        session.removeAttribute("pay-quantity");
     	Account account = (Account) session.getAttribute("account");
     	if(account == null) {
     		request.setAttribute("sumCart", 0);

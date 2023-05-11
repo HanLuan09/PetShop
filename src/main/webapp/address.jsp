@@ -76,17 +76,16 @@
                                     </div>    
                                 </a>
                             </div>
-                            <div class="auth-form__aside-method">
-                                Trạng thái: <span style="font-weight: 300;">Chưa thanh toán</span>
-                            </div>
-                            
                         </div>
     
                         <div class="auth-form__controls">
-                            <button class="btn auth-form__controls-back btn--normal" type="button" onclick="location.href='cart-get';">Trở lại</button>
+                        	<c:if test="${checkiP != null and checkQ != null}">
+                            	<button class="btn auth-form__controls-back btn--normal" type="button" onclick="location.href='/petshop/petshop-orders?idp=${checkiP}&quantity=${checkQ}';">Trở lại</button>
+                            </c:if>
+                            <c:if test="${checkiP == null or checkQ == null}">
+                            	<button class="btn auth-form__controls-back btn--normal" type="button" onclick="location.href='/petshop/petshop-orders';">Trở lại</button>
+                            </c:if>
                             <button class="btn btn--primary" type="submit">Hoàn thành</button>
-                            <button class="btn auth-form__controls-back btn--primary2" type="button">Tiếp tục</button>
-                            <button class="btn btn--primary" type="button">Thay đổi</button>
                         </div>
     
                     </div>
@@ -167,7 +166,7 @@
                             </div>
                             <div class="login-btn">
                                 <button class="mod-button" type="submit">HOÀN THÀNH</button>
-                                <button class="mod-button" type="button">THAY ĐỔI ĐỊA CHỈ</button>
+                                
                             </div>     
                         </div>
                     </div>

@@ -33,8 +33,7 @@ public class SaveAddressControl extends HttpServlet {
             throws ServletException, IOException {
     	HttpSession session = request.getSession();
     	Account a = (Account) session.getAttribute("account");
-    	if(a == null) {
-    		
+    	if(a == null) {	
     		response.sendRedirect("login");
     	}
     	int idA = a.getIdA();
@@ -44,65 +43,14 @@ public class SaveAddressControl extends HttpServlet {
     		String nameAddress = request.getParameter("address");
     		AccountDao daoAccount = new AccountDao();
     		daoAccount.updateAddress(idA, name, phone, nameAddress);
-    		try {
-    			AccountDao daoA = new AccountDao();
-    			CartSevice cartSevice = new CartSevice();
-    			List<CartItem> listCartItems = cartSevice.getCartItemsFromCookiesAccount(idA, request);
-    			List<CartItem> listCItemsNot = cartSevice.getCartItemsFromCookiesNotAccount(idA, request);
-    			LocalDate localDate = LocalDate.now();
-		        Date date = java.sql.Date.valueOf(localDate);
-		        // thêm vào giỏ hàng
-		        synchronized (daoA) {
-		        	try {
-		        		daoA.addOrder(date, idA);
-		        		//mua ngay 
-		                String pay_idp = (String)session.getAttribute("pay-idp");
-		                String pay_quantity = (String)session.getAttribute("pay-quantity");
-		                if(pay_idp!= null && pay_quantity!=null && !pay_idp.equals("") && !pay_quantity.equals("")) {
-		                	try {
-								
-		                		DAO dao = new DAO();
-		                		Product product = dao.getProductById(pay_idp);
-		                		Order order = daoA.getOrderOneTop();
-		                		OrderDetails orderDetails = new OrderDetails();
-		                		orderDetails.setIdO(order.getIdO());
-		                		orderDetails.setIdP(product.getIdP());
-		                		orderDetails.setPrice(product.getPriceNew());
-		                		orderDetails.setAmount(Integer.parseInt(pay_quantity));
-		                		daoA.addOrderDetails(orderDetails);
-							} catch (Exception e) {
-							
-							}
-		                	
-		                }else {
-		                	
-		                	for(CartItem i: listCartItems) {
-		                		try {
-		                			Order order = daoA.getOrderOneTop();
-		                			OrderDetails orderDetails = new OrderDetails();
-		                			orderDetails.setIdO(order.getIdO());
-		                			orderDetails.setIdP(i.getProduct().getIdP());
-		                			orderDetails.setPrice(i.getProduct().getPriceNew());
-		                			orderDetails.setAmount(i.getQuantity());
-		                			daoA.addOrderDetails(orderDetails);
-		                			cartSevice.removeCookies(response);
-		                			cartSevice.saveCartItemsToCookies(response, listCItemsNot);
-		                		} catch (Exception e) {
-		                			
-		                		}
-		                	}
-		                }
-		        		
-		        		response.sendRedirect("home");
-		        	} catch (Exception e) {
-		        		
-		        	}
-		        	
-		        }
-    		}catch (Exception e) {
-				
-			}
-    		
+    		String ipPSession = (String)session.getAttribute("pay-idp");
+        	String quantitySession = (String)session.getAttribute("pay-quantity");
+        	if(ipPSession!=null && quantitySession!=null) {
+        		response.sendRedirect("/petshop/petshop-orders?idp="+ipPSession+"&quantity="+quantitySession);
+        	}
+        	else {
+        		response.sendRedirect("/petshop/petshop-orders");
+        	}
 		} catch (Exception e) {
 			request.setAttribute("messAddress", "Không thể thay đổi địa chỉ!");
 			request.getRequestDispatcher("address").forward(request, response);

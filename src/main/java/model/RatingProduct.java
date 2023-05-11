@@ -4,6 +4,7 @@ public class RatingProduct {
 	private int idA, idP, rating;
 	private String comment;
 	
+	
 	public RatingProduct() {
 		super();
 		// TODO Auto-generated constructor stub

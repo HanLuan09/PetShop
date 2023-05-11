@@ -1,11 +1,11 @@
 package model;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class RatingCount {
 	private int rating;
 	private int count;
-	
 	public RatingCount() {
 		
 	}
@@ -23,5 +23,19 @@ public class RatingCount {
 		int sum=0;
 		for(RatingCount o: list) sum += o.count;
 		return sum;
+	}
+	public double trungBinhRating(List<RatingCount> list) {
+		int sum = 0;
+		int sum2= 0;
+	    for(RatingCount o: list) {
+	    	sum += (o.rating * o.count);
+	    	sum2+= o.count;
+	    }
+	    double avg = (double)sum / sum2;
+
+	    int truncated = (int)(avg * 10);
+	    int decimal = truncated % 10;
+
+	    return (double)(truncated / 10) + (double)decimal / 10;
 	}
 }

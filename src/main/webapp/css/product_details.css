@@ -89,11 +89,6 @@
     justify-content: center;
     align-items: center;
 }
-.home-right-rating-gpa {
-    font-size: 1.3rem;
-    color: #ee4d2d;
-    border-bottom-color: #ee4d2d;
-}
 .home-right-number {
     border-bottom: 1px solid #555;
     font-size: 1rem;
@@ -105,8 +100,21 @@
 .home-right__rating-star {
     margin: 0 5px;
     font-size: .875rem;
-    color: #fff;
+    color: #d5d5d5;
     text-transform: capitalize;
+    position: relative;
+    float: left;
+    display: block;
+    height: 11px;
+    line-height: 11px;
+}
+.card-jfy-rating-layer.top-layer {
+    position: absolute;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.card-jfy-rating-layer {
+    display: inline-block;
 }
 .home-right__rating--gold {
     color: #ee4d2d;

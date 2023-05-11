@@ -56,8 +56,7 @@ public class LoginControl extends HttpServlet {
 //        	lưu vào trình duyệt
         	response.addCookie(cookieName);
         	response.addCookie(cookiePass);
-        	
-//        	HttpSession session = request.getSession();
+
         	String previousUrl = (String) session.getAttribute("previousUrl");
 
         	if (previousUrl != null && !previousUrl.isEmpty()) {

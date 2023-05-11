@@ -51,20 +51,29 @@
                                             <span>${detail.nameP}</span>
                                         </div>
                                         <div class="container__home">
-                                            <div class="flex X5u-5c">
-                                                <div class="home-right-rating">
-                                                    <div class="home-right-rating-gpa">${detail.rating}</div>
-                                                    <div class="home-right__rating-star">
-                                                        <i class="home-right__rating--gold fa-solid fa-star"></i>
-                                                        <i class="home-right__rating--gold fa-solid fa-star"></i>
-                                                        <i class="home-right__rating--gold fa-solid fa-star"></i>
-                                                        <i class="home-right__rating--gold fa-solid fa-star"></i>
-                                                        <i class="home-right__rating--gold fa-solid fa-star"></i>
-                                                    </div>
-                                                </div>
+                                        	<div class="flex home-right-quantity">
+                                        		<div class="home-right-rating-gpa home-right-number" style="color: #ee4d2d;">${detail.rating}</div>
+                                                <div class="home-right__rating-star">
+		                                        	<div class="card-jfy-rating-layer top-layer checked home-right__rating--gold" style="width: 100%;">
+		                                            	<i class="fa-solid fa-star"></i>
+		                                            	<i class="fa-solid fa-star"></i>
+		                                                <i class="fa-solid fa-star"></i>
+		                                                <i class="fa-solid fa-star"></i>
+		                                                <i class="fa-solid fa-star"></i>      
+		                                            </div>
+		                                            <div class="card-jfy-rating-layer">
+		                                            	<i class="fa-solid fa-star"></i>
+		                                            	<i class="fa-solid fa-star"></i>
+		                                            	<i class="fa-solid fa-star"></i>
+		                                            	<i class="fa-solid fa-star"></i>
+		                                            	<i class="fa-solid fa-star"></i>          
+		                                        	</div>
+		                                    	</div>
+                                                
                                             </div>
+                                           
                                             <div class="home-right-quantity">
-                                                <div class="home-right-number">${countRating}</div>
+                                                <div class="home-right-number">${detail.countRating}</div>
                                                 <div>Đánh giá</div>
                                             </div>
                                             <div class="home-right-quantity">
@@ -72,6 +81,12 @@
                                                 <div>Đã bán</div>
                                             </div>
                                         </div>
+                                        <script type="text/javascript">
+	                                        var ratingValue = parseFloat(document.querySelector('.home-right-rating-gpa').textContent);
+	                                        var ratingWidth = ratingValue * 20; // Chuyển đổi từ điểm đánh giá (0-5) sang phần trăm (0-100)
+	                                        var cardRatingLayer = document.querySelector('.top-layer');
+	                                        cardRatingLayer.style.width = ratingWidth + '%';
+                                        </script>
                                         <!-- end rating -->
                                         <div class="container__origin">Xuất xứ: <span>${detail.origin}</span></div>
                                         <!-- price -->
@@ -219,7 +234,7 @@
                             var quantity = document.querySelector('#quantity-input').value;
                             console.log(quantity);
                             // Chuyển hướng đến trang giỏ hàng với các tham số cần thiết
-                            location.href = 'cart-pay?idp='+${detail.idP}+'&quantity='+quantity;
+                            location.href = 'petshop-orders?idp='+${detail.idP}+'&quantity='+quantity;
                         });
                     }
                 </script>
@@ -263,13 +278,13 @@
                                         </div>
                                         <div class="col l-10 c-10 m-11">
                                             <div>
-                                                <button class="container__header-btn container__header-btn-1">Tất cả</button>
+                                                <button class="container__header-btn container__header-btn-1 container__header-btn--selecter">Tất cả</button>
                                                 <c:forEach items="${listRCount}" var="o">
 	                                                <button class="container__header-btn container__header-btn-1">${o.rating} Sao (${o.count})</button>
                                                 </c:forEach>
                                               
                                             </div>
-                                            <div class="content__left-count">${countRating} Đánh giá</div>
+                                            <div class="content__left-count">${detail.countRating} Đánh giá</div>
                                         </div>
                                     </div>
                                 </div>
