@@ -46,9 +46,7 @@ public class ImageAccountControl extends HttpServlet {
     				part.write(readPath+"/"+fileName);
     				
         		} catch (Exception e) {
-        			
-        			PrintWriter out = response.getWriter();
-        			out.println("null");
+        			request.getRequestDispatcher("error.jsp").forward(request, response);
         		}
     			
 //        		xét lại account
@@ -58,7 +56,7 @@ public class ImageAccountControl extends HttpServlet {
     				a.setImageA(fileName);
     				session.setAttribute("account", a);
     			} catch (Exception e) {
-    				// TODO: handle exception
+    				request.getRequestDispatcher("error.jsp").forward(request, response);
     			}
     			response.sendRedirect("order");
         	}

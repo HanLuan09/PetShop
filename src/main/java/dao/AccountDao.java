@@ -139,20 +139,30 @@ public class AccountDao {
 	     
   	}
 //  	
-  	public void addOrder (Date date, int idA) {
-  		String query = "INSERT INTO DBO.[Order]([CreatedDate], [IdA]) VALUES(?, ?)";
-	      try {
-	          conn = new DbContext().getConnection();//mo ket noi voi sql
-	          ps = conn.prepareStatement(query);
-	          ps.setDate(1, date);
-	          ps.setInt(2, idA);
-	          ps.executeUpdate();
-	          
-	          conn.close();
-	          ps.close();
-	      } catch (Exception e) {
-	      }
-  	}
+  	public int addOrder (Date date, int idA) {
+    	int ido =0;
+    	String query = "DECLARE @InsertedIds TABLE (IdO int);\r\n"
+    			+ "INSERT INTO dbo.[Order] ([CreatedDate], [IdA])\r\n"
+    			+ "OUTPUT INSERTED.IdO INTO @InsertedIds\r\n"
+    			+ "VALUES (?, ?);\r\n"
+    			+ "SELECT IdO FROM @InsertedIds;";
+    	try {
+    		conn = new DbContext().getConnection();//mo ket noi voi sql
+    		ps = conn.prepareStatement(query);
+    		ps.setDate(1, date);
+	        ps.setInt(2, idA);
+    		ps.executeUpdate();
+    		rs = ps.getGeneratedKeys();
+    		if (rs.next()) {
+    		    ido = rs.getInt(1);
+    		}
+    		ps.close();
+    		conn.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    	return ido;
+    }
   	public List<Order> getOrder (String idA) {
   		List<Order> list = new ArrayList<>();
   		String query = "select * from Order where IdA = ?";
@@ -171,6 +181,35 @@ public class AccountDao {
 	      } catch (Exception e) {
 	      }
 	      return list;
+  	}
+  	public int getOrderAccount (String idO) {
+  		String query = "select IdA from dbo.[Order] where IdO = ?";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setString(1, idO);
+	          rs = ps.executeQuery();
+	          while(rs.next()) {
+	        	  return rs.getInt(1);
+	          }
+	          conn.close();
+	          ps.close();
+	      } catch (Exception e) {
+	      }
+	      return 0;
+  	}
+  	public void setStauts(String idO) {
+  		String query = "UPDATE dbo.OrderDetails SET Status =1 WHERE ido = ? AND Status = 0";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setString(1, idO);
+	          ps.executeUpdate();
+	          conn.close();
+	          ps.close();
+	      } catch (Exception e) {
+	      }
+	      
   	}
 //  	
   	public int addOrderDetails (OrderDetails o) {
@@ -192,24 +231,24 @@ public class AccountDao {
 	      }
 	      return result;
   	}
-  	public Order getOrderOneTop () {
-  		String query = "SELECT * FROM [Order] WHERE idO = (SELECT MAX(idO) FROM [Order])";
-  		
-	      try {
-	          conn = new DbContext().getConnection();//mo ket noi voi sql
-	          ps = conn.prepareStatement(query);
-	          rs = ps.executeQuery();
-	          while(rs.next()) {
-	        	  return new Order(rs.getInt(1),
-	        			  rs.getDate(2),
-	        			  rs.getInt(3));
-	          }
-	          conn.close();
-	          ps.close();
-	      } catch (Exception e) {
-	      }
-	      return null;
-  	}
+//  	public Order getOrderOneTop () {
+//  		String query = "SELECT * FROM [Order] WHERE idO = (SELECT MAX(idO) FROM [Order])";
+//  		
+//	      try {
+//	          conn = new DbContext().getConnection();//mo ket noi voi sql
+//	          ps = conn.prepareStatement(query);
+//	          rs = ps.executeQuery();
+//	          while(rs.next()) {
+//	        	  return new Order(rs.getInt(1),
+//	        			  rs.getDate(2),
+//	        			  rs.getInt(3));
+//	          }
+//	          conn.close();
+//	          ps.close();
+//	      } catch (Exception e) {
+//	      }
+//	      return null;
+//  	}
   	public List<OrderDetails> getOrderDetails (String idO) {
   		List<OrderDetails> list = new ArrayList<>();
   		String query = "select * from OrderDetails where IdO = ?";
@@ -231,6 +270,21 @@ public class AccountDao {
 	      }
 	      return list;
   	}
+  	public void removeOrderDetails (String idO, String idP) {
+  		String query = "DELETE FROM dbo.OrderDetails where ido = ? AND idp = ?";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setString(1, idO);
+	          ps.setString(2, idP);
+	          ps.executeUpdate();
+	          conn.close();
+	          ps.close();
+	      } catch (Exception e) {
+	      }
+	     
+  	}
+  	
 //  	
   	public List<RatingAccount> getAllRatingAcount(String idP){
   		List<RatingAccount> list = new ArrayList<>();
@@ -244,13 +298,15 @@ public class AccountDao {
 	          ps.setString(1, idP);
 	          rs = ps.executeQuery();
 	          while(rs.next()) {
-	        	  list.add(new RatingAccount(rs.getInt(1),
-	        			  rs.getInt(2),
-	        			  rs.getInt(3),
-	        			  rs.getString(4),
-	        			  rs.getString(5),
-	        			  rs.getString(6)));
-	          }
+	    			list.add(new RatingAccount(rs.getInt(1),
+		        			  rs.getInt(2),
+		        			  rs.getInt(3),
+		        			  rs.getInt(4),
+		        			  rs.getString(5),
+		        			  rs.getDate(6),
+		        			  rs.getString(7),
+		        			  rs.getString(8)));
+	    		}
 	          conn.close();
 	          ps.close();
 	      } catch (Exception e) {
@@ -275,8 +331,6 @@ public class AccountDao {
   	}
   	public static void main(String[] args) {
   		AccountDao dao = new AccountDao();
-		Address a = dao.getAddress(2);
-		Order o = dao.getOrderOneTop();
-		System.out.println(o);
+		System.out.println(dao.getOrderAccount("8"));
 	}
 }

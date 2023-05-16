@@ -148,7 +148,7 @@
                                                 </li>
                                                 <c:if test="${sessionScope.account.isAdmin == 1}">
                                                 <li class="header__user-item-users-item">
-                                                    <a href="manager">Quản lý bán hàng</a>
+                                                    <a href="admin">Quản lý bán hàng</a>
                                                 </li>
                                                 </c:if>
                                                 <li class="header__user-item-users-item">
@@ -233,8 +233,5 @@
 	            div.style.display = 'none';
 	          }
 	        });
-
-
-	        
 		</script>
         

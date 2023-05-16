@@ -30,29 +30,39 @@ public class CartSaveControl extends HttpServlet{
     		response.sendRedirect("login");
     	}else {
     		
-    		int idP = Integer.parseInt(request.getParameter("idp"));
-    		int quantity = Integer.parseInt(request.getParameter("quantity"));
-    		Product product = dao.getProductById(idP+"");
-    		if (product == null) {
-    			PrintWriter out = response.getWriter();
-    			out.println("lỗi");
-    		}
-    		
+    		try {
+    			int idP = Integer.parseInt(request.getParameter("idp"));
+    			int quantity = Integer.parseInt(request.getParameter("quantity"));
+    			Product product = dao.getProductById(idP+"");
+    			if (product == null) {
+    				PrintWriter out = response.getWriter();
+    				out.println("lỗi");
+    			}
+    			
 //        Lấy danh sách sản phẩm trong giỏ hàng từ cookie
 //    		xử lý try catch khi cookies ko có
-    		List<CartItem> cartItems;
-    		try {
-    			cartItems =cartSevice.getCartItemsFromCookies(request);
-    		}catch (Exception e) {
-    			cartItems = new ArrayList<>();
-			}
+    			List<CartItem> cartItems;
+    			try {
+    				cartItems =cartSevice.getCartItemsFromCookies(request);
+    			}catch (Exception e) {
+    				cartItems = new ArrayList<>();
+    			}
 //        Tìm kiếm sản phẩm trong danh sách sản phẩm trong giỏ hàng
-    		CartItem cartItem = cartSevice.findCartItem(cartItems, idP, account.getIdA());
-    		if(quantity>0) cartItem.setQuantity(quantity);
-//        Lưu danh sách sản phẩm trong giỏ hàng vào cookie
-    		cartSevice.saveCartItemsToCookies(response, cartItems);
-    		request.setAttribute("listCart", cartItems);
-    		response.sendRedirect("cart-get");
+    			CartItem cartItem = cartSevice.findCartItem(cartItems, idP, account.getIdA());
+    			
+    			int checkRem = dao.remainingProducts(idP);
+    			if(quantity > checkRem || quantity < 1) {
+    				response.sendRedirect("cart-get");
+    			}
+    			else{
+	    			if(quantity>0 && quantity <= checkRem) cartItem.setQuantity(quantity);
+	    			cartSevice.saveCartItemsToCookies(response, cartItems);
+	    			request.setAttribute("listCart", cartItems);
+	    			response.sendRedirect("cart-get");
+    			}
+			} catch (Exception e) {
+				request.getRequestDispatcher("error.jsp").forward(request, response);
+			}
     	}
     }
 }

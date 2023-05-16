@@ -25,39 +25,49 @@ public class CartServlet extends HttpServlet {
         if (account == null) {
             response.sendRedirect("login");
         } else {
-            int idP = Integer.parseInt(request.getParameter("idp"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            Product product = dao.getProductById(idP + "");
-            if (product == null) {
-                PrintWriter out = response.getWriter();
-                out.println("lỗi");
-            }
-
-            // Lấy danh sách sản phẩm trong giỏ hàng từ cookie
-            // xử lý try catch khi cookies ko có
-            List<CartItem> cartItems = null;
-            try {
-                cartItems = cartSevice.getCartItemsFromCookies(request);
-            } catch (Exception e) {
-                cartItems = new ArrayList<>();
-            }
-            // Kiểm tra null trước khi thêm sản phẩm vào giỏ hàng
-            if (cartItems == null) {
-                cartItems = new ArrayList<>();
-            }
-            // Tìm kiếm sản phẩm trong danh sách sản phẩm trong giỏ hàng
-            CartItem cartItem = cartSevice.findCartItem(cartItems, idP, account.getIdA());
-            if (cartItem == null) {
-                // Nếu sản phẩm chưa có trong giỏ hàng, tạo mới đối tượng CartItem
-                cartItems.add(new CartItem(product, quantity, account.getIdA()));
-            } else {
-                // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng
-                cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            }
-            // Lưu danh sách sản phẩm trong giỏ hàng vào cookie
-            cartSevice.saveCartItemsToCookies(response, cartItems);
-            request.setAttribute("listCart", cartItems);
-            response.sendRedirect("detail?pid=" + product.getIdP() + "&cid=" + product.getCateId()); // Chuyển hướng đến trang giỏ hàng
+        	
+        	try {
+        		int idP = Integer.parseInt(request.getParameter("idp"));
+        		int quantity = Integer.parseInt(request.getParameter("quantity"));
+        		Product product = dao.getProductById(idP + "");
+        		if (product == null) {
+        			request.getRequestDispatcher("error.jsp").forward(request, response);
+        		}
+        		
+        		// Lấy danh sách sản phẩm trong giỏ hàng từ cookie
+        		// xử lý try catch khi cookies ko có
+        		List<CartItem> cartItems = null;
+        		try {
+        			cartItems = cartSevice.getCartItemsFromCookies(request);
+        		} catch (Exception e) {
+        			cartItems = new ArrayList<>();
+        		}
+        		// Kiểm tra null trước khi thêm sản phẩm vào giỏ hàng
+        		if (cartItems == null) {
+        			cartItems = new ArrayList<>();
+        		}
+        		// Tìm kiếm sản phẩm trong danh sách sản phẩm trong giỏ hàng
+        		CartItem cartItem = cartSevice.findCartItem(cartItems, idP, account.getIdA());
+        		if (cartItem == null) {
+        			// Nếu sản phẩm chưa có trong giỏ hàng, tạo mới đối tượng CartItem
+        			cartItems.add(new CartItem(product, quantity, account.getIdA()));
+        		} else {
+        			// Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng
+        			int checkRem = dao.remainingProducts(idP);
+        			if(cartItem.getQuantity() + quantity >= checkRem) {
+        				cartItem.setQuantity(checkRem);
+        			}else {	
+        				cartItem.setQuantity(cartItem.getQuantity() + quantity);
+        			}
+        		}
+        		// Lưu danh sách sản phẩm trong giỏ hàng vào cookie
+        		cartSevice.saveCartItemsToCookies(response, cartItems);
+        		request.setAttribute("listCart", cartItems);
+        		response.sendRedirect("detail?pid=" + product.getIdP() + "&cid=" + product.getCateId()); // Chuyển hướng đến trang giỏ hàng
+        	
+			} catch (Exception e) {
+				request.getRequestDispatcher("error.jsp").forward(request, response);
+			}
         }
     }
 }

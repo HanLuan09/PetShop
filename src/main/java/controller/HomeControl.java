@@ -22,26 +22,29 @@ public class HomeControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try {	
 //      hiển thị cart  
-        CartSumList cSumList = new CartSumList();
-        cSumList.viewCart(request);
+        	CartSumList cSumList = new CartSumList();
+        	cSumList.viewCart(request);
 //    	lấy url
-        SessionService sessionService = new SessionService();
-        sessionService.sesionURLService(request, response);
-    	
-        DAO dao = new DAO();
-        List<Category> listC = dao.getAllCategory();
-        request.setAttribute("listCC", listC);
-        List<ProductDetails> list = dao.getAllProductRemaining();
-        List<Product> listDogCat = dao.getAllProductDogCat();
-        Collections.sort(list);
+        	SessionService sessionService = new SessionService();
+        	sessionService.sesionURLService(request, response);
+        	DAO dao = new DAO();
+        	List<Category> listC = dao.getAllCategory();
+        	request.setAttribute("listCC", listC);
+        	List<ProductDetails> list = dao.getAllProductRemaining();
+        	List<Product> listDogCat = dao.getAllProductDogCat();
+        	Collections.sort(list);
 //        //b2: set data to jsp
-        request.setAttribute("listBest", listDogCat);
-        request.setAttribute("listP", list);
-        request.setAttribute("listDogCat", listDogCat);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
-        //404 -> url
-        //500 -> jsp properties
+        	request.setAttribute("listBest", listDogCat);
+        	request.setAttribute("listP", list);
+        	request.setAttribute("listDogCat", listDogCat);
+        	request.getRequestDispatcher("index.jsp").forward(request, response);
+        	//404 -> url
+        	//500 -> jsp properties
+		} catch (Exception e) {
+			response.sendRedirect("error.jsp");
+		}
     }
 
     @Override
@@ -55,10 +58,4 @@ public class HomeControl extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

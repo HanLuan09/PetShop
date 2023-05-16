@@ -22,35 +22,39 @@ public class DetailControl extends HttpServlet{
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        try {
 //      hiển thị cart  
-        CartSumList cSumList = new CartSumList();
-        cSumList.viewCart(request);
-        
+        	CartSumList cSumList = new CartSumList();
+        	cSumList.viewCart(request);
 //    	lấy url
-        SessionService sessionService = new SessionService();
-        sessionService.sesionURLService(request, response);
-    	
-//    	
-        String id = request.getParameter("pid");
-        String cateId = request.getParameter("cid");
-        DAO dao = new DAO();
-        AccountDao daoA = new AccountDao();
-        RatingDao daoR = new RatingDao(); // lấy cho  Rating Count
-        ProductSortDao daoP = new ProductSortDao();
-        ProductDetails p = dao.getProductDetailById(id);
-        List<ProductDetails> listP = daoP.getAllProductCid(cateId);
-        Collections.sort(listP);
-        List<Category> listC = dao.getAllCategory();
-        List<RatingAccount> listRatingAccounts = daoA.getAllRatingAcount(id);
-        List<RatingCount> listRatingCounts = daoR.getRatingCountProduct(id);
-        
-        request.setAttribute("detail", p);
-        request.setAttribute("listCC", listC);
-        request.setAttribute("listP", listP);
-        request.setAttribute("listRA", listRatingAccounts);
-        request.setAttribute("listRCount", listRatingCounts);
-        request.getRequestDispatcher("product_details.jsp").forward(request, response);
+        	SessionService sessionService = new SessionService();
+        	sessionService.sesionURLService(request, response);
+        	
+        	String id = request.getParameter("pid");
+        	String cateId = request.getParameter("cid");
+        	DAO dao = new DAO();
+        	AccountDao daoA = new AccountDao();
+        	RatingDao daoR = new RatingDao(); // lấy cho  Rating Count
+        	ProductSortDao daoP = new ProductSortDao();
+        	ProductDetails p = dao.getProductDetailById(id);
+        	List<ProductDetails> listP = daoP.getAllProductCid(cateId);
+        	Collections.sort(listP);
+        	List<Category> listC = dao.getAllCategory();
+        	List<RatingAccount> listRatingAccounts = daoA.getAllRatingAcount(id);
+        	Collections.sort(listRatingAccounts);
+        	List<RatingCount> listRatingCounts = daoR.getRatingCountProduct(id);
+        	
+        	request.setAttribute("remaining", dao.remainingProducts(Integer.parseInt(id)));
+        	request.setAttribute("detail", p);
+        	request.setAttribute("listCC", listC);
+        	request.setAttribute("listP", listP);
+        	request.setAttribute("listRA", listRatingAccounts);
+        	request.setAttribute("listRCount", listRatingCounts);
+        	request.getRequestDispatcher("product_details.jsp").forward(request, response);
+			
+		} catch (Exception e) {
+			response.sendRedirect("error.jsp");
+		}
     }
 
     @Override

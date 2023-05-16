@@ -1,7 +1,8 @@
 package controller.account;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import dao.RatingDao;
 import jakarta.servlet.ServletException;
@@ -26,18 +27,20 @@ public class RatingSaveControl extends HttpServlet {
     		String idO = request.getParameter("ido");
     		int idP = Integer.parseInt(request.getParameter("idp"));
     		try {
+    			LocalDate localDate = LocalDate.now();
+		        Date date = java.sql.Date.valueOf(localDate);
     			int idA = a.getIdA();
-    			
     			int rating = Integer.parseInt(request.getParameter("rating"));
     			if(0 >= rating || rating >5) rating = 0;
     			String comment = request.getParameter("comment");
-    			if(!comment.trim().equals("")) {
+    			if(!comment.trim().equals("") || rating > 0) {
     				RatingDao daoRating = new RatingDao();
-    				daoRating.saveRatingProduct(idP, idA, rating, comment);
+    				daoRating.saveRatingProduct(idP, idA, idO, rating, comment, date);
     			}
     		} catch (Exception e) {
-    			
+    			request.getRequestDispatcher("error.jsp").forward(request, response);
     		}
+    		
     		response.sendRedirect("order-detail?idp="+idP+"&ido="+idO);
     	}
     	

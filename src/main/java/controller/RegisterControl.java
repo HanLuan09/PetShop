@@ -26,6 +26,7 @@ public class RegisterControl extends HttpServlet {
             request.setAttribute("messregister", "Đăng nhập không thành công!");
             request.getRequestDispatcher("login_register.jsp").forward(request, response);
         } else {
+        	synchronized (this) {
             // Check if username is already registered
             if (!usernameRef.compareAndSet(null, name)) {
                 // Username is already registered, throw exception
@@ -50,6 +51,7 @@ public class RegisterControl extends HttpServlet {
                 // Clear username reference after registration is complete
                 usernameRef.set(null);
             }
+        	}
         }
     }
 
@@ -72,53 +74,3 @@ public class RegisterControl extends HttpServlet {
         return "Short description";
     }
 }
-
-
-
-/*
-@WebServlet(name="RegisterControl", urlPatterns = {"/register"})
-public class RegisterControl extends HttpServlet {
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-        String name = request.getParameter("fullname");
-        String pass = request.getParameter("password");
-        String passComfi = request.getParameter("password_comfirmation");
-        if(name == null || pass == null || passComfi == null || !pass.equals(passComfi)) {
-        	request.setAttribute("messregister", "Đăng nhập không thành công!");
-        	request.getRequestDispatcher("login_register.jsp").forward(request, response);
-        }
-        else {	
-        	DAO dao = new DAO();
-        	Account a = dao.checkAccount(name);
-        	if(a == null) {
-        		dao.postAccount(name, pass);
-        		response.sendRedirect("home");
-//        	
-        	}else {
-        		request.setAttribute("messregister", "Tên đăng nhập đã tồn tại!");
-//        	response.sendRedirect("login_register.jsp");
-        		request.getRequestDispatcher("login_register.jsp").forward(request, response);
-        	}
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-        
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-        
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-}*/

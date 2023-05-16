@@ -88,9 +88,15 @@
                                                 </div>
                                             </div>
                                         <!-- phân loại kích thước màu sắc -->
-                                        <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post">
+                                        <c:if test="${uDetail.status==0}">
+	                                        <form id="removeform" action="remove-order" method="post" onsubmit="confirmCancelOrder(event)">                	
+	                                    </c:if>
+	                                    <c:if test="${uDetail.status==1}">
+	                                        <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post">                	
+	                                    </c:if>
+                                        <!-- <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post">-->
                                         	<input type="hidden" name="idp" value="${uDetail.idP}">
-                                        	<input type="hidden" name="ido" value="${ido}">
+                                        	<input type="hidden" name="ido" value="${uDetail.idO}">
                                         	<input style="border: 2px solid #000" type="hidden" name ="rating" id="rating" value="${rProduct.rating}">
 	                                        <div class="container__header">
 	                                            <div class="container__header-wrap">
@@ -130,12 +136,28 @@
 	                                                <dib class="container__right-purchase-wrap">
 	                                                    <div class="container__right-purchase-btn" style="display: flex; flex-direction: row;">
 	                                                        <button class="btn btn-tinted btn--l container__right-purchase-btn__cart iFo-rx" type="button"aria-disabled="false" onclick="location.href='/petshop/order';"><span>Trở về</span></button>
-	                                                        <c:if test="${rProduct.rating==0}">
-	                                                        	<button class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false">Đánh giá</button>
+	                                                        <c:if test="${uDetail.status==0}">
+	                                                        	<button class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false" type="submit" onclick="confirmCancelOrder()">Hủy đặt hàng</button>
+	                                                        	<script>
+	                                                        		function confirmCancelOrder(event) {
+	                                                        		  event.preventDefault(); 
+
+	                                                        		  if (confirm("Bạn có chắc chắn muốn hủy đặt hàng?")) {
+	                                                        		    	document.getElementById("removeform").submit();
+	                                                        		  } else {
+	                                                        		    
+	                                                        		  }
+	                                                        		}
+																</script>
 	                                                        </c:if>
-	                                                        <c:if test="${rProduct.rating>0}">
-	                                                        	<button id="btn_rating--edit" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" type="button" aria-disabled="false">Đổi đánh giá</button>
-	                                                        	<button id="btn_rating--save" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false">Lưu đánh giá</button>
+	                                                        <c:if test="${uDetail.status == 1}">
+		                                                        <c:if test="${rProduct.rating==0}">
+		                                                        	<button id="btn_rating--add" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false">Đánh giá</button>
+		                                                        </c:if>
+		                                                        <c:if test="${rProduct.rating>0}">
+		                                                        	<button id="btn_rating--edit" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" type="button" aria-disabled="false">Đổi đánh giá</button>
+		                                                        	<button id="btn_rating--save" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false">Lưu đánh giá</button>
+		                                                        </c:if>
 	                                                        </c:if>
 	                                                    </div>
 	                                                    
@@ -190,7 +212,44 @@
                 </div>
             <jsp:include page="footer.jsp"/>
     	</div>
-           
+        <div id="add-to-cart-popup" class="hidden">
+            <div class="add-to-cart-icon">
+                <i class="fa-regular fa-circle-check"></i>
+            </div>
+            <div class="add-to-cart-text">
+                <p>Bạn đã đánh giá sản phẩm thành công</p>
+            </div>
+        </div>
+        <script>
+            // Lấy phần tử thông báo pop-up
+			var popup = document.getElementById("add-to-cart-popup");
+			
+			// Hàm hiển thị thông báo pop-up
+			function showPopup() {
+			  // Hiển thị thông báo
+			  popup.classList.add("show");
+			
+			  // Sau 3 giây, ẩn thông báo
+			  setTimeout(function() {
+			    popup.classList.remove("show");
+			  }, 6000);
+			}
+			
+			// Xử lý sự kiện thêm sản phẩm vào giỏ hàng
+			var addToCartButton = document.getElementById("btn_rating--save");
+			if(addToCartButton!=undefined){
+				addToCartButton.addEventListener("click", function() {
+				  showPopup();
+				});
+			}
+			var addToCartButton = document.getElementById("btn_rating--add");
+			if(addToCartButton!=undefined){
+				addToCartButton.addEventListener("click", function() {
+				  showPopup();
+				});
+			}
+        </script> 
 	</div>
+	
 </body>
 </html>

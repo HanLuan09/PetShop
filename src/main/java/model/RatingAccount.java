@@ -1,14 +1,17 @@
 package model;
 
-public class RatingAccount extends RatingProduct {
+import java.sql.Date;
+
+public class RatingAccount extends RatingProduct implements Comparable<RatingAccount> {
 	private String imageA, username;
 
 	public RatingAccount() {
 		super();
 	}
-
-	public RatingAccount(int idA, int idP, int rating, String comment, String imageA, String username) {
-		super(idA, idP, rating, comment);
+	
+	public RatingAccount(int idA, int idP, int idO, int rating, String comment, Date dateRating, String imageA, String username) {
+		super(idA, idP, idO, rating, comment, dateRating);
+		// TODO Auto-generated constructor stub
 		this.imageA = imageA;
 		this.username = username;
 	}
@@ -28,5 +31,9 @@ public class RatingAccount extends RatingProduct {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+	@Override
+	public int compareTo(RatingAccount o) {
+		return o.getDateRating().compareTo(this.getDateRating());
+	}
+		
 }

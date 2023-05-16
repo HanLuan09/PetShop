@@ -1,6 +1,7 @@
 package controller.admin;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import dao.AdminDao;
@@ -18,16 +19,28 @@ public class ManagerControl extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
-        DAO dao = new DAO();
-        AdminDao adminDao = new AdminDao();
-        int count = dao.countProduct();
         
-        List<AdminProduct> list = adminDao.getAllProductCate();
-        request.setAttribute("count", count);
-        request.setAttribute("listAminP", list);
-        request.getRequestDispatcher("manager_product.jsp").forward(request, response);
-        //404 -> url
-        //500 -> jsp properties
+    	try {
+    		DAO dao = new DAO();
+    		AdminDao adminDao = new AdminDao();
+    		int count = dao.countProduct();
+    		
+    		List<AdminProduct> list = adminDao.getAllProductCate();
+    		Collections.sort(list);
+//        Collections.sort(list, new Comparator<String>() {
+//            @Override
+//            public int compare(String o1, String o2) {
+//                return o2.compareTo(o1);
+//            }
+//        });
+    		request.setAttribute("count", count);
+    		request.setAttribute("listAminP", list);
+    		request.getRequestDispatcher("manager_product.jsp").forward(request, response);
+    		//404 -> url
+    		//500 -> jsp properties
+		} catch (Exception e) {
+			request.getRequestDispatcher("error.jsp").forward(request, response);
+		}
     }
 
     @Override

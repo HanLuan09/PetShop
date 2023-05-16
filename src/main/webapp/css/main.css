@@ -1,3 +1,4 @@
+@charset "UTF-8";
 
 /* contaner */
 .container {
@@ -307,6 +308,9 @@
     color: #595959;
     font-size: 1.3rem;
     font-weight: 300;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 /*  */
 /* sale */

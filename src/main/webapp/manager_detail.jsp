@@ -9,6 +9,7 @@
     <title>PetShop</title>
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/gird.css">
+    <link rel="stylesheet" href="./css/order.css">
     <link rel="stylesheet" href="./css/manager_detail.css">
     <style>
         b{
@@ -31,6 +32,7 @@
 		}
 		
 		.auth-form__group.invalid .form-message {
+			display: block;
 		    color: #f33a58;
 		}
     </style>
@@ -39,13 +41,19 @@
 	<form id="form" action="${idProduct>0 ? "save" : "add"}" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="idP" id ="idBook" value = "${idProduct}">
     <div class="main">
-       <div class="container">
-            <div class="grid wide " style="padding: 0 50px;">
-                <div class="row header">
-                    <h2><a class="header_text" href=""><b>PetShop</b></a></h2>
+    	<div class="YqIqug">
+            <div class="contai">
+                <div class="jb8bh0">
+                    <a href="/petshop/manager" class="lJqn"> <spam class="logo">PetShop</spam> 
+                        <span class="eSRYBr">Thêm sản phẩm</span>
+                    </a>
                 </div>
-                
-                <div class="row container-wrap">
+            </div>
+        </div>
+       <div class="container">
+            <div class="grid wide"> 
+                <div class="row container-wrap" style="width: 95%; margin: 15px auto;">
+                	<div class="vtrWey"></div>
                     <div class="col l-6 content">
                         <div class="flex container-list">
                             <div class="auth-form__group">
@@ -72,12 +80,12 @@
                         <div class="flex container-list">
                             <div class="auth-form__group">
                                 <label class="container-label" for="">Giá</label>
-                                <input name="price" id="price" class="container-text form-control" type="number" value="${productId.price}">
+                                <input name="price" id="price" class="container-text form-control" type="text" value="${productId.price}">
                                 <span class="form-message"></span>
                             </div>
                             <div class="auth-form__group">
                                 <label class="container-label" for="">Giảm giá</label>
-                                <input id="discount" name="discount" class="container-text form-control" type="number" value="${productId.discount}">
+                                <input id="discount" name="discount" class="container-text form-control" type="text" value="${productId.discount}">
                                 <span class="form-message"></span>
                             </div>  
                         </div>
@@ -85,7 +93,7 @@
                         <div class="flex container-list">
                             <div class="auth-form__group">
                                 <label class="container-label" for="">Số lượng</label>
-                                <input id ="amount" name="amount" class="container-text form-control" type="number" value="${productId.amount}">
+                                <input id ="amount" name="amount" class="container-text form-control" type="text" value="${productId.amount}">
                                 <span class="form-message"></span>
                             </div>  
                             <div>
@@ -107,8 +115,8 @@
                                   </label>
                                   <input name="image" type="file" id="file-input" accept=".jpg,.jpeg,.png" style="display:none;" value="${productId.imageP}">
                                   <span class="form-message"></span>
-                                
                             </div>
+                            <span style="display: flex; justify-content: center; margin-top: 5px; color: #EE4D20;" class ="form-message--file"></span>
                             <div class="container-img">
                                 <img id="preview-image" src="upload/${productId.imageP}" alt="" style=" max-width: 100%; max-height: 100%; background-size: contain; background-repeat: no-repeat;">
                             </div>
@@ -141,6 +149,7 @@
             	<button class="btn btn--primary2" id="btn_edit">Edit</button>
             </div>
             <script type="text/javascript">
+            
             	const idCheck = document.getElementById("idBook");
             	const add = document.getElementById("btn_add");
             	const save = document.getElementById("btn_save");
@@ -180,13 +189,14 @@
                   		});
             		});
             	}
+            	
+                
             </script>
         </footer>
     </div>
 	</form>
-	<script src="./javascript/validate.js">
-	
-	</script>
+	<script src="./javascript/main.js"></script>
+	<script src="./javascript/validate.js"></script>
 	<script>
         // mong muốn 
         //pc
@@ -208,6 +218,36 @@
                 
             ]
             
+        });
+      	var previewTestImage = document.getElementById("preview-image");
+        var btnSave = document.getElementById("btn_add");
+        console.log(btnSave)
+		previewImage.addEventListener("load", function() {
+			document.querySelector(".form-message--file").innerText = ''
+        	//btnSave.disabled = false; // Bỏ disable nút "Save" để cho phép submit
+    	});
+	    btnSave.addEventListener("click", function(event) {
+	        if (!previewTestImage.complete || previewTestImage.naturalWidth === 0) {
+	        	document.querySelector(".form-message--file").innerText = 'Vui lòng chọn ảnh'
+	            event.preventDefault(); // Ngăn chặn sự kiện submit nếu hình ảnh chưa được hiển thị
+	        }else{
+	        	document.querySelector(".form-message--file").innerText = ''
+	        }
+	    });
+        productSalary({
+        	quainput: "#price", 
+        	quantity: "0",
+        	quamax: "100000000"
+        });
+        productSalary({
+        	quainput: "#discount", 
+        	quantity: "0",
+        	quamax: "100"
+        });
+        productSalary({
+        	quainput: "#amount", 
+        	quantity: "0",
+        	quamax: "1000000"
         });
         
     </script>

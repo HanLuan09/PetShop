@@ -9,11 +9,12 @@ public class UserProductDetail {
 	private int price;
 	private String imageP;
 	private long sumPrice;
+	private int status;
 	public UserProductDetail() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public UserProductDetail(int idP, String nameP, String origin, int idO, int amount, int price, String imageP) {
+	public UserProductDetail(int idP, String nameP, String origin, int idO, int amount, int price, String imageP, int status) {
 		super();
 		this.idP = idP;
 		this.nameP = nameP;
@@ -23,6 +24,7 @@ public class UserProductDetail {
 		this.price = price;
 		this.sumPrice = this.price*this.amount;
 		this.imageP = imageP;
+		this.status = status;
 	}
 	public int getIdP() {
 		return idP;
@@ -58,6 +60,12 @@ public class UserProductDetail {
 	}
 	public void setImageP(String imageP) {
 		this.imageP = imageP;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

@@ -34,10 +34,9 @@ public class OrderDetailControl extends HttpServlet {
     		RatingDao daoRating = new RatingDao();
     		UserProductDAO daoUser = new UserProductDAO();
     		UserProductDetail uDetail = daoUser.getProductUserDetail(idP, idO);
-    		RatingProduct rProduct = daoRating.getRatingProduct(idP, idA);
+    		RatingProduct rProduct = daoRating.getRatingProduct(idP, idA, idO);
     		request.setAttribute("uDetail", uDetail);
     		request.setAttribute("rProduct", rProduct);
-    		request.setAttribute("ido", idO);
     		request.getRequestDispatcher("user_product_details.jsp").forward(request, response);
     	}
     	

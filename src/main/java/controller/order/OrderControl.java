@@ -74,7 +74,7 @@ public class OrderControl extends HttpServlet {
 	    		request.setAttribute("address", aRess);
 	    		request.getRequestDispatcher("order.jsp").forward(request, response);
     		} catch (Exception e) {
-				// TODO: handle exception
+    			request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
 	
     	}

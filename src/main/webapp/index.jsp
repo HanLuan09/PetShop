@@ -134,7 +134,7 @@
 								  const productContainer2 = productContainer1.querySelector('.row-nowrap');
 								  const productContainers = productContainer2.querySelectorAll('.col');
 								  let currentPosition = 0; // Xác định vị trí của khung danh mục sản phẩm hiện tại
-								
+								  console.log(productContainers.length)
 								  // Lấy các nút chuyển đổi
 								  const leftButton = document.getElementById('btnLeft-dog');
 								  const rightButton = document.getElementById('btnRight-dog');
@@ -143,31 +143,37 @@
 								  productContainers.forEach(container => {
 								    container.style.transition = 'transform 0.3s ease';
 								  });
-								
+								  
 								  // Xử lý sự kiện click của nút chuyển đến trái
 								  leftButton.addEventListener('click', () => {
-								    if (currentPosition > 0) {
-								      currentPosition--;
+								    if (currentPosition > 3) {
+								      currentPosition = currentPosition - 4;
 								      updateContainerTransform();
 								      rightButton.style.display = 'flex';
 								      if (currentPosition === 0) {
-								        leftButton.style.display = 'none';
+								    	  
+								        	leftButton.style.display = 'none';
 								      }
 								    }
+								    //console.log(currentPosition)
 								  });
-								
+									
 								  // Xử lý sự kiện click của nút chuyển đến phải
 								  rightButton.addEventListener('click', () => {
-								    if (currentPosition < productContainers.length - 1) {
-								      currentPosition++;
-								      updateContainerTransform();
-								      leftButton.style.display = 'flex';
-								      if (currentPosition === productContainers.length - 5) {
-								        rightButton.style.display = 'none';
-								      }
-								    }
+									var test = productContainers.length % 4;
+									if (currentPosition < productContainers.length - 4) {
+									      currentPosition = currentPosition + 4;
+									      updateContainerTransform();
+									      leftButton.style.display = 'flex';
+									      if (currentPosition >= productContainers.length - 4) {
+									        	rightButton.style.display = 'none';
+									      }
+									      
+									    }
+								    
+								    
 								  });
-								
+								 
 								  // Ẩn nút chuyển đến trái khi hiển thị khung đầu tiên
 								  if (currentPosition === 0) {
 								    leftButton.style.display = 'none';

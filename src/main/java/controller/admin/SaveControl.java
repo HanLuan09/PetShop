@@ -12,7 +12,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import model.Account;
 import model.Product;
 
 @MultipartConfig
@@ -29,6 +31,11 @@ public class SaveControl extends HttpServlet {
             throws ServletException, IOException {
     	response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
+    	HttpSession session = request.getSession();
+    	Account a = (Account) session.getAttribute("account");
+    	if(a==null) {
+    		response.sendRedirect("login");
+    	}
     	DAO dao = new DAO();
     	String id= request.getParameter("idP");
         String name = request.getParameter("nameP");
@@ -56,9 +63,7 @@ public class SaveControl extends HttpServlet {
     				p.setImageP(fileName);
     				
         		} catch (Exception e) {
-        			
-        			PrintWriter out = response.getWriter();
-        			out.println("Luan"+" null");
+        			request.getRequestDispatcher("error.jsp").forward(request, response);
         		}
         	}
         	// set lại product
@@ -79,7 +84,7 @@ public class SaveControl extends HttpServlet {
             		response.sendRedirect("edit?pid=" + id);
             	}
 			} catch (Exception e) {
-				// TODO: handle exception
+				request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
         	
         }

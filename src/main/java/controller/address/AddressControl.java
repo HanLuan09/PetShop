@@ -42,19 +42,11 @@ public class AddressControl extends HttpServlet {
 	    		request.setAttribute("address", aRess);
 	    		request.getRequestDispatcher("address.jsp").forward(request, response);
     		} catch (Exception e) {
-				// TODO: handle exception
+    			request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
 	
     	}
     	
     }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    	response.setContentType("text/html;charset=UTF-8");
-    	
-        
-    }  
 
 }

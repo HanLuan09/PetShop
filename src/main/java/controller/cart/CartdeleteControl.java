@@ -22,18 +22,23 @@ public class CartdeleteControl extends HttpServlet{
     	if(account==null) {
     		response.sendRedirect("login");
     	}else {
-    		int idP = Integer.parseInt(request.getParameter("idp"));
-    		int idA = Integer.parseInt(request.getParameter("ida"));
-    		int idcheck = Integer.parseInt(request.getParameter("idcheck"));
-    		CartSevice cartSevice = new CartSevice();
-    		cartSevice.removeCartItemFromCookies(idP, idA, response, request);
+    		try {
+    			int idP = Integer.parseInt(request.getParameter("idp"));
+    			int idA = Integer.parseInt(request.getParameter("ida"));
+    			int idcheck = Integer.parseInt(request.getParameter("idcheck"));
+    			CartSevice cartSevice = new CartSevice();
+    			cartSevice.removeCartItemFromCookies(idP, idA, response, request);
 //    		request.getRequestDispatcher("card-get").forward(request, response);
-    		if(idcheck == 1) {
-    			response.sendRedirect("cart-get");
-    		}
-    		else {
-    			response.sendRedirect("home");
-    		}
+    			if(idcheck == 1) {
+    				response.sendRedirect("cart-get");
+    			}
+    			else {
+    				response.sendRedirect("home");
+    			}
+				
+			} catch (Exception e) {
+				request.getRequestDispatcher("error.jsp").forward(request, response);
+			}
     	}
     } 
 }

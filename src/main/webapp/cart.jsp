@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./css/product_details.css">
     <link rel="stylesheet" href="./css/gird.css">
     <link rel="stylesheet" href="./css/responsive.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body style="background-color: #f5f5f5;">
     <div class="main" style="background-color: #F5F5F5">
@@ -28,14 +29,14 @@
                         <div class="container_cart BjIo5w">
                             <div class="container_cart-wrap">
                                 <div class="row sm-gutter" style="line-height: 40px;">
-                                    <div class="col l-1 m-1 c-1" style="display: flex; margin: auto;">
+                                    <!--  <div class="col l-1 m-1 c-1" style="display: flex; margin: auto;">
                                         <label for="" class="stardust-checkbox">
                                             <input type="checkbox" class="stardust-checkbox__input">
                                             <div class="stardust-checkbox__box"></div>
                                         </label>  
-                                    </div>
+                                    </div>-->
                                     <div class="container__navi-cart-item col l-2 m-3 c-3"> <span>Sản phẩm</span></div>
-                                    <div class="col l-4 m-9 c-9"></div>
+                                    <div class="col l-5 m-9 c-9"></div>
                                     <div class="container_cart-list col l-2">
                                         <div class="container__navi-cart-item">Số lượng</div>
                                     </div>
@@ -59,35 +60,29 @@
                             <div class="container_cart BjIo5w">
                                 <div class="container_cart-wrap">
                                     <div class="row sm-gutter">
-                                        <div class="col l-1 m-1 c-1" style="display: flex;">
+                                       <!--   <div class="col l-1 m-1 c-1" style="display: flex;">
                                             <label for="" class="stardust-checkbox">
                                                 <input type="checkbox" class="stardust-checkbox__input">
                                                 <div class="stardust-checkbox__box"></div>
                                             </label> 
-                                        </div>
+                                        </div>-->
                                         <div class="col l-2 m-3 c-3">
                                       
-                                            <img class="container_cart-img" src="upload/${o.product.imageP}" alt="">
+                                            <img class="container_cart-img" src="upload/${o.cartItem.product.imageP}" alt="">
                                         </div>
-                                        <div class="col l-4 m-8 c-8">
+                                        <div class="col l-5 m-8 c-8" style="display: flex; align-items: center;">
                                             <div class="container_cart-text">
-                                                <h4 class="container_cart-text-name">${o.product.nameP}</h4>
-                                                <div style="margin-top: 8px;">
-                                                    <div class="container_cart-text-item">Kích Thước: <span>M</span></div>
-                                                    <div class="container_cart-text-item">Màu Sắc: <span>M</span></div>
-                                                    <div class="container_cart-text-item">Đơn Giá: <span>M</span></div>
-                                                </div>
+                                                <h4 class="container_cart-text-name">${o.cartItem.product.nameP}</h4>
                                             </div>
                                             <div class="row">
                                                 <div class="col l-0 m-5 c-0">
                                                     <div class="" style="padding-top: 10px;">
                                                         <div class="container_cart-item">
-                                                            <button class="container_cart-item-btn">
+                                                            <button class="container__right-purchase-input-btn" id="container__left" onclick="location.href ='cart-save?idp='+${o.cartItem.product.idP}+'&quantity='+${o.cartItem.quantity-1};">
                                                                 <i class="fa-solid fa-minus"></i>
-                                                            </button>
-                                                            
-                                                            <input type="text" class="container_cart-item-input" value="${o.quantity}" role="spinbutton" aria-valuenow="1">
-                                                            <button class="container_cart-item-btn">
+                                                            </button>                                                         
+                                                            <input type="text" id="quantity-input" class="container__right-purchase-input-text" value="${o.cartItem.quantity}" role="spinbutton" aria-valuenow="1" readonly>
+                                                            <button class="container__right-purchase-input-btn" id="container__right" onclick="location.href ='cart-save?idp='+${o.cartItem.product.idP}+'&quantity='+${o.cartItem.quantity+1};">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
                                                         </div>
@@ -95,12 +90,12 @@
                                                 </div>
                                                 <div class="col l-0 m-6 c-0">
                                                     <div class="container_cart-list">
-                                                        <span class="container_cart-list-pay">${o.product.priceNew} đ</span>
+                                                        <span class="container_cart-list-pay">${o.cartItem.product.priceNew} đ</span>
                                                     </div>
                                                 </div>
                                                 <div class="col l-0 m-1 c-0">
                                                     <div class="container_cart-list">
-                                                        <a class="container_cart-list-delete" href="/petshop/cart-delete?idp=${o.product.idP}&ida=${o.idA}&idcheck=1"><i class="fas fa-trash fa-lg"></i></a>
+                                                        <a class="container_cart-list-delete" href="/petshop/cart-delete?idp=${o.cartItem.product.idP}&ida=${o.cartItem.idA}&idcheck=1"><i class="fas fa-trash fa-lg"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,27 +105,52 @@
                                                 <div style="display: flex; flex-direction: row; align-items: center;">
                                                     <div style="margin-right: 15px;">
                                                         <div class="container__right-purchase-input" style="display: flex; flex-direction: row;">
-                                                            <button class="container__right-purchase-input-btn" id="container__left" onclick="location.href ='cart-save?idp='+${o.product.idP}+'&quantity='+${o.quantity-1};">
+                                                            <button class="container__right-purchase-input-btn" id="container__left" onclick="location.href ='cart-save?idp='+${o.cartItem.product.idP}+'&quantity='+${o.cartItem.quantity-1};">
                                                                 <i class="fa-solid fa-minus"></i>
-                                                            </button>                                                         
-                                                            <input type="text" id="quantity-input" class="container__right-purchase-input-text" value="${o.quantity}" role="spinbutton" aria-valuenow="1" readonly>
-                                                            <button class="container__right-purchase-input-btn" id="container__right" onclick="location.href ='cart-save?idp='+${o.product.idP}+'&quantity='+${o.quantity+1};">
+                                                            </button>  
+                                                            <input id="input-max" type="hidden" value="${o.remaining}">                                                       
+                                                            <input type="text" id="quantity-input" class="container__right-purchase-input-text" value="${o.cartItem.quantity}" role="spinbutton" aria-valuenow="1" readonly>
+                                                            <button class="container__right-purchase-input-btn" id="container__right" onclick="location.href ='cart-save?idp='+${o.cartItem.product.idP}+'&quantity='+${o.cartItem.quantity+1};">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
+                                                    <script type="text/javascript">
+													    const inputMax = parseInt(document.querySelector('#input-max').value);
+													    const quantityInput = document.querySelector('#quantity-input');
+													    const btnLeft = document.querySelector('#container__left');
+													    const btnRight = document.querySelector('#container__right');
+													
+													    btnLeft.addEventListener('click', function(e) {
+													        const currentQuantity = parseInt(quantityInput.value);
+													        if (currentQuantity > 1) {
+													            quantityInput.value = currentQuantity - 1;
+													        }else{
+													        	e.preventDefault();
+													        }
+													    });
+													
+													    btnRight.addEventListener('click', function(e) {
+													        const currentQuantity = parseInt(quantityInput.value);
+													        if (currentQuantity < inputMax) {
+													            quantityInput.value = currentQuantity + 1;
+													        }else{
+													        	e.preventDefault();
+													        }
+													    });
+													</script>
                                                     
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col l-2 m-0 c-5">
                                             <div class="container_cart-list">
-                                                <span class="container_cart-list-pay">${o.product.priceNew} đ</span>
+                                                <span class="container_cart-list-pay">${o.cartItem.product.priceNew} đ</span>
                                             </div>
                                         </div>
                                         <div class="col l-1 m-0 c-1">
                                             <div class="container_cart-list">
-                                                <a class="container_cart-list-delete" href="/petshop/cart-delete?idp=${o.product.idP}&ida=${o.idA}&idcheck=1"><i class="fas fa-trash fa-lg"></i></a>
+                                                <a class="container_cart-list-delete" href="/petshop/cart-delete?idp=${o.cartItem.product.idP}&ida=${o.cartItem.idA}&idcheck=1"><i class="fas fa-trash fa-lg"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -149,14 +169,9 @@
                         <div class="container_cart BjIo5w">
                             <div class="container_cart-wrap">
                                 <div class="row sm-gutter" style="line-height: 40px;">
-                                    <div class="col l-1 m-1 c-1" style="display: flex; margin: auto;">
-                                        <label for="" class="stardust-checkbox">
-                                            <input type="checkbox" class="stardust-checkbox__input">
-                                            <div class="stardust-checkbox__box"></div>
-                                        </label>  
-                                    </div>
-                                    <div class="col l-4 m-0 c-0">
-                                        <div class="container__header-total">Chọn tất cả (<span>${countP}</span>)</div>
+                                    
+                                    <div class="col l-5 m-0 c-0">
+                                        <div class="container__header-total">Có tất cả (<span>${countP}</span>)</div>
                                     </div>
                                     <div class="col l-5 m-8 c-7">
                                         <div class="container__header-total">Thanh toán: <span style="color: #FF0000">${sumPrice} đ</span></div>

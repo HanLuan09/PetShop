@@ -12,7 +12,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import model.Account;
 import model.Product;
 
 @MultipartConfig
@@ -24,6 +26,11 @@ public class AddControl extends HttpServlet {
             throws ServletException, IOException {
     	response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
+    	HttpSession session = request.getSession();
+    	Account a = (Account) session.getAttribute("account");
+    	if(a==null) {
+    		response.sendRedirect("login");
+    	}
     	DAO dao = new DAO();
     	Product checkP = dao.checkNameProduct(request.getParameter("nameP"), 0);
     	if(checkP == null) {
@@ -54,12 +61,10 @@ public class AddControl extends HttpServlet {
             			response.sendRedirect("edit?pid=-1");
             		}
 				} catch (Exception e) {
-					PrintWriter out = response.getWriter();
-					out.println("add"+" null");
+					request.getRequestDispatcher("error.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
-				PrintWriter out = response.getWriter();
-				out.println("Luan"+" null");
+				request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
     		
     	}

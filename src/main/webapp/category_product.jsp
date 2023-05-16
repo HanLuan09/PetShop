@@ -115,18 +115,18 @@
                         <div class="col l-10 m-12 c-12">
                         	<div class="category-sort hide-on-mobile-tablet">
                                 <span class="category-sort-span">Sắp xếp theo</span>
-                                <button class="btn m-left" onclick="location.href='sort-popular';">Phổ biến</button>
-                                <button class="btn m-left" style="background-color:  #ea7221;" onclick="location.href='sort-latest';">Mới nhất</button>
-                                <button class="btn btn--primary m-left" onclick="location.href='sort-sell';">Bán chạy</button>
+                                <button class="btn m-left" onclick="location.href='sort-product?sort=1';">Phổ biến</button>
+                                <button class="btn m-left" style="background-color:  #ea7221;" onclick="location.href='sort-product?sort=2';">Mới nhất</button>
+                                <button class="btn btn--primary m-left" onclick="location.href='sort-product?sort=3';">Bán chạy</button>
                                 <div class="select-input m-left">
                                     <span class="select-input_lable">Giá</span>
                                     <i class="fas fa-angle-down"></i>
                                     <ul class="select-input_lable-list">
                                         <li class="select-input_lable-item">
-                                            <a href="sort-low">Giá: Từ thấp đến cao</a>    
+                                            <a href="sort-product?sort=4">Giá: Từ thấp đến cao</a>    
                                         </li>
                                         <li class="select-input_lable-item">    
-                                            <a href="sort-high">Giá: Từ cao đến thấp</a>
+                                            <a href="sort-product?sort=5">Giá: Từ cao đến thấp</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -164,9 +164,9 @@
 		                                                        <i class="fa-solid fa-star"></i>
 		                                                    </div>
 		                                                </div>
-	                                                	<div class="product-rating-value home-product-item__rating" style="color: #999;">(${o.countRating})</div>
+	                                                	<div class="product-rating-value home-product-item__rating" style="color: #999;">(${o.sLgRating})</div>
 		                                                <span class="home-product-item__rating-separate"></span>
-		                                                <span class="home-product-item__action-sold">Đã bán ${o.sumPrice}</span>
+		                                                <span class="home-product-item__action-sold">Đã bán ${o.sLgSold}</span>
 		                                            </div>
 		                                            <div class="home-product-item__origin">
 		                                                <span class="home-product-item__origin-title">${o.origin}</span>

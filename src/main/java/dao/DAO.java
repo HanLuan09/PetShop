@@ -12,7 +12,7 @@ public class DAO {
 //    Lấy tất cả sản phẩm
     public List<Product> getAllProduct() {
         List<Product> list = new ArrayList<Product>();
-        String query = "select * from Product";
+        String query = "select * from Product WHERE [status] = 1";
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -40,7 +40,7 @@ public class DAO {
 //  Lấy tất cả chó mèo cưng
 	  public List<Product> getAllProductDogCat() {
 	      List<Product> list = new ArrayList<Product>();
-	      String query = "select * from Product where CateID=1 or CateID=2";
+	      String query = "select * from Product WHERE [status] = 1 and (CateID=1 or CateID=2)";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
@@ -68,12 +68,21 @@ public class DAO {
 //	    Lấy tất cả sản phẩm còn lại 
 	    public List<ProductDetails> getAllProductRemaining() {
 	        List<ProductDetails> list = new ArrayList<ProductDetails>();
-	        String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+	        String query = "SELECT p.IdP ,\r\n"
+	        		+ "	p.NameP ,\r\n"
+	        		+ "	p.ImageP ,\r\n"
+	        		+ "	p.Describe ,\r\n"
+	        		+ "	p.Origin , \r\n"
+	        		+ "	p.Amount,\r\n"
+	        		+ "	p.Discount,\r\n"
+	        		+ "	p.Price,\r\n"
+	        		+ "	p.CateID,"
+	        		+ "SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
 	        		+ "FROM Product p\r\n"
 	        		+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
 	        		+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
-	        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
-	        		+ "where CateID > 2\r\n"
+	        		+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA and pr.idO =od.IdO\r\n"
+	        		+ "WHERE p.[status] = 1\r\n"
 	        		+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount,  p.Price, p.Amount, p.cateId";
 	        try {
 	            conn = new DbContext().getConnection();//mo ket noi voi sql
@@ -144,7 +153,7 @@ public class DAO {
 //    end lấy tất cả danh mục
 //    Lấy 1 sản phẩm
     public Product getProductById(String id) {
-    	String query = "SELECT * FROM Product where idp = ?";
+    	String query = "SELECT * FROM Product where [status] = 1 and idp = ?";
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -169,12 +178,21 @@ public class DAO {
         return null;
     }
     public ProductDetails getProductDetailById(String id) {
-    	String query = "SELECT p.*, SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
+    	String query = "SELECT p.IdP,\r\n"
+    			+ "	p.NameP ,\r\n"
+    			+ "	p.ImageP ,\r\n"
+    			+ "	p.Describe ,\r\n"
+    			+ "	p.Origin , \r\n"
+    			+ "	p.Amount,\r\n"
+    			+ "	p.Discount,\r\n"
+    			+ "	p.Price,\r\n"
+    			+ "	p.CateID, "
+    			+ "SUM(od.Amount) AS TotalSold, CAST(AVG(rating * 1.0) AS DECIMAL(10, 1)) AS AverageRating, COUNT(pr.rating) AS TotalRating\r\n"
     			+ "FROM Product p\r\n"
     			+ "LEFT JOIN OrderDetails od ON p.IdP = od.IdP\r\n"
     			+ "LEFT JOIN [Order] o ON o.IdO = od.IdO\r\n"
-    			+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA\r\n"
-    			+ "where p.idp = ?\r\n"
+    			+ "LEFT JOIN ProductRating pr ON pr.IdP = p.IdP AND pr.IdA = o.IdA and pr.idO =od.IdO\r\n"
+    			+ "WHERE p.[status] = 1 and p.idp = ?\r\n"
     			+ "GROUP BY p.NameP, p.ImageP, p.IdP, p.Origin, p.Describe , p.Discount, p.Price, p.Amount, p.cateId";
     	
         try {
@@ -208,8 +226,8 @@ public class DAO {
 //    thêm mới
     public int addProduct(Product p) {
     	int result = 0;
-    	String query = "INSERT INTO DBO.Product([NameP], [ImageP], [Describe], [Origin], [Amount], [Discount], [Price], [CateID]) \r\n"
-    			+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+    	String query = "INSERT INTO DBO.Product([NameP], [ImageP], [Describe], [Origin], [Amount], [Discount], [Price], [CateID], [status]) \r\n"
+    			+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, 1)";
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -313,9 +331,23 @@ public class DAO {
 	      } catch (Exception e) {
 	      }
     }
-//  xóa sản phẩm
+    public void removeProduct(String id) {
+    	String query = "UPDATE dbo.Product SET [status] = 0 WHERE IdP =?";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setString(1, id);
+	          ps.executeUpdate();
+	          
+	          conn.close();
+	          ps.close();
+	          rs.close();
+	          
+	      } catch (Exception e) {
+	      }
+    }
 	  public int countProduct() {
-	  	String query = "select count(idp) from Product";
+	  	String query = "select count(idp) from Product WHERE [status] = 1";
 		      try {
 		          conn = new DbContext().getConnection();//mo ket noi voi sql
 		          ps = conn.prepareStatement(query);
@@ -363,7 +395,7 @@ public class DAO {
     	String query = "SELECT P.Amount - COALESCE(SUM(OD.Amount), 0) AS Remaining\r\n"
     			+ "FROM Product AS P\r\n"
     			+ "LEFT JOIN OrderDetails AS OD ON P.IdP = OD.IdP\r\n"
-    			+ "WHERE P.IdP = ?\r\n"
+    			+ "WHERE P.[status] = 1 and P.IdP = ?\r\n"
     			+ "GROUP BY P.Amount;";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
@@ -386,9 +418,9 @@ public class DAO {
         DAO dao = new DAO();
         
         List<ProductDetails> listp = dao.getAllProductRemaining();
-        Product pr = dao.getProductById("3");
-        
-        System.out.println(dao.remainingProducts(6));
+        for(ProductDetails o : listp) {
+        	System.out.println(o);
+        }
         
     }
 }

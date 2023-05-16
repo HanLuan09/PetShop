@@ -1,6 +1,7 @@
 package controller.order;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,14 +36,16 @@ public class OrderPayControl extends HttpServlet {
     		try {
     			AccountDao daoA = new AccountDao();
     			CartSevice cartSevice = new CartSevice();
-    			List<CartItem> listCartItems = cartSevice.getCartItemsFromCookiesAccount(idA, request);
-    			List<CartItem> listCItemsNot = cartSevice.getCartItemsFromCookiesNotAccount(idA, request);
     			LocalDate localDate = LocalDate.now();
 		        Date date = java.sql.Date.valueOf(localDate);
-		        synchronized (daoA) {
+		        synchronized (this) {
 		            try {
 		                // Thêm đơn hàng mới vào database
-		                daoA.addOrder(date, idA);
+		                int idO = daoA.addOrder(date, idA);
+		                if(idO == 0) {
+		                	request.getRequestDispatcher("error.jsp").forward(request, response);
+		                	return;
+		                }
 		                //mua ngay 
 		                String pay_idp = (String)session.getAttribute("pay-idp");
 		                String pay_quantity = (String)session.getAttribute("pay-quantity");
@@ -51,25 +54,26 @@ public class OrderPayControl extends HttpServlet {
 								
 		                		DAO dao = new DAO();
 		                		Product product = dao.getProductById(pay_idp);
-		                		Order order = daoA.getOrderOneTop();
+		                		
 		                		OrderDetails orderDetails = new OrderDetails();
-		                		orderDetails.setIdO(order.getIdO());
+		                		orderDetails.setIdO(idO);
 		                		orderDetails.setIdP(product.getIdP());
 		                		orderDetails.setPrice(product.getPriceNew());
 		                		orderDetails.setAmount(Integer.parseInt(pay_quantity));
 		                		daoA.addOrderDetails(orderDetails);
 							} catch (Exception e) {
-							
+								request.getRequestDispatcher("error.jsp").forward(request, response);
 							}
 		                	
 		                }else {
+		                	List<CartItem> listCartItems = cartSevice.getCartItemsFromCookiesAccount(idA, request);
+		        			List<CartItem> listCItemsNot = cartSevice.getCartItemsFromCookiesNotAccount(idA, request);
 		                	// Lặp qua các mục trong giỏ hàng và thêm chi tiết đơn hàng tương ứng vào database
 		                	for(CartItem i: listCartItems) {
 		                		try {
-		                			// Lấy đơn hàng đầu tiên và thêm chi tiết đơn hàng
-		                			Order order = daoA.getOrderOneTop();
+		                			
 		                			OrderDetails orderDetails = new OrderDetails();
-		                			orderDetails.setIdO(order.getIdO());
+		                			orderDetails.setIdO(idO);
 		                			orderDetails.setIdP(i.getProduct().getIdP());
 		                			orderDetails.setPrice(i.getProduct().getPriceNew());
 		                			orderDetails.setAmount(i.getQuantity());
@@ -79,7 +83,7 @@ public class OrderPayControl extends HttpServlet {
 		                			cartSevice.removeCookies(response);
 		                			cartSevice.saveCartItemsToCookies(response, listCItemsNot);
 		                		} catch (Exception e) {
-		                			// Xử lý ngoại lệ nếu cần
+		                			request.getRequestDispatcher("error.jsp").forward(request, response);
 		                		}
 		                	}
 		                }
@@ -88,12 +92,12 @@ public class OrderPayControl extends HttpServlet {
 		                
 		                response.sendRedirect("home");
 		            } catch (Exception e) {
-		                // Xử lý ngoại lệ nếu cần
+		            	request.getRequestDispatcher("error.jsp").forward(request, response);
 		            }
 		        }
 		        
     		}catch (Exception e) {
-				
+    			request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
 		} 
  

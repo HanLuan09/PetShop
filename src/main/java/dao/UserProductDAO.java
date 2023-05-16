@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.DbContext;
+import model.AccountProduct;
 import model.UserProduct;
 import model.UserProductDetail;
 
@@ -17,11 +18,11 @@ public class UserProductDAO {
 //    
     public List<UserProduct> getProductUser(int idA) {
         List<UserProduct> list = new ArrayList<UserProduct>();
-        String query = "SELECT Product.IdP, [Order].idO, Product.NameP, [Order].CreatedDate, [OrderDetails].[Status]\r\n"
+        String query = "SELECT Product.IdP, [Order].idO, Product.NameP, Product.ImageP, [Order].CreatedDate, [OrderDetails].[Status], dbo.OrderDetails.Price, dbo.OrderDetails.Amount\r\n"
         		+ "FROM Product\r\n"
-        		+ "INNER JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
-        		+ "INNER JOIN [Order] ON OrderDetails.IdO = [Order].IdO\r\n"
-        		+ "WHERE [Order].IdA = ?";
+        		+ "JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
+        		+ "JOIN [Order] ON OrderDetails.IdO = [Order].IdO\r\n"
+        		+ "WHERE Product.[status] = 1 and [Order].IdA = ?";
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -31,8 +32,76 @@ public class UserProductDAO {
                 list.add(new UserProduct(rs.getInt(1),
                 		rs.getInt(2),
                         rs.getString(3),
-                        rs.getDate(4),
-                        rs.getInt(5)));
+                        rs.getString(4),
+                        rs.getDate(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8)));
+            }
+            conn.close();
+            ps.close();
+            rs.close();
+        } catch (Exception e) {
+        }
+        
+        return list;
+    }
+    public List<AccountProduct> getProductAdmin() {
+        List<AccountProduct> list = new ArrayList<>();
+        String query = "SELECT Product.IdP, [Order].idO, Product.NameP, Product.ImageP, [Order].CreatedDate, [OrderDetails].[Status], dbo.OrderDetails.Price, dbo.OrderDetails.Amount, Account.IdA\r\n"
+        		+ "FROM Product\r\n"
+        		+ "JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
+        		+ "JOIN [Order] ON OrderDetails.IdO = [Order].IdO\r\n"
+        		+ "JOIN dbo.Account ON Account.IdA = [Order].IdA\r\n"
+        		+ "WHERE Product.[status] = 1 and OrderDetails.Status = 0 \r\n"
+        		+ "ORDER BY Account.IdA";
+        try {
+            conn = new DbContext().getConnection();//mo ket noi voi sql
+            ps = conn.prepareStatement(query);
+            //ps.setInt(1, idA);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new AccountProduct(rs.getInt(1),
+                		rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getDate(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8),
+                        rs.getInt(9)));
+            }
+            conn.close();
+            ps.close();
+            rs.close();
+        } catch (Exception e) {
+        }
+        
+        return list;
+    }
+    public List<AccountProduct> getProductAdminOrderDetail(String idO) {
+        List<AccountProduct> list = new ArrayList<>();
+        String query = "SELECT Product.IdP, [Order].idO, Product.NameP, Product.ImageP, [Order].CreatedDate, [OrderDetails].[Status], dbo.OrderDetails.Price, dbo.OrderDetails.Amount, Account.IdA\r\n"
+        		+ "FROM Product\r\n"
+        		+ "JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
+        		+ "JOIN [Order] ON OrderDetails.IdO = [Order].IdO and OrderDetails.Status =0\r\n"
+        		+ "JOIN dbo.Account ON Account.IdA = [Order].IdA\r\n"
+        		+ "WHERE Product.[status] = 1 and [Order].idO = ? \r\n";
+        try {
+            conn = new DbContext().getConnection();//mo ket noi voi sql
+            ps = conn.prepareStatement(query);
+            ps.setString(1, idO);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new AccountProduct(rs.getInt(1),
+                		rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getDate(5),
+                        rs.getInt(6),
+                        rs.getInt(7),
+                        rs.getInt(8),
+                        rs.getInt(9)));
             }
             conn.close();
             ps.close();
@@ -44,10 +113,10 @@ public class UserProductDAO {
     }
     public UserProductDetail getProductUserDetail(int idP, int idO) {
        
-        String query = "SELECT Product.idp, Product.NameP, Product.Origin, OrderDetails.IdO, OrderDetails.Amount, OrderDetails.Price, Product.imageP\r\n"
+        String query = "SELECT Product.idp, Product.NameP, Product.Origin, OrderDetails.IdO, OrderDetails.Amount, OrderDetails.Price, Product.imageP, [OrderDetails].[Status]\r\n"
         		+ "FROM Product\r\n"
         		+ "INNER JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
-        		+ "WHERE OrderDetails.IdO = ? and OrderDetails.IdP = ?";
+        		+ "WHERE Product.[status] = 1 and OrderDetails.IdO = ? and OrderDetails.IdP = ?";
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -61,7 +130,8 @@ public class UserProductDAO {
                         rs.getInt(4),
                         rs.getInt(5),
                         rs.getInt(6),
-                        rs.getString(7));
+                        rs.getString(7),
+                        rs.getInt(8));
             }
             conn.close();
             ps.close();

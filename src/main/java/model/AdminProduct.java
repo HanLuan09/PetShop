@@ -1,27 +1,29 @@
 package model;
 
-public class AdminProduct {
+public class AdminProduct implements Comparable<AdminProduct> {
 	private int idP;
 	private String nameP;
 	private String cate;
 	private int amount;
 	private int price;
+	private int discount;
 	private int sumPrice;
 	
 	public AdminProduct() {
 		
 	}
 
-	public AdminProduct(int idP, String nameP, String cate, int amount, int price, int sumPrice) {
-		
+	public AdminProduct(int idP, String nameP, String cate, int amount, int price, int discount, int sumPrice) {
+		super();
 		this.idP = idP;
 		this.nameP = nameP;
 		this.cate = cate;
 		this.amount = amount;
 		this.price = price;
+		this.discount = discount;
 		this.sumPrice = sumPrice;
 	}
-
+	
 	public int getIdP() {
 		return idP;
 	}
@@ -69,7 +71,19 @@ public class AdminProduct {
 	public void setSumPrice(int sumPrice) {
 		this.sumPrice = sumPrice;
 	}
+	
+	public int getDiscount() {
+		return discount;
+	}
 
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
+	@Override
+	public int compareTo(AdminProduct o) {
+		return o.idP -this.idP;
+	}
 	@Override
 	public String toString() {
 		return "AdminProduct [idP=" + idP + ", nameP=" + nameP + ", cate=" + cate + ", amount=" + amount + ", price="

@@ -13,9 +13,27 @@
     <link rel="stylesheet" href="./css/cart.css">
     <link rel="stylesheet" href="./css/gird.css">
     <link rel="stylesheet" href="./css/user_product.css">
+    <link rel="stylesheet" href="./css/order.css">
     <link rel="stylesheet" href="./css/responsive.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style type="text/css">
+    	.order-text-name {
+		    /* display: flex; */
+		    /* white-space: nowrap; */
+		    /* overflow: hidden; */
+		    text-overflow: ellipsis;
+		    overflow: hidden;
+		    display: block;
+		    /*display: -webkit-box;*/
+		    -webkit-box-orient: vertical;
+		    -webkit-line-clamp: 2;
+		}
+		.none{
+			display: none;
+		}
+    </style>
 </head>
-<body>
+<body style="background: #f5f5f5">
     <div class="main">
         <jsp:include page="navi_cart.jsp"/>
         <div class="container">
@@ -34,7 +52,7 @@
                                 <div class="petShop-text-welcome">Welcome PetShop</div>
                             </div>
                         </div>
-                        <div class="stardust-dropdown">
+                       	<div class="stardust-dropdown">
                             <div id="container__menu-product" class="l1U02e active--right">
                                 <div class="bfikuD"><i class="fa-regular fa-clipboard"></i></div>
                                 <div class="DlL0zX"><spam class="adF7Xs">Sản phẩm của tôi</spam></div>
@@ -153,47 +171,88 @@
                         </div>
 						<!-- petshop -->
                         <div class="content-phetshop">
-                            <div class="container_cart BjIo5w">
+                        	<div class="container_cart BjIo5w">
                                 <div class="container_cart-wrap">
                                     <div class="row sm-gutter">
-                                        <div class="col l-2 m-3 c-3" style="display: flex; justify-content: center;"><span class="active">Tất Cả</span></div>
-                                        <div class="col l-2 m-3 c-3" style="display: flex; justify-content: center;"><span class="active">Đang Chờ</span></div>
+                                        <div style="display: flex; justify-content: center;"><span>Sản phẩm của tôi</span></div>
+                                        <!--  <div class="col l-2 m-3 c-3" style="display: flex; justify-content: center;"><span class="active">Đang Chờ</span></div>
                                         <div class="col l-2 m-3 c-3" style="display: flex; justify-content: center;"><span class="active">Hoàn Thành</span></div>
-                                        <div class="col l-2 m-3 c-3" style="display: flex; justify-content: center;"><span class="active">Đã Hủy</span></div>
+                                        <div class="col l-2 m-3 c-3" style="display: flex; justify-content: center;"><span class="active">Đã Hủy</span></div>-->
                                     </div>
                                 </div>
                             </div>
-                            <c:forEach items="${listUserProducts}" var="o">
-                            <div class="container_cart BjIo5w">
-                                <div class="container_cart-wrap">
-                                    <div class="row sm-gutter">
-                                    	
-                                        <div class="col l-4 m-12 c-12">
-                                            <div class="container_cart-text">
-                                                <h4 class="container_cart-text-name">${o.nameP}</h4>
-                                            </div>   
-                                        </div>
-                                        <div class="col l-3 m-12 c-12">
-                                            <div class="container_cart-list">
-                                            	Mã đơn hàng: <span style="font-size: 1.3rem; color: #ff0000; margin: 0 5px">PETSHOP0${o.idO}</span>
-                                            </div>
-                                        </div>
-                                        <div class="col l-3 m-12 c-12">
-                                            <div class="container_cart-list">
-                                                Ngày mua: <span style="font-size: 1.3rem; color: #ff0000; margin: 0 5px">${o.date}</span>
-                                            </div>
-                                        </div>
-                                        
-                                        
-                                        <div class="col l-2 m-12 c-12">
-                                            <div class="container_cart-list">
-                                                <button class="btn btn--primary" onclick="location.href='order-detail?idp=${o.idP}&ido=${o.idO}';">Chi tiết</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            </c:forEach>
+                        	<div class="">
+			                    <div class="">
+			                        <div class="l-12 m-12 c-12">
+			                        	
+			                            <div class="cPNXP" style="border-bottom: 1px solid rgba(0,0,0,.09);">
+			                                <div class="sVj2 row sm-gutter">
+			                                    <div class="col l-4">Sản phẩm</div>
+			                                    <div class="col l-1 content__order">Số lượng</div>
+			                                    <div class="col l-2 content__order">Đơn giá</div>
+			                                    <div class="col l-1 content__order">Ngày mua</div>
+			                                    <div class="col l-2 content__order">Trạng thái</div>
+			                                    <div class="col l-2 content__order">Chi tiết</div>    
+			                                </div>
+			                            </div>
+			                            <c:forEach items="${mapProducts}" var="entry">
+			                            <div class="sqxwIi">
+			                            
+			                                <div class="cPNXP" style="padding-bottom: 15px;">
+			                                    <div class="sVj2 row sm-gutter">
+			                                        <div class="col l-12 m-12 c-12">Mã đơn đặt hàng: PETSHOP0${entry.key}</div>			                                       
+			                                    </div>
+			                                </div>
+			                                <c:forEach items="${entry.value}" var="o">
+			                                <div class="container_cart BjIo5w" style="border: 0; border-top: 1px dashed rgba(0,0,0,.09); background: #fffefb; margin-bottom: 0;">
+			                                    <div class="container_cart-wrap">
+			                                        <div class="row sm-gutter">
+			                                            <div class="col l-4 m-4 c-4" style="display: flex;">
+			                                                <img style="height: 50px; width: 45px;" src="upload/${o.imageP}" alt="">
+			                                                <span class="oEI3Ln">
+			                                                    <span class="order-text-name" >${o.nameP}</span>
+			                                                </span>
+			                                            </div>
+			                                            <div class="col l-1 m-2 c-2">
+			                                                <div class="container_cart-list">
+			                                                    <span class="order_text-sum">${o.amount}</span>
+			                                                </div>
+			                                            </div>
+			                                            <div class="col l-2 m-2 c-2">
+			                                                <div class="container_cart-list">
+			                                                    <span class="order_text-sum">${o.price} đ</span>
+			                                                </div>
+			                                            </div>
+			                                             <div class="col l-1 m-2 c-2">
+			                                                <div class="container_cart-list">
+			                                                    <span class="order_text-sum">${o.date}</span>
+			                                                </div>
+			                                            </div>
+			                                            <div class="col l-2 m-2 c-2">
+			                                                <div class="container_cart-list">
+			                                                	<c:if test="${o.status == 0}"><span class="order_text">Đặt hàng</span></c:if>
+			                                                    <c:if test="${o.status == 1}"><span class="order_text">Hoàn thành</span></c:if>
+			                                                    <c:if test="${o.status == 2}"><span class="order_text">Đã hủy</span></c:if>
+			                                                </div>
+			                                            </div>
+			                                            <div class="col l-2 m-2 c-2">
+			                                                <div class="container_cart-list">
+			                                                    <button class="btn btn--primary" onclick="location.href='order-detail?idp=${o.idP}&ido=${o.idO}';">Chi tiết</button>
+			                                                </div>
+			                                            </div>
+			                                        
+			                                        </div>
+			                                    </div>
+			                                </div>
+			                                </c:forEach>
+			                            </div>
+			                            <div style="margin-top: 15px"></div>
+				                        </c:forEach>
+				                            
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div> 
                         </div>
                     </div>
                 </div>

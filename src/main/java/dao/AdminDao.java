@@ -16,16 +16,18 @@ public class AdminDao {
 //    
     public List<AdminProduct> getAllProductCate() {
         List<AdminProduct> list = new ArrayList<AdminProduct>();
-        String query = "SELECT Product.IdP AS 'pID', \r\n"
-        		+ "	   Product.NameP AS 'pName',\r\n"
-        		+ "       Category.NameC AS 'cName',\r\n"
-        		+ "	   Product.Amount AS 'pAmount',\r\n"
-        		+ "       Product.Price AS 'pPrice',\r\n"
-        		+ "       SUM(OrderDetails.Amount) AS 'sumPrice'\r\n"
-        		+ "FROM Product\r\n"
-        		+ "INNER JOIN Category ON Product.CateID = Category.CateID\r\n"
-        		+ "LEFT JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
-        		+ "GROUP BY Product.NameP, Product.IdP, Category.NameC, Product.Price, Product.Amount";
+        String query = "SELECT Product.IdP AS 'pID',\r\n"
+        		+ "        		Product.NameP AS 'pName',\r\n"
+        		+ "        		Category.NameC AS 'cName',\r\n"
+        		+ "        		Product.Amount AS 'pAmount',\r\n"
+        		+ "        		Product.Price AS 'pPrice',\r\n"
+        		+ "        		Product.Discount AS 'pDiscount',\r\n"
+        		+ "        		SUM(OrderDetails.Amount) AS 'sumPrice'\r\n"
+        		+ "        		FROM Product\r\n"
+        		+ "        		INNER JOIN Category ON Product.CateID = Category.CateID\r\n"
+        		+ "        		LEFT JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
+        		+ "        		where Product.[status] = 1\r\n"
+        		+ "        		GROUP BY Product.NameP, Product.IdP, Category.NameC, Product.Price, Product.Amount, Product.Discount";
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -36,7 +38,8 @@ public class AdminDao {
                         rs.getString(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getInt(6)));
+                        rs.getInt(6),
+                        rs.getInt(7)));
             }
             conn.close();
             ps.close();
@@ -46,19 +49,23 @@ public class AdminDao {
         
         return list;
     }
+    
     public List<AdminProduct> getAllProductSearch(String s) {
         List<AdminProduct> list = new ArrayList<AdminProduct>();
-        String query = "SELECT Product.IdP AS 'pID', \r\n"
-        		+ "	   Product.NameP AS 'pName',\r\n"
-        		+ "       Category.NameC AS 'cName',\r\n"
-        		+ "	   Product.Amount AS 'pAmount',\r\n"
-        		+ "       Product.Price AS 'pPrice',\r\n"
-        		+ "       SUM(OrderDetails.Amount) AS 'sumPrice'\r\n"
-        		+ "FROM Product\r\n"
-        		+ "INNER JOIN Category ON Product.CateID = Category.CateID\r\n"
-        		+ "LEFT JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
-        		+ "where Category.NameC like ? or  Product.NameP like ? \r\n"
-        		+ "GROUP BY Product.NameP, Product.IdP, Category.NameC, Product.Price, Product.Amount";
+        
+        String query = "SELECT Product.IdP AS 'pID',\r\n"
+        		+ "        		Product.NameP AS 'pName',\r\n"
+        		+ "        		 Category.NameC AS 'cName',\r\n"
+        		+ "        		Product.Amount AS 'pAmount',\r\n"
+        		+ "        		Product.Price AS 'pPrice',\r\n"
+        		+ "        		Product.Discount AS 'pDiscount',\r\n"
+        		+ "        		SUM(OrderDetails.Amount) AS 'sumPrice'\r\n"
+        		+ "        		FROM Product\r\n"
+        		+ "        		INNER JOIN Category ON Product.CateID = Category.CateID\r\n"
+        		+ "        		LEFT JOIN OrderDetails ON Product.IdP = OrderDetails.IdP\r\n"
+        		+ "        		where Product.[status] = 1 and (Category.NameC like ? or  Product.NameP like ?)\r\n"
+        		+ "        		GROUP BY Product.NameP, Product.IdP, Category.NameC, Product.Price, Product.Amount, Product.Discount";
+   
         try {
             conn = new DbContext().getConnection();//mo ket noi voi sql
             ps = conn.prepareStatement(query);
@@ -71,7 +78,8 @@ public class AdminDao {
                         rs.getString(3),
                         rs.getInt(4),
                         rs.getInt(5),
-                        rs.getInt(6)));
+                        rs.getInt(6),
+                        rs.getInt(7)));
             }
             conn.close();
             ps.close();

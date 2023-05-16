@@ -56,33 +56,38 @@
                         <!-- <li class="header-shoppet">ShopPet</li>    -->
                     </a>
                     <!-- search view -->
-                    <div class="header__search hide-on-mobile">    
+                    <div class="header__search hide-on-mobile">
+                    	    
                         <div class="header__search-input__wrap">
+                        	<form action="search" method="get">
                             <div class="header__search-box">
                                 <span class="header__search-icon"></span>
                                 <div class="header__search-content">
-                                    <input type="search" class="header__search-input" placeholder="Tìm kiếm tại đây"> 
+                                	<input oninput="searchName(this)" type="text" name="search" class="header__search-input" placeholder="Tìm kiếm tại đây">
+                                    
                                     <!-- search lịch sử tìm kiếm-->
-                                    <div class="header__search-history">
-                                        <h3 class="header__search-history-heading">Lịch sử tìm kiếm</h3>
-                                        <ul class="header__search-history-list">
+                                    <div class="header__search-history" id="search-history" style="display: none;">
+                                        <h3 class="header__search-history-heading">Tìm kiếm</h3>
+                                        <ul class="header__search-history-list" id="content-search">
                                             <li class="header__search-history-item"><a href="">luan</a></li>
                                             <li class="header__search-history-item"><a href="">hán</a></li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="header__search-button">Tìm kiếm</div>
-                                
+                                <button class="header__search-button" type="submit" style="border: 0">Tìm kiếm</button>
                             </div>
+	                        </form>
                         </div>
                     </div>
                     <!-- end search -->
 
                     <ul class="header__list2">
+      
                         <div class="header__nav">
+                          
                             <div class="header_user  hide-on-mobile-tablet">
                                 <div class="header__user-list">
-                                    <span class="header__user-text-petshop">Welcome to PetShop!</span>
+                                    
                                     <div class="header__user-item"> 
                                         <!-- chưa có tài khoản -->
                                         <c:if test="${sessionScope.account == null}">
@@ -99,11 +104,11 @@
                                             <span class="header__user-name">Xin chào ${sessionScope.account.username}</span>    
                                             <ul class="header__user-item-users-menu">
                                                 <li class="header__user-item-users-item">
-                                                    <a href="order">Tài khoản của tôi</a>
+                                                    <a href="order">Đơn hàng của tôi</a>
                                                 </li>
                                                 <c:if test="${sessionScope.account.isAdmin == 1}">
                                                 <li class="header__user-item-users-item">
-                                                    <a href="manager">Quản lý bán hàng</a>
+                                                    <a href="admin">Quản lý bán hàng</a>
                                                 </li>
                                                 </c:if>
                                                 <li class="header__user-item-users-item">
@@ -130,10 +135,63 @@
 	                                  localStorage.setItem('buttonClicked', 'login');
 	                                });
                                 }
+                               
                         	</script>
                         </div>
+                        <!--  -->
                     </ul>
                 </div>
             </div>
         </header>
-     
+        <script type="text/javascript">
+	        //search
+	        function searchName(param){
+			    var txtSearch =param.value;
+			    $.ajax({
+			        url: "/petshop/search-name",
+			        type: "get",
+			        data: {
+			            search: txtSearch
+			        },
+			        success: function (data) {
+			            var row = document.getElementById("content-search");
+			            row.innerHTML = data;
+			            
+			            var searchHistory = document.querySelectorAll('#content-search li');
+			            searchHistory.forEach((item) => {
+			            	var aTag = item.querySelector('a');
+			                var text = aTag.innerText.trim();
+			                console.log(text)
+			                aTag.href = "search?search="+text;
+			                aTag.addEventListener('click', (event) => {
+			                    // Ngăn chặn sự kiện lan truyền đến thẻ div cha
+			                    event.stopPropagation();
+			                   
+			                    // Thực hiện hành động của thẻ a
+			                    window.location.href = aTag.href;
+			                  });
+			                
+			           }); 
+			            
+			        },
+			        error: function(xhr){
+			            
+			        }
+			    })
+			}
+	        const input = document.querySelector('input.header__search-input');
+	        const div = document.querySelector('div.header__search-history');
+
+	        // Hiển thị div khi người dùng nhập vào input
+	        input.addEventListener('focus', () => {
+	          div.style.display = 'block';
+	        });
+
+	        // Ẩn div khi người dùng click ra ngoài thẻ input và thẻ div
+	        document.addEventListener('click', (event) => {
+	          if (!input.contains(event.target) && !div.contains(event.target)) {
+	            div.style.display = 'none';
+	          }
+	        });
+		</script>
+        

@@ -14,19 +14,22 @@ public class RatingDao {
     ResultSet rs = null;
 
 //  Get 
-    public RatingProduct getRatingProduct(int idP, int idA) {
-    	String query = "select * from ProductRating where ida = ? and idp = ?";
+    public RatingProduct getRatingProduct(int idP, int idA, int idO) {
+    	String query = "select * from ProductRating where ida = ? and idp = ? and idO = ?";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setInt(1, idA);
 	          ps.setInt(2, idP);
+	          ps.setInt(3, idO);
 	          rs = ps.executeQuery();
 	          while (rs.next()) {
 	              return new RatingProduct(rs.getInt(1),
 	            		  rs.getInt(2),
 	            		  rs.getInt(3),
-	            		  rs.getString(4));
+	            		  rs.getInt(4),
+	            		  rs.getString(5),
+	            		  rs.getDate(6));
 	          }
 	          conn.close();
 	          ps.close();
@@ -36,15 +39,17 @@ public class RatingDao {
 	      return new RatingProduct() ;
     }
 //    thêm 
-    public void addRatingProduct(int idP, int idA, int rating, String comment) {
-    	String query = "insert into ProductRating([idA], [idP], [rating], [comment]) values(?, ?, ?, ?)";
+    public void addRatingProduct(int idP, int idA, int idO, int rating, String comment, Date date) {
+    	String query = "insert into ProductRating([idA], [idP], [idO], [rating], [comment], [dateRating]) values(?, ?, ?, ?, ?, ?)";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setInt(1, idA);
 	          ps.setInt(2, idP);
-	          ps.setInt(3, rating);
-	          ps.setString(4, comment);
+	          ps.setInt(3, idO);
+	          ps.setInt(4, rating);
+	          ps.setString(5, comment);
+	          ps.setDate(6, date);
 	          ps.executeUpdate();
 	          conn.close();
 	          ps.close();
@@ -53,15 +58,17 @@ public class RatingDao {
 	      }
     }
 //  sửa
-	  public void saveRatingProduct(int idP, int idA, int rating, String comment) {
-	  	String query = "update ProductRating set [rating] = ?, [comment] = ? where [idA]= ? and [idP]= ?";
+	  public void saveRatingProduct(int idP, int idA, String idO, int rating, String comment, Date date) {
+	  	String query = "UPDATE dbo.ProductRating SET [rating] = ?, [comment] = ?, [dateRating] = ? where [idA]= ? and [idP]= ? and [idO] = ?";
 		      try {
 		          conn = new DbContext().getConnection();//mo ket noi voi sql
 		          ps = conn.prepareStatement(query);
 		          ps.setInt(1, rating);
 		          ps.setString(2, comment);
-		          ps.setInt(3, idA);
-		          ps.setInt(4, idP);
+		          ps.setDate(3, date);
+		          ps.setInt(4, idA);
+		          ps.setInt(5, idP);
+		          ps.setString(6, idO);
 		          ps.executeUpdate();
 		          conn.close();
 		          ps.close();
@@ -94,4 +101,10 @@ public class RatingDao {
 			}
 			return list;
 	  }
+	  public static void main(String[] args) {
+		  RatingDao RDao = new RatingDao();
+		RatingProduct rP = RDao.getRatingProduct(11, 2, 7);
+		System.out.println(rP);
+		
+	}
 }

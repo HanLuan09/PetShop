@@ -24,33 +24,38 @@ public class CategoryControl extends HttpServlet{
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        try {
+			
 //      hiển thị cart  
-        CartSumList cSumList = new CartSumList();
-        cSumList.viewCart(request);
-      
+        	CartSumList cSumList = new CartSumList();
+        	cSumList.viewCart(request);
+        	
 //    	lấy url
-        SessionService sessionService = new SessionService();
-        sessionService.sesionURLService(request, response);
-    	
-        //da lay dc category id ve roi
-        String cateId = request.getParameter("cid");
-        DAO dao = new DAO();
-        ProductSortDao daoP = new ProductSortDao();
-        List<Category> listC = dao.getAllCategory();
-        List<ProductDetails> listP = new ArrayList<>();
-        if(cateId.equals("0")) {
-        	listP = daoP.getAllProductCid("1");
-        	listP.addAll(daoP.getAllProductCid("2"));
-        }
-        else {
-        	listP = daoP.getAllProductCid(cateId);
-        }
-        Collections.sort(listP);
-        request.setAttribute("listCC", listC);
-        // list all p theo cid vẫn đẩy theo listP
-        request.setAttribute("listP", listP);
-        request.setAttribute("active", cateId);
-        request.getRequestDispatcher("category_product.jsp").forward(request, response);
+        	SessionService sessionService = new SessionService();
+        	sessionService.sesionURLService(request, response);
+        	
+        	//da lay dc category id ve roi
+        	String cateId = request.getParameter("cid");
+        	DAO dao = new DAO();
+        	ProductSortDao daoP = new ProductSortDao();
+        	List<Category> listC = dao.getAllCategory();
+        	List<ProductDetails> listP = new ArrayList<>();
+        	if(cateId.equals("0")) {
+        		listP = daoP.getAllProductCid("1");
+        		listP.addAll(daoP.getAllProductCid("2"));
+        	}
+        	else {
+        		listP = daoP.getAllProductCid(cateId);
+        	}
+        	Collections.sort(listP);
+        	request.setAttribute("listCC", listC);
+        	// list all p theo cid vẫn đẩy theo listP
+        	request.setAttribute("listP", listP);
+        	request.setAttribute("active", cateId);
+        	request.getRequestDispatcher("category_product.jsp").forward(request, response);
+		} catch (Exception e) {
+			response.sendRedirect("error.jsp");
+		}
     }
 
     @Override

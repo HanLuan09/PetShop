@@ -17,6 +17,7 @@
     <!-- javascript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 </head>
 <body>
     <div class="main">
@@ -145,10 +146,12 @@
                                                                     <button type="button" class="container__right-purchase-input-btn" id="container__left">
                                                                         <i class="fa-solid fa-minus"></i>
                                                                     </button>
-                                                                    <input name="quantity" id="quantity-input" type="text" class="container__right-purchase-input-text" value="1" role="spinbutton" aria-valuenow="1" readonly>
+                                                                    <input name="quantity" id="quantity-input" type="text" class="container__right-purchase-input-text" value="1" role="spinbutton" aria-valuenow="1" max ="${remaining}">
+                                                                    <input id="input-max" type="hidden" value="${remaining}">
                                                                     <button type="button" class="container__right-purchase-input-btn" id="container__right">
                                                                         <i class="fa-solid fa-plus"></i>
                                                                     </button>
+                                                                  	<span id="text--quatity" class ="container__right-purchase-item-text"></span>
                                                                 </div>
                                                             </div>
                                                             
@@ -181,9 +184,28 @@
                                                 </div>
                                             </div>
                                             <script>
-				                				// xét xem người đăng nhập khi nhấn mua hàng mà chưa có tài khoản
+                                            	var quantity = document.querySelector('#input-max').value;
+                                            	var textQuantity = document.querySelector('#text--quatity');
+				                                console.log(quantity);
+				                                var inputs = document.querySelectorAll('.iFo-rx');
+				                                if (quantity <=0) {
+				                                	inputs.forEach(function(input) {
+								            		    input.setAttribute('readonly', 'readonly');
+								            		    input.setAttribute('disabled', 'disabled');
+								            		});
+				                                	 textQuantity.innerText = 'Đã hết hàng';
+				                                }else{
+				                                	  inputs.forEach(function(input) {
+								                  		  if (input.hasAttribute('readonly') || input.hasAttribute('disabled')) {
+								                  		    input.removeAttribute('readonly');
+								                  		    input.removeAttribute('disabled');
+								                  		  }
+								                  	  });
+				                                	  textQuantity.innerText = '';
+				                                }
 				                                const btnAT = document.querySelector('#btn-add--login');
 				                                const btnBT = document.querySelector('#btn-buynow--login');
+				                             // xét xem người đăng nhập khi nhấn mua hàng mà chưa có tài khoản
 				                                if(btnAT != undefined) {
 					                                btnAT.addEventListener('click', function() {
 					                                  localStorage.setItem('buttonClicked', 'login');
@@ -220,11 +242,18 @@
                         id: ".container__header-btn-2",
                         action: "container__header-btn--selecter"   
                     });
-                    
+                    const inputMax = document.querySelector('#input-max').value;
                     productNumber({
                     	minus: "#container__left",
                     	plus: "#container__right",
-                    	quantity: ".container__right-purchase-input-text"
+                    	quantity: ".container__right-purchase-input-text",
+                    	quamax: inputMax
+                    });
+                    
+                    productSalary({
+                    	quainput: "#quantity-input", 
+                    	quantity: "1",
+                    	quamax: inputMax
                     });
                     <!-- button mua hàng -->
                     var button = document.querySelector('#btn-purchase--buy');
@@ -232,7 +261,7 @@
                         button.addEventListener('click', function() {
                             // Lấy giá trị mới nhất của input
                             var quantity = document.querySelector('#quantity-input').value;
-                            console.log(quantity);
+                            //console.log(quantity);
                             // Chuyển hướng đến trang giỏ hàng với các tham số cần thiết
                             location.href = 'petshop-orders?idp='+${detail.idP}+'&quantity='+quantity;
                         });
@@ -317,6 +346,8 @@
                                                 
                                             </div>
                                         </div>
+                                        <div class="petShop-product-rating__time">${o.dateRating}</div>
+                                        
                                         <div class="shopee-product-rating__name">${o.comment}</div>
 
                                     </div>
@@ -330,8 +361,8 @@
                <!-- sản phẩm -->
             <!-- đồ thú cưng -->
             
-                <jsp:include page="product.jsp"/>
-                <jsp:include page="footer.jsp"/>
+        <jsp:include page="product.jsp"/>
+        <jsp:include page="footer.jsp"/>
 		</div>
         <div id="add-to-cart-popup" class="hidden">
             <div class="add-to-cart-icon">
@@ -353,7 +384,7 @@
 			  // Sau 3 giây, ẩn thông báo
 			  setTimeout(function() {
 			    popup.classList.remove("show");
-			  }, 6000);
+			  }, 12000);
 			}
 			
 			// Xử lý sự kiện thêm sản phẩm vào giỏ hàng
