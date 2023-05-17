@@ -33,9 +33,9 @@ public class OrderControl extends HttpServlet {
     	int idA = a.getIdA();
     	AccountDao daoA = new AccountDao();
     	UserProductDAO daoUser = new UserProductDAO();
-    	List<UserProduct> listUserProducts = daoUser.getProductUser(idA);
+    	List<UserProduct> listUserProducts = daoUser.getProductUser(idA); 
     	Map<Integer, List<UserProduct>> map = new HashMap<>();
-
+    	int checkP = listUserProducts.size();
     	for (UserProduct o : listUserProducts) {
     	    if (map.containsKey(o.getIdO())) {
     	        // Nếu khóa đã tồn tại trong map, thêm đối tượng UserProduct vào danh sách tương ứng
@@ -49,6 +49,8 @@ public class OrderControl extends HttpServlet {
     	}
     	Account account = daoA.checkAccount(a.getUsername());
     	Address address = daoA.getAddress(idA);
+    	
+    	request.setAttribute("checkP", checkP);
     	request.setAttribute("mapProducts", map);
     	request.setAttribute("listUserProducts", listUserProducts);
     	request.setAttribute("account", account);

@@ -101,6 +101,28 @@ public class RatingDao {
 			}
 			return list;
 	  }
+	  public int timeRating(int IdA, int IdO, int IdP) {
+		  	String query = "SELECT DATEDIFF(day, dateRating, GETDATE()) AS DateDiff\r\n"
+		  			+ "FROM dbo.ProductRating\r\n"
+		  			+ "WHERE idA = ? AND idP = ? AND idO = ?";
+			try {
+			          conn = new DbContext().getConnection();//mo ket noi voi sql
+			          ps = conn.prepareStatement(query);
+			          ps.setInt(1, IdA);
+			          ps.setInt(2, IdP);
+			          ps.setInt(3, IdO);
+			          rs = ps.executeQuery();
+			          while(rs.next()) {
+			        	  return rs.getInt(1);
+			          }
+			          conn.close();
+			          ps.close();
+			          rs.close();
+			         
+			} catch (Exception e) {
+			}
+			return -1;
+	  }
 	  public static void main(String[] args) {
 		  RatingDao RDao = new RatingDao();
 		RatingProduct rP = RDao.getRatingProduct(11, 2, 7);

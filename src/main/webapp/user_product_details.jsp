@@ -34,6 +34,18 @@
             border: 1px solid #817f7f;
             
         }
+        .uk7Wpm {
+        	display: inline-block;
+		    padding: 2px 5px;
+		    margin-left: 1.5em;
+		    color: #ee4d2d;
+		    border-radius: 1px;
+		    border: 0.5px solid;
+		    font-size: 10px;
+		    text-transform: capitalize;
+		    flex-shrink: 0;
+		    cursor: pointer;
+		}
 
     </style>
 </head>
@@ -87,40 +99,35 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        <!-- phân loại kích thước màu sắc -->
+                                        
                                         <c:if test="${uDetail.status==0}">
-	                                        <form id="removeform" action="remove-order" method="post" onsubmit="confirmCancelOrder(event)">                	
+	                                        <form id="removeform" action="remove-order" method="post" onsubmit="confirmCancelOrder(event)" class="review-form">                	
 	                                    </c:if>
 	                                    <c:if test="${uDetail.status==1}">
-	                                        <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post">                	
+	                                        <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post" class="review-form">                	
 	                                    </c:if>
                                         <!-- <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post">-->
+                                        	<div class="input-rating">
+							                    <span class="container__header-name" style="margin-left: 10px;">Xếp hạng: </span>
+							                    <div class="stars" style="font-size: 1.4rem">
+												    <input id="star5" name="rating" value="5" type="radio" ${rProduct.rating == 5 ? 'checked' : ''}><label for="star5"></label>
+												    <input id="star4" name="rating" value="4" type="radio" ${rProduct.rating == 4 ? 'checked' : ''}><label for="star4"></label>
+												    <input id="star3" name="rating" value="3" type="radio" ${rProduct.rating == 3 ? 'checked' : ''}><label for="star3"></label>
+												    <input id="star2" name="rating" value="2" type="radio" ${rProduct.rating == 2 ? 'checked' : ''}><label for="star2"></label>
+												    <input id="star1" name="rating" value="1" type="radio" ${rProduct.rating == 1 ? 'checked' : ''}><label for="star1"></label>
+												</div>
+												<c:if test="${uDetail.status == 1}" >	                                                        	
+							                    	<c:if test="${timeR <= 4}"><div class="uk7Wpm" id="btn_rating--edit">${rProduct.rating>0 ? "Thay đổi": "Đánh giá"}</div></c:if>
+							                    	<c:if test="${timeR > 4}"><div class="uk7Wpm" id="btn_rating--edit">Hết thời gian thay đổi đánh giá</div></c:if>
+							                    </c:if>
+							                    <c:if test="${uDetail.status != 1}" >	                                                        	
+							                    	<div class="uk7Wpm" id="btn_rating--noedit"> Bạn chưa thể đánh giá sản phẩm</div>
+							                    </c:if>
+							                </div>
                                         	<input type="hidden" name="idp" value="${uDetail.idP}">
                                         	<input type="hidden" name="ido" value="${uDetail.idO}">
-                                        	<input style="border: 2px solid #000" type="hidden" name ="rating" id="rating" value="${rProduct.rating}">
+                    
 	                                        <div class="container__header">
-	                                            <div class="container__header-wrap">
-	                                                <Label class="container__header-name">Đánh giá</Label>
-	                                                <div class="container__header-list">
-	                                                    <button type="button" class="container__header-btn ${rProduct.rating ==1 ? "container__header-btn--selecter" : ""}">
-	                                                    	<span class="home-product-item__rating-text">1</span> <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-	                                                    </button>
-	                                                    <button type="button" class="container__header-btn ${rProduct.rating ==2 ? "container__header-btn--selecter" : ""}">
-	                                                    	<span class="home-product-item__rating-text">2</span> <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-	                                                    </button>
-	                                                    <button type="button" class="container__header-btn ${rProduct.rating ==3 ? "container__header-btn--selecter" : ""}">
-	                                                    	<span class="home-product-item__rating-text">3</span> <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-	                                                    </button>
-	                                                    <button type="button" class="container__header-btn ${rProduct.rating ==4 ? "container__header-btn--selecter" : ""}">
-	                                                    	<span class="home-product-item__rating-text">4</span> <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-	                                                    </button>
-	                                                    <button type="button" class="container__header-btn ${rProduct.rating ==5 ? "container__header-btn--selecter" : ""}">
-	                                                    	<span class="home-product-item__rating-text">5</span> <i class="home-product-item__rating--gold fa-solid fa-star"></i>
-	                                                    </button>
-	                                                    
-	                                                </div>
-	                                            </div>
-	                                            
 	                                            <div class="container__header-wrap" style="display: block;">
 	                                                <div><Label class="container__header-name">Nhận xét</Label></div>
 	                                                <div class="container__header-list">
@@ -150,14 +157,8 @@
 	                                                        		}
 																</script>
 	                                                        </c:if>
-	                                                        <c:if test="${uDetail.status == 1}">
-		                                                        <c:if test="${rProduct.rating==0}">
-		                                                        	<button id="btn_rating--add" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false">Đánh giá</button>
-		                                                        </c:if>
-		                                                        <c:if test="${rProduct.rating>0}">
-		                                                        	<button id="btn_rating--edit" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" type="button" aria-disabled="false">Đổi đánh giá</button>
-		                                                        	<button id="btn_rating--save" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false">Lưu đánh giá</button>
-		                                                        </c:if>
+	                                                        <c:if test="${uDetail.status == 1}">                                                        	
+		                                                        <button id="btn_rating--save" class="btn btn-solid-primary btn--l container__right-purchase-btn__buy iFo-rx" aria-disabled="false">Đăng</button>                               
 	                                                        </c:if>
 	                                                    </div>
 	                                                    
@@ -177,9 +178,21 @@
 					                
 						            	const save = document.getElementById("btn_rating--save");
 						            	const edit = document.getElementById("btn_rating--edit");
-						            	if(edit != undefined){
+						            	const noedit = document.getElementById("btn_rating--noedit");
+						            	if(noedit != undefined){
+						            		var inputs = document.querySelectorAll('input, textarea,.container__header-btn');
+						            		
+						            		// Lặp qua danh sách các phần tử input và textarea và thêm/xoá thuộc tính readonly và disabled
+						            		//document.querySelector('.custom-file-upload').style.cu
+						            		inputs.forEach(function(input) {
+						            		    input.setAttribute('readonly', 'readonly');
+						            		    input.setAttribute('disabled', 'disabled');
+						            		  
+						            		});
+						            	}
+						            	else if(edit != undefined){
 						            		save.style.display ="none";
-						            		edit.style.display ="inherit";
+						            		edit.style.display ="inline-block";
 						            		var inputs = document.querySelectorAll('input, textarea,.container__header-btn');
 												
 						            		// Lặp qua danh sách các phần tử input và textarea và thêm/xoá thuộc tính readonly và disabled

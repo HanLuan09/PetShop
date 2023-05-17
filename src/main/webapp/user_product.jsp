@@ -184,7 +184,14 @@
                         	<div class="">
 			                    <div class="">
 			                        <div class="l-12 m-12 c-12">
-			                        	
+			                        	<c:if test="${checkP == 0}">
+			                        		<div class ="snhf snlrc5">
+						                		<div class="nxRQ" style="background-image: url(./img/nocart.png);"></div>
+						                		<div class="zH4psk">Bạn chưa mua bất kì sản phẩm nào</div>
+						                		<a class="OpSzHa btn btn--primary" href="/petshop/home">Mua Ngay</a>
+						                	</div>
+			                        	</c:if>
+			                        	<c:if test="${checkP > 0}">
 			                            <div class="cPNXP" style="border-bottom: 1px solid rgba(0,0,0,.09);">
 			                                <div class="sVj2 row sm-gutter">
 			                                    <div class="col l-4">Sản phẩm</div>
@@ -248,7 +255,7 @@
 			                            </div>
 			                            <div style="margin-top: 15px"></div>
 				                        </c:forEach>
-				                            
+				                        </c:if>
 			                            </div>
 			                        </div>
 			                    </div>

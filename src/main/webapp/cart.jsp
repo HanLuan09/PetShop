@@ -189,7 +189,7 @@
                 	<div class ="snhf snlrc5">
                 		<div class="nxRQ" style="background-image: url(./img/nocart.png);"></div>
                 		<div class="zH4psk">Giỏ hàng của bạn còn trống</div>
-                		<a class="OpSzHa btn btn--primary" href="">Mua Ngay</a>
+                		<a class="OpSzHa btn btn--primary" href="/petshop/home">Mua Ngay</a>
                 	</div>
 				</c:if>
             </div>

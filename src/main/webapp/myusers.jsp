@@ -39,7 +39,7 @@
                     </c:if>
                     <c:if test="${sessionScope.account == null}">
                     	<p style="max-width: 40%;">Xin chào</p>
-                    	<a href="login_register.jsp">ĐĂNG NHẬP / ĐĂNG KÝ</a>
+                    	<a href="login">ĐĂNG NHẬP / ĐĂNG KÝ</a>
                     </c:if>
                 </div>
             </div>
