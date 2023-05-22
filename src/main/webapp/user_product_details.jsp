@@ -101,10 +101,10 @@
                                             </div>
                                         
                                         <c:if test="${uDetail.status==0}">
-	                                        <form id="removeform" action="remove-order" method="post" onsubmit="confirmCancelOrder(event)" class="review-form">                	
+	                                        <form id="removeform" action="remove-order" method="post" onsubmit="confirmCancelOrder(event)" class="review-form" onsubmit="return validateForm()">                	
 	                                    </c:if>
 	                                    <c:if test="${uDetail.status==1}">
-	                                        <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post" class="review-form">                	
+	                                        <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post" class="review-form" onsubmit="return validateForm()">                	
 	                                    </c:if>
                                         <!-- <form action="${rProduct.rating>0 ? "rating-save" : "rating-add"}" method="post">-->
                                         	<div class="input-rating">
@@ -136,6 +136,7 @@
 	                                                    </div>
 	                                                </div>
 	                                            </div>
+	                                            <span>${mess}</span>
 	                                        </div>
 	                                        
 	                                            <!-- dtn -->
@@ -165,6 +166,24 @@
 	                                                </dib>
 	                                            </div>
                                             </form>
+                                            <script>
+												function validateForm() {
+												  var radios = document.getElementsByName("rating");
+												  var selectedRating = false;
+												  
+												  for (var i = 0; i < radios.length; i++) {
+												    if (radios[i].checked) {
+												      selectedRating = true;
+												      break;
+												    }
+												  }
+												  
+												  if (!selectedRating) {
+												    alert("Bạn chưa đánh giá sản phẩm");
+												    return false;
+												  }
+												}
+											</script>
                                         </div>
                                        
                                     </div>
@@ -225,42 +244,29 @@
                 </div>
             <jsp:include page="footer.jsp"/>
     	</div>
+    	<c:if test="${sussmess} != null">
         <div id="add-to-cart-popup" class="hidden">
             <div class="add-to-cart-icon">
                 <i class="fa-regular fa-circle-check"></i>
             </div>
             <div class="add-to-cart-text">
-                <p>Bạn đã đánh giá sản phẩm thành công</p>
+                <p>${sussmess}</p>
             </div>
         </div>
+        </c:if>
         <script>
-            // Lấy phần tử thông báo pop-up
-			var popup = document.getElementById("add-to-cart-popup");
-			
-			// Hàm hiển thị thông báo pop-up
-			function showPopup() {
-			  // Hiển thị thông báo
-			  popup.classList.add("show");
-			
-			  // Sau 3 giây, ẩn thông báo
-			  setTimeout(function() {
-			    popup.classList.remove("show");
-			  }, 6000);
-			}
-			
-			// Xử lý sự kiện thêm sản phẩm vào giỏ hàng
-			var addToCartButton = document.getElementById("btn_rating--save");
-			if(addToCartButton!=undefined){
-				addToCartButton.addEventListener("click", function() {
-				  showPopup();
-				});
-			}
-			var addToCartButton = document.getElementById("btn_rating--add");
-			if(addToCartButton!=undefined){
-				addToCartButton.addEventListener("click", function() {
-				  showPopup();
-				});
-			}
+	        const addToCartPopup = document.getElementById('add-to-cart-popup');
+	        
+	        // Kiểm tra xem div thông báo có tồn tại không
+	        if (addToCartPopup !== null) {
+	            // Hiển thị div thông báo
+	            addToCartPopup.classList.remove('hidden');
+	            
+	            // Tự động ẩn div thông báo sau 10 giây
+	            setTimeout(function() {
+	                addToCartPopup.classList.add('hidden');
+	            }, 10000);
+	        }
         </script> 
 	</div>
 	

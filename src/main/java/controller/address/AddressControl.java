@@ -21,6 +21,7 @@ public class AddressControl extends HttpServlet {
     	Account a = (Account) session.getAttribute("account");
     	if(a==null) {
     		response.sendRedirect("login");
+    		return;
     	}
     	else {
     		try {

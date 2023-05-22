@@ -19,6 +19,16 @@ import model.Product;
 public class EditControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//    	trang chi tiết sản phẩm của Admin
+    	HttpSession session = request.getSession();
+    	Account a = (Account) session.getAttribute("account");
+    	if(a==null) {
+    		response.sendRedirect("login");
+    		return;
+    	}else if(a.getIsAdmin()!=1) {
+    		response.sendRedirect("login");
+    		return;
+    	}
         response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
         try {

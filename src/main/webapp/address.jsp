@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="auth-form__aside">
+                        <!--  <div class="auth-form__aside">
                             <p style="font-size: 1.4rem; font-weight: 400; color: #333;">Phương thức thanh toán:</p>
                             <div style="display: flex;">
                                 <div class="auth-form__aside-address auth-form__aside-address-2 auth-form__aside-address--click">
@@ -76,7 +76,7 @@
                                     </div>    
                                 </a>
                             </div>
-                        </div>
+                        </div>-->
     
                         <div class="auth-form__controls">
                         	<c:if test="${checkiP != null and checkQ != null}">
@@ -140,7 +140,7 @@
 			                                </div>
 			                            </div>
 			                        </div>
-			                        <div class="auth-form__aside">
+			                        <!--<div class="auth-form__aside">
 			                            <p style="font-size: 1.4rem; font-weight: 400; color: #333;">Phương thức thanh toán:</p>
 			                            <div style="display: flex;">
 			                                <div class="auth-form__aside-address auth-form__aside-address-2 auth-form__aside-address--click">
@@ -161,7 +161,7 @@
 			                                Trạng thái: <span style="font-weight: 300;">Chưa thanh toán</span>
 			                            </div>
 			                            
-			                        </div>
+			                        </div>-->
                                 </div>
                             </div>
                             <div class="login-btn">

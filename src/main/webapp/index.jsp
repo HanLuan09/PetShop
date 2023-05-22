@@ -209,13 +209,13 @@
                         <div class="col l-12 m-12" style="margin-bottom: 10px;">
                             <div class="card-fs-content-header stardust-tabs-header" style="border-bottom: #d5d5d5 1px solid;">
                                 <div class="stardust-tabs-header__text">
-                                    <span style="font-size: 1.5rem">Sản phẩm hàng đầu</span>
+                                    <span style="font-size: 1.5rem">Có thể bạn quan tâm</span>
                                 </div>
                                 
                             </div>
                             <div>
                                 <div class ="card-categories-ul">
-                                	<c:forEach items="${listBest}" var ="o">
+                                	<c:forEach items="${randomSelection}" var ="o">
                                     <div class="card-categories-li align-left">
                                         <a href="detail?pid=${o.idP}&cid=${o.cateId}" class="card-categories-li-content">
                                             <div class="card-categories-image-container">

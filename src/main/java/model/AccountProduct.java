@@ -3,7 +3,7 @@ package model;
 import java.sql.Date;
 import java.util.List;
 
-public class AccountProduct extends UserProduct {
+public class AccountProduct extends UserProduct{
 	private int idA;
 
 	public AccountProduct() {

@@ -27,19 +27,22 @@ public class AdminControl extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
+//        thống kê và danh sách sản phẩm đang chờ
         HttpSession session = request.getSession();
     	Account a = (Account) session.getAttribute("account");
     	if(a==null) {
     		response.sendRedirect("login");
+    		return;
+    	}else if(a.getIsAdmin()!=1) {
+    		response.sendRedirect("login");
+    		return;
     	}
         try {
 			
-        	DAO dao = new DAO();
-        	AdminDao adminDao = new AdminDao();
-        	int count = dao.countProduct();
         	
         	UserProductDAO dProductDAO = new UserProductDAO();
         	List<AccountProduct> list = dProductDAO.getProductAdmin();
+        	Collections.sort(list);
         	HashMap<Integer, List<Pair<Integer, List<AccountProduct>>>> map = new HashMap<>();
         	
         	for (AccountProduct o : list) {
@@ -74,7 +77,6 @@ public class AdminControl extends HttpServlet {
         		}
         	}
         	
-        	request.setAttribute("count", count);
         	request.setAttribute("map", map);
         	request.setAttribute("listAminP", list);
         	request.getRequestDispatcher("admin.jsp").forward(request, response);

@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Date;
 
-public class UserProduct {
+public class UserProduct implements Comparable<UserProduct>{
 	private int idP;
 	private int idO;
 	private String nameP;
@@ -72,7 +72,8 @@ public class UserProduct {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-
-	
-	
+	@Override
+	public int compareTo(UserProduct o) {
+		return Integer.compare(o.idO, this.idO);
+	}
 }

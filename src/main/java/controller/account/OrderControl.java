@@ -1,8 +1,11 @@
 package controller.account;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,19 +32,20 @@ public class OrderControl extends HttpServlet {
     	Account a = (Account) session.getAttribute("account");
     	if(a == null) {
     		response.sendRedirect("login");
+    		return;
     	}
     	int idA = a.getIdA();
     	AccountDao daoA = new AccountDao();
     	UserProductDAO daoUser = new UserProductDAO();
     	List<UserProduct> listUserProducts = daoUser.getProductUser(idA); 
-    	Map<Integer, List<UserProduct>> map = new HashMap<>();
+    	Collections.sort(listUserProducts);
+    	Map<Integer, List<UserProduct>> map = new LinkedHashMap<>();
     	int checkP = listUserProducts.size();
     	for (UserProduct o : listUserProducts) {
     	    if (map.containsKey(o.getIdO())) {
-    	        // Nếu khóa đã tồn tại trong map, thêm đối tượng UserProduct vào danh sách tương ứng
     	        map.get(o.getIdO()).add(o);
     	    } else {
-    	        // Nếu khóa chưa tồn tại trong map, tạo danh sách mới và thêm đối tượng UserProduct vào danh sách đó
+    	        // Nếu khóa chưa tồn tại trong map
     	        List<UserProduct> newList = new ArrayList<>();
     	        newList.add(o);
     	        map.put(o.getIdO(), newList);

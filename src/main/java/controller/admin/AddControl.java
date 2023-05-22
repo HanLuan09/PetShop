@@ -20,16 +20,20 @@ import model.Product;
 @MultipartConfig
 @WebServlet(name = "AddControl", urlPatterns = {"/add"})
 public class AddControl extends HttpServlet {
-    
+//    Thêm mới sản phẩm
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	request.removeAttribute("succesMess");
     	response.setContentType("text/html;charset=UTF-8");
         //b1: get data from dao
     	HttpSession session = request.getSession();
     	Account a = (Account) session.getAttribute("account");
     	if(a==null) {
     		response.sendRedirect("login");
+    	}else if(a.getIsAdmin()!=1) {
+    		response.sendRedirect("login");
+    		return;
     	}
     	DAO dao = new DAO();
     	Product checkP = dao.checkNameProduct(request.getParameter("nameP"), 0);
@@ -55,10 +59,17 @@ public class AddControl extends HttpServlet {
             		p.setCateId(Integer.parseInt(request.getParameter("cateid")));
             		
             		if(dao.addProduct(p)!=0) {
-            			response.sendRedirect("manager");
+            			request.setAttribute("succesMess", "Thêm sản phẩm thành công");
+                		//request.getSession().setAttribute("succesMess", "Sửa sản phẩm thành công");
+                		//response.sendRedirect("manager");
+                		request.getRequestDispatcher("manager").forward(request, response);
+            			return;
             		}
             		else {
-            			response.sendRedirect("edit?pid=-1");
+            			request.setAttribute("succesMess", "Thêm sản phẩm thất bại");
+                		request.getRequestDispatcher("manager").forward(request, response);
+//            			response.sendRedirect("edit?pid=-1");
+            			return;
             		}
 				} catch (Exception e) {
 					request.getRequestDispatcher("error.jsp").forward(request, response);

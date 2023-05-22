@@ -42,6 +42,7 @@ public class SearchProductControl extends HttpServlet {
         List<Category> listC = dao.getAllCategory();
         List<ProductDetails> listP = daoP.getAllProductSearch(search);
         Collections.sort(listP);
+        request.setAttribute("search", search);
         request.setAttribute("listCC", listC);
         // list all p theo cid vẫn đẩy theo listP
         request.setAttribute("listP", listP);

@@ -94,6 +94,7 @@ public class UserProductDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new AccountProduct(rs.getInt(1),
+                		//rs.getBigDecimal(2).toBigInteger(),
                 		rs.getInt(2),
                         rs.getString(3),
                         rs.getString(4),
@@ -142,9 +143,4 @@ public class UserProductDAO {
         return new UserProductDetail();
     }
     
-    public static void main(String[] args) {
-		UserProductDAO dao = new UserProductDAO();
-		UserProductDetail u = dao.getProductUserDetail(2, 2);
-		System.out.println(u);
-	}
 }

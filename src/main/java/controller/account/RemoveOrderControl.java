@@ -25,15 +25,20 @@ public class RemoveOrderControl extends HttpServlet {
     	Account a = (Account) session.getAttribute("account");
     	if(a == null) {
     		response.sendRedirect("login");
+    		return;
     	}else {
     		String idO = request.getParameter("ido");
     		String idP = request.getParameter("idp");
     		
     		try {
     			AccountDao dAccountDao = new AccountDao();
-    			dAccountDao.removeOrderDetails(idO, idP);
+    			int res = dAccountDao.removeOrderDetails(idO, idP);
+    			if(res == 0) {
+    				response.sendRedirect("error.jsp");
+    				return;
+    			}
     		} catch (Exception e) {
-    			request.getRequestDispatcher("error.jsp").forward(request, response);
+    			response.sendRedirect("error.jsp");
     		}
     		response.sendRedirect("/petshop/order");
     	}

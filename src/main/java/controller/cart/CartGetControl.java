@@ -26,6 +26,7 @@ public class CartGetControl extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
 //    	xem giỏ hàng của tài khoản nào
         
     	HttpSession session = request.getSession();

@@ -24,11 +24,12 @@ public class OrderControl extends HttpServlet {
     @Override 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    	
+//    	Hiển thị danh sách sản phẩm muốn đặt
     	HttpSession session = request.getSession();
     	Account a = (Account) session.getAttribute("account");
     	if(a==null) {
     		response.sendRedirect("login");
+    		return;
     	}
     	else {
     		try {
@@ -74,7 +75,7 @@ public class OrderControl extends HttpServlet {
 	    		request.setAttribute("address", aRess);
 	    		request.getRequestDispatcher("order.jsp").forward(request, response);
     		} catch (Exception e) {
-    			request.getRequestDispatcher("error.jsp").forward(request, response);
+    			response.sendRedirect("error.jsp");
 			}
 	
     	}

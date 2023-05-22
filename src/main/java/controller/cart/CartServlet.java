@@ -18,6 +18,7 @@ public class CartServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DAO dao = new DAO();
+//        Lưu vào giỏ hàng
         CartSevice cartSevice = new CartSevice();
         //    	xem giỏ hàng của tài khoản nào
         HttpSession session = request.getSession();

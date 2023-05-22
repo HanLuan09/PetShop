@@ -22,11 +22,14 @@ public class RatingAddControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//    	Thêm mới đánh giá
+    	request.removeAttribute("sussmess");
     	response.setContentType("text/html;charset=UTF-8");
     	HttpSession session = request.getSession();
     	Account a = (Account) session.getAttribute("account");
     	if(a == null) {
     		response.sendRedirect("login");
+    		return;
     	}else {
     		int idO = Integer.parseInt(request.getParameter("ido"));
     		int idP = Integer.parseInt(request.getParameter("idp"));
@@ -35,16 +38,26 @@ public class RatingAddControl extends HttpServlet {
     			LocalDate localDate = LocalDate.now();
 		        Date date = java.sql.Date.valueOf(localDate);
     			int idA = a.getIdA();
-    			int rating = Integer.parseInt(request.getParameter("rating"));
+    			String checkR = request.getParameter("rating");
+    			if(checkR == null || checkR.equals("")) {
+    				request.setAttribute("mess", "lỗi");
+    				response.sendRedirect("order-detail?idp="+idP+"&ido="+idO);
+    				return;
+    			}
+    			int rating = Integer.parseInt(checkR);
     			String comment = request.getParameter("comment");
-    			if(0 >= rating || rating >5) rating = 0;
-    			if(!comment.trim().equals("") || rating >0) {
+    			if(rating >0) {
     				RatingDao daoRating = new RatingDao();
-    				daoRating.addRatingProduct(idP, idA, idO, rating, comment, date);
+    				int res = daoRating.addRatingProduct(idP, idA, idO, rating, comment, date);
+    				if(res == 0) {
+    					response.sendRedirect("error.jsp");
+    					return;
+    				}
     			}
     		} catch (Exception e) {
-    			request.getRequestDispatcher("error.jsp").forward(request, response);
+    			response.sendRedirect("error.jsp");
     		}
+    		request.setAttribute("sussmess", "Bạn đã đánh giá sản phẩm");
     		response.sendRedirect("order-detail?idp="+idP+"&ido="+idO);
     	}
     	

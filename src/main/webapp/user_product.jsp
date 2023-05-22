@@ -266,6 +266,5 @@
             </div>
         </div>
        <script type="text/javascript" src="./javascript/user_product.js"></script>
-    </div>
 </body>
 </html>

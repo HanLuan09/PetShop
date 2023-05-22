@@ -39,7 +39,8 @@ public class RatingDao {
 	      return new RatingProduct() ;
     }
 //    thêm 
-    public void addRatingProduct(int idP, int idA, int idO, int rating, String comment, Date date) {
+    public int addRatingProduct(int idP, int idA, int idO, int rating, String comment, Date date) {
+    	int result = 0;
     	String query = "insert into ProductRating([idA], [idP], [idO], [rating], [comment], [dateRating]) values(?, ?, ?, ?, ?, ?)";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
@@ -50,16 +51,18 @@ public class RatingDao {
 	          ps.setInt(4, rating);
 	          ps.setString(5, comment);
 	          ps.setDate(6, date);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          conn.close();
 	          ps.close();
 	         
 	      } catch (Exception e) {
 	      }
+	      return result;
     }
 //  sửa
-	  public void saveRatingProduct(int idP, int idA, String idO, int rating, String comment, Date date) {
-	  	String query = "UPDATE dbo.ProductRating SET [rating] = ?, [comment] = ?, [dateRating] = ? where [idA]= ? and [idP]= ? and [idO] = ?";
+	  public int saveRatingProduct(int idP, int idA, String idO, int rating, String comment, Date date) {
+		  int result = 0;
+	      String query = "UPDATE dbo.ProductRating SET [rating] = ?, [comment] = ?, [dateRating] = ? where [idA]= ? and [idP]= ? and [idO] = ?";
 		      try {
 		          conn = new DbContext().getConnection();//mo ket noi voi sql
 		          ps = conn.prepareStatement(query);
@@ -69,12 +72,13 @@ public class RatingDao {
 		          ps.setInt(4, idA);
 		          ps.setInt(5, idP);
 		          ps.setString(6, idO);
-		          ps.executeUpdate();
+		          result = ps.executeUpdate();
 		          conn.close();
 		          ps.close();
 		         
 		      } catch (Exception e) {
 		      }
+		      return result;
 	  }
 	  public List<RatingCount> getRatingCountProduct(String idP) {
 		  	List<RatingCount> list = new ArrayList<>();

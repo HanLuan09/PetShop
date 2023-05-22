@@ -41,19 +41,15 @@ public class LoginControl extends HttpServlet {
         Account a = dao.getAccount(name, pass);
         if(a == null) {
         	request.setAttribute("messlogin", "Người dùng đã tồn tại hoặc mật khẩu không chính xác!");
-//        	response.sendRedirect("login_register.jsp");
         	request.getRequestDispatcher("login_register.jsp").forward(request, response);
+        	return;
         }else {
-//        	tạo session
         	HttpSession session = request.getSession();
         	session.setAttribute("account", a);
-//        	Lưu cookies
         	Cookie cookieName = new Cookie("nameC", name);
         	Cookie cookiePass = new Cookie("passC", pass);
-//        	 xét thời gian tồn tại
         	cookieName.setMaxAge(60*60*24*90);
         	cookiePass.setMaxAge(60*60*24*90);
-//        	lưu vào trình duyệt
         	response.addCookie(cookieName);
         	response.addCookie(cookiePass);
 
@@ -62,14 +58,12 @@ public class LoginControl extends HttpServlet {
         	if (previousUrl != null && !previousUrl.isEmpty()) {
         	    // Xóa URL trước đó khỏi session
         	    session.removeAttribute("previousUrl");
-        	    
         	    // Chuyển hướng đến URL trước đó
         	    response.sendRedirect(previousUrl);
         	} else {
-        	    // Chuyển hướng đến trang mặc định (ví dụ: trang home)
+        	    // Chuyển hướng đến trang mặc định ()
         	    response.sendRedirect("home");
         	}
-//        	response.sendRedirect("home");
         }
         
     }

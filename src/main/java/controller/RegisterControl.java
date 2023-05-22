@@ -25,25 +25,30 @@ public class RegisterControl extends HttpServlet {
         if(name == null || pass == null || passComfi == null || !pass.equals(passComfi)) {
             request.setAttribute("messregister", "Đăng nhập không thành công!");
             request.getRequestDispatcher("login_register.jsp").forward(request, response);
+            return;
         } else {
         	synchronized (this) {
-            // Check if username is already registered
-            if (!usernameRef.compareAndSet(null, name)) {
-                // Username is already registered, throw exception
-                //throw new UserRegistrationException("Username already exists.");
+           
+            if (!usernameRef.compareAndSet(null, name)) {             
             	request.setAttribute("messregister", "Tên đăng nhập đã tồn tại!");
                 request.getRequestDispatcher("login_register.jsp").forward(request, response);
+                return;
             }
 
             try {
                 AccountDao dao = new AccountDao();
                 Account a = dao.checkAccount(name);
                 if(a == null) {
-                    dao.postAccount(name, pass);
-                    response.sendRedirect("home");
-                } else {
+                    int result = dao.postAccount(name, pass);
+                    if(result == 0) {
+                    	response.sendRedirect("error.jsp");
+                    	return;
+                    }
+                    response.sendRedirect("login");
+                } else {                	
                     request.setAttribute("messregister", "Tên đăng nhập đã tồn tại!");
                     request.getRequestDispatcher("login_register.jsp").forward(request, response);
+                    return;
                 }
                 
             } 
@@ -67,10 +72,5 @@ public class RegisterControl extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
         
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
     }
 }

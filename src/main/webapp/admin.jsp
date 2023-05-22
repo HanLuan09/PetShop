@@ -67,7 +67,7 @@
                     </div>
                     
                     <div class="l-10 m-12 c-12">
-                        <div class="content-account">
+                        <!--<div class="content-account">
                             <div class="container_cart BjIo5w">
                                 <div class="row sm-gutter" style="width: 100%;">
                                     <div class="col l-6">    
@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                        
-                        </div>
+                        </div>-->
 						<!-- petshop -->
                         <div class="content-phetshop">
                         	<div class="container_cart BjIo5w">
@@ -197,6 +197,5 @@
             </div>
         </div>
        <script type="text/javascript" src="./javascript/user_product.js"></script>
-    </div>
 </body>
 </html>

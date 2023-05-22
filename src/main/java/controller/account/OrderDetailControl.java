@@ -27,6 +27,7 @@ public class OrderDetailControl extends HttpServlet {
     	Account account = (Account) session.getAttribute("account");
     	if(account==null) {
     		response.sendRedirect("login");
+    		return;
     	}else {
     		int idA = account.getIdA();
     		int idP = Integer.parseInt(request.getParameter("idp"));

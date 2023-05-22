@@ -27,6 +27,7 @@ public class ImageAccountControl extends HttpServlet {
     	Account a = (Account) session.getAttribute("account");
     	if(a == null) {
     		response.sendRedirect("login");
+    		return;
     	}
     	else {
     		
@@ -35,6 +36,7 @@ public class ImageAccountControl extends HttpServlet {
         	// kiểm tra xem có thay đổi file hay không
         	if(fileName == null || fileName.equals("")) {
         		response.sendRedirect("order");
+        		return;
         	}
         	else {
     			try {
@@ -46,17 +48,22 @@ public class ImageAccountControl extends HttpServlet {
     				part.write(readPath+"/"+fileName);
     				
         		} catch (Exception e) {
-        			request.getRequestDispatcher("error.jsp").forward(request, response);
+        			response.sendRedirect("error.jsp");
+        			return;
         		}
     			
 //        		xét lại account
     			try {
     				AccountDao daoA = new AccountDao();
-    				daoA.putImageAcount(fileName, a.getIdA());
+    				int resful = daoA.putImageAcount(fileName, a.getIdA());
+    				if(resful == 0) {
+    					response.sendRedirect("error.jsp");
+    					return;
+    				}
     				a.setImageA(fileName);
     				session.setAttribute("account", a);
     			} catch (Exception e) {
-    				request.getRequestDispatcher("error.jsp").forward(request, response);
+    				response.sendRedirect("error.jsp");
     			}
     			response.sendRedirect("order");
         	}

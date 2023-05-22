@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import context.DbContext;
-import model.Product;
 import model.ProductDetails;
 
 public class ProductSortDao {

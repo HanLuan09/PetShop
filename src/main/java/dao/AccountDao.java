@@ -11,7 +11,9 @@ import context.DbContext;
 import model.Account;
 import model.Address;
 import model.Order;
+import model.OrderAddress;
 import model.OrderDetails;
+import model.Payment;
 import model.RatingAccount;
 
 public class AccountDao {
@@ -65,7 +67,8 @@ public class AccountDao {
 	      return null;
     }
 //  Post Account
-  	public void postAccount(String username, String password) {
+  	public int postAccount(String username, String password) {
+  		int result = 0;
   		String query = "INSERT INTO Account([imageA], [Username], [Password], [isAdmin]) VALUES(?, ? , ?, ?)";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
@@ -74,13 +77,14 @@ public class AccountDao {
 	          ps.setString(2, username);
 	          ps.setString(3, password);
 	          ps.setInt(4, 0);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          
 	          conn.close();
 	          ps.close();
 	          rs.close();
 	      } catch (Exception e) {
 	      }
+	      return result;
   	}
 //  end account
   	public Address getAddress(int id) {
@@ -104,7 +108,8 @@ public class AccountDao {
 	      }
 	      return null;
   	}
-  	public void addAddress(int id, String name , String phone, String address) {
+  	public int addAddress(int id, String name , String phone, String address) {
+  		int result = 0;
   		String query = "INSERT INTO DBO.[Address]([IdA], [Name], [Phone], [Address]) VALUES(?, ?, ?, ?)";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
@@ -113,15 +118,16 @@ public class AccountDao {
 	          ps.setString(2, name);
 	          ps.setString(3, phone);
 	          ps.setString(4, address);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          
 	          conn.close();
 	          ps.close();
 	      } catch (Exception e) {
 	      }
-	     
+	     return result;
   	}
-  	public void updateAddress(int id, String name , String phone, String address) {
+  	public int updateAddress(int id, String name , String phone, String address) {
+  		int result = 0;
   		String query = "UPDATE DBO.[Address] SET [Name] =?, [Phone] =?, [Address] =? WHERE IdA = ?";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
@@ -130,13 +136,13 @@ public class AccountDao {
 	          ps.setString(2, phone);
 	          ps.setString(3, address);
 	          ps.setInt(4, id);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          
 	          conn.close();
 	          ps.close();
 	      } catch (Exception e) {
 	      }
-	     
+	     return result;
   	}
 //  	
   	public int addOrder (Date date, int idA) {
@@ -198,18 +204,19 @@ public class AccountDao {
 	      }
 	      return 0;
   	}
-  	public void setStauts(String idO) {
+  	public int setStauts(String idO) {
+  		int result = 0;
   		String query = "UPDATE dbo.OrderDetails SET Status =1 WHERE ido = ? AND Status = 0";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setString(1, idO);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          conn.close();
 	          ps.close();
 	      } catch (Exception e) {
 	      }
-	      
+	      return result;
   	}
 //  	
   	public int addOrderDetails (OrderDetails o) {
@@ -231,24 +238,6 @@ public class AccountDao {
 	      }
 	      return result;
   	}
-//  	public Order getOrderOneTop () {
-//  		String query = "SELECT * FROM [Order] WHERE idO = (SELECT MAX(idO) FROM [Order])";
-//  		
-//	      try {
-//	          conn = new DbContext().getConnection();//mo ket noi voi sql
-//	          ps = conn.prepareStatement(query);
-//	          rs = ps.executeQuery();
-//	          while(rs.next()) {
-//	        	  return new Order(rs.getInt(1),
-//	        			  rs.getDate(2),
-//	        			  rs.getInt(3));
-//	          }
-//	          conn.close();
-//	          ps.close();
-//	      } catch (Exception e) {
-//	      }
-//	      return null;
-//  	}
   	public List<OrderDetails> getOrderDetails (String idO) {
   		List<OrderDetails> list = new ArrayList<>();
   		String query = "select * from OrderDetails where IdO = ?";
@@ -270,19 +259,20 @@ public class AccountDao {
 	      }
 	      return list;
   	}
-  	public void removeOrderDetails (String idO, String idP) {
+  	public int removeOrderDetails (String idO, String idP) {
+  		int result = 0;
   		String query = "DELETE FROM dbo.OrderDetails where ido = ? AND idp = ?";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setString(1, idO);
 	          ps.setString(2, idP);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          conn.close();
 	          ps.close();
 	      } catch (Exception e) {
 	      }
-	     
+	     return result;
   	}
   	
 //  	
@@ -313,21 +303,104 @@ public class AccountDao {
 	      }
 	      return list;
   	}
-  	public void putImageAcount(String image, int idA){
-  		
+  	public int putImageAcount(String image, int idA){
+  		int result = 0;
   		String query = "UPDATE Account SET [imageA] = ? where idA =?";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setString(1, image);
 	          ps.setInt(2, idA);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          
 	          conn.close();
 	          ps.close();
 	      } catch (Exception e) {
 	      }
-	     
+	     return result;
+  	}
+  	public int addOrderAddress(int idO, String name , String phone, String address) {
+  		int result = 0;
+  		String query = "INSERT INTO DBO.[OrderAdderss]([IdO], [Name], [Phone], [Address]) VALUES( ?, ?, ?, ?)";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setInt(1, idO);
+	          ps.setString(2, name);
+	          ps.setString(3, phone);
+	          ps.setString(4, address);
+	          result = ps.executeUpdate();
+	          
+	          conn.close();
+	          ps.close();
+	      } catch (Exception e) {
+	      }
+	     return result;
+  	}
+  	public OrderAddress getOrderAddress(int idO) {
+  		String query = "select * from dbo.OrderAdderss where IdO = ?";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setInt(1, idO);
+	          rs = ps.executeQuery();
+	          while(rs.next()){
+	        	  return new OrderAddress(rs.getInt(1),        			  
+	        			  rs.getString(2),
+	        			  rs.getString(3),
+	        			  rs.getString(4));
+	          }
+	          conn.close();
+	          ps.close();
+	          rs.close();
+	      } catch (Exception e) {
+	      }
+	      return null;
+  	}
+  	public int paymentProduct(Payment p) {
+    	int result =0;
+    	String query = "INSERT INTO dbo.Payment([IdO], [bankcode], [priceBank], [priceSum], [OrderInfo], [payDate]) VALUES(?, ?, ?, ?, ?, ?)";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setInt(1, p.getIdO());
+	          ps.setString(2, p.getBankcode());
+	          ps.setLong(3, p.getPriceBank());
+	          ps.setLong(4, p.getPriceSum());
+	          ps.setString(5, p.getOrderInfo());
+	          ps.setDate(6, p.getPayDate());
+	          result = ps.executeUpdate();
+	          
+	          conn.close();
+	          ps.close();
+	          rs.close();
+	          
+	      } catch (Exception e) {
+	      }
+	      return result;
+    }
+  	public List<Payment> getPayment (int idO) {
+  		List<Payment> list = new ArrayList<>();
+  		String query = "SELECT * FROM dbo.Payment WHERE idO = ?";
+	      try {
+	          conn = new DbContext().getConnection();//mo ket noi voi sql
+	          ps = conn.prepareStatement(query);
+	          ps.setInt(1, idO);
+	          rs = ps.executeQuery();
+	          while(rs.next()){
+	        	  list.add(new Payment(rs.getInt(1),        			  
+	        			  rs.getString(2),
+	        			  rs.getLong(3),
+	        			  rs.getLong(4),
+	        			  rs.getString(5),
+	        			  rs.getDate(6)));
+	          }
+	          conn.close();
+	          ps.close();
+	          rs.close();
+	      } catch (Exception e) {
+	      }
+	      return list;
   	}
   	public static void main(String[] args) {
   		AccountDao dao = new AccountDao();

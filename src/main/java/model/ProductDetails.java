@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 public class ProductDetails extends Product implements Comparable<ProductDetails> {
 	private int sumPrice;
 	private float rating;

@@ -11,6 +11,10 @@ public class Size {
 		this.size = size;
 		this.ratio = ratio;
 	}
+	
+	public int getIdP() {
+		return idP;
+	}
 	public String getSize() {
 		return size;
 	}

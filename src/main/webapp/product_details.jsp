@@ -185,8 +185,7 @@
                                             </div>
                                             <script>
                                             	var quantity = document.querySelector('#input-max').value;
-                                            	var textQuantity = document.querySelector('#text--quatity');
-				                                console.log(quantity);
+                                            	var textQuantity = document.querySelector('#text--quatity');                                
 				                                var inputs = document.querySelectorAll('.iFo-rx');
 				                                if (quantity <=0) {
 				                                	inputs.forEach(function(input) {
@@ -307,7 +306,7 @@
                                         </div>
                                         <div class="col l-10 c-10 m-11">
                                             <div>
-                                                <button class="container__header-btn container__header-btn-1 container__header-btn--selecter">Tất cả</button>
+                                                <button class="container__header-btn container__header-btn-1 container__header-btn--selecter container__header-btn--all">Tất cả</button>
                                                 <c:forEach items="${listRCount}" var="o">
 	                                                <button class="container__header-btn container__header-btn-1">${o.rating} Sao (${o.count})</button>
                                                 </c:forEach>
@@ -322,8 +321,9 @@
 
                         <div class="shopee-product-rating-list">
                             <div class="shopee-product-rating-comment-list">
-                            	<c:forEach items="${listRA}" var="o">
+                            	<c:forEach items="${listRA}" var="o">                           	
                                 <div class="shopee-product-rating">
+                                	<input class ="rating-input" type="hidden" value="${o.rating}">
                                     <div class="shopee-product-rating__avatar">
                                         <div class="shopee-avatar">
                                             <div class="shopee-avatar__placeholder">
@@ -358,9 +358,35 @@
                     </div>
                 </div>
             </div>
-               <!-- sản phẩm -->
-            <!-- đồ thú cưng -->
-            
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <script type="text/javascript">
+            $(document).ready(function() {
+            	  $('.container__header-btn').click(function() {
+            	    var selectedRating = $(this).text().charAt(0); // Lấy số sao từ nút được click           	    
+            	    if ($(this).hasClass('container__header-btn--all')) {
+            	      // Nếu nút được click là nút "Tất cả", hiển thị tất cả đánh giá
+            	      $('.shopee-product-rating').show();           	              	   
+            	      $('.container__header-btn').not(this).removeClass('container__header-btn--selecter'); // Loại bỏ class "container__header-btn-1" khỏi tất cả các nút khác
+            	    } else {
+            	      
+            	      $('.container__header-btn').not(this).removeClass('container__header-btn--selecter');// loại bỏ
+            	      
+            	      $(this).addClass('container__header-btn--selecter');// thêm class            	              
+            	      $('.container__header-btn--all').removeClass('container__header-btn--selecter');// loại bỏ nút tất cả nếu có 
+            	      $('.shopee-product-rating').hide(); // Ẩn tất cả các đánh giá
+            	      
+            	      // Hiển thị các đánh giá có số sao phù hợp
+            	      $('.shopee-product-rating input.rating-input').each(function() {
+            	        if ($(this).val() == selectedRating) {
+            	          $(this).closest('.shopee-product-rating').show();// hiên tất cả các đánh giá phù hợp
+            	        }
+            	      });
+            	    }
+            	  });
+            	});
+
+            </script>
+          
         <jsp:include page="product.jsp"/>
         <jsp:include page="footer.jsp"/>
 		</div>

@@ -316,13 +316,14 @@ public class DAO {
     }
 //  end color
 //    xóa sản phẩm
-    public void deleteProduct(String id) {
+    public int deleteProduct(String id) {
+    	int result = 0;
     	String query = "DELETE from Product where idp = ?";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setString(1, id);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          
 	          conn.close();
 	          ps.close();
@@ -330,14 +331,16 @@ public class DAO {
 	          
 	      } catch (Exception e) {
 	      }
+	      return result;
     }
-    public void removeProduct(String id) {
+    public int removeProduct(String id) {
+    	int result = 0;
     	String query = "UPDATE dbo.Product SET [status] = 0 WHERE IdP =?";
 	      try {
 	          conn = new DbContext().getConnection();//mo ket noi voi sql
 	          ps = conn.prepareStatement(query);
 	          ps.setString(1, id);
-	          ps.executeUpdate();
+	          result = ps.executeUpdate();
 	          
 	          conn.close();
 	          ps.close();
@@ -345,25 +348,9 @@ public class DAO {
 	          
 	      } catch (Exception e) {
 	      }
+	      return result;
     }
-	  public int countProduct() {
-	  	String query = "select count(idp) from Product WHERE [status] = 1";
-		      try {
-		          conn = new DbContext().getConnection();//mo ket noi voi sql
-		          ps = conn.prepareStatement(query);
-		        
-		          rs = ps.executeQuery();
-		          while(rs.next()) {
-		        	  return rs.getInt(1);
-		          }
-		          conn.close();
-		          ps.close();
-		          rs.close();
-		          
-		      } catch (Exception e) {
-		      }
-		      return 0;
-	  }
+	  
 //    check tên sản phẩm có trùng không
     public Product checkNameProduct(String name, int id) {
     	String query = "select * from Product where NameP = ? and idP <> ?";

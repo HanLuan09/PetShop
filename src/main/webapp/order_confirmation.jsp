@@ -116,6 +116,10 @@
                                         <span class="zDPGhr SzEjHI">Tổng giá tiền:</span>
                                         <span class="KoRB7y"> ${sumPrice} VND</span>
                                     </div>
+                                    <div>
+                                        <span class="zDPGhr SzEjHI">Trạng thái thanh toán:</span>
+                                        <span class="KoRB7y">Thanh toán ${payment} VND (còn phải thanh toán ${payments} VND)</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

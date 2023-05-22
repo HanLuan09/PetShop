@@ -53,7 +53,7 @@
                             </div>
         
                             <div class="auth-form__controls">
-                                <button class="btn auth-form__controls-back btn--normal">Trở lại</button>
+                                <a href="${sessionScope.previousUrl}" class="btn auth-form__controls-back btn--normal">Trở lại</a>
                                 <button class="btn btn--primary" type="submit">Đăng ký</button>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
 	                        </div>
 	    					
 	                        <div class="auth-form__controls">
-	                            <button class="btn auth-form__controls-back btn--normal">Trở lại</button>
+	                            <a href="${sessionScope.previousUrl}" class="btn auth-form__controls-back btn--normal">Trở lại</a>
 	                            <button class="btn btn--primary" type="submit">Đăng nhập</button>
 	                        </div>
 	    
@@ -167,6 +167,7 @@
 	            	e.preventDefault();
 	                document.querySelector("#auth-form-register").style.display= "block";
 	                document.querySelector("#auth-form-login").style.display= "none";
+	                localStorage.setItem('buttonClicked', 'register');
 	            });
 
 	            // đã có tài khoản
@@ -175,6 +176,7 @@
 	            	e.preventDefault();
 	                document.querySelector("#auth-form-register").style.display= "none";
 	                document.querySelector("#auth-form-login").style.display= "block";
+	                localStorage.setItem('buttonClicked', 'login');
 	            });
 	           	
 	    	</script>

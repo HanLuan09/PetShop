@@ -7,7 +7,7 @@
                 <div class="search-box">
                     <span class="search-icon"></span>
                     <div class="search-content">
-                        <input type="search" class="search-input" value>
+                        <input type="search" class="search-input" value = "${search}">
                         <!-- <ul class="search-diwen-wrap">
                             <li class="search-text" style>chó cưng</li>
                             <li class="search-text" style>mèo cưng</li>
@@ -63,14 +63,15 @@
                             <div class="header__search-box">
                                 <span class="header__search-icon"></span>
                                 <div class="header__search-content">
-                                	<input oninput="searchName(this)" type="text" name="search" class="header__search-input" placeholder="Tìm kiếm tại đây">
+                                	<input oninput="searchName(this)" type="text" name="search" class="header__search-input" placeholder="Tìm kiếm tại đây" value="${search}">
                                     
                                     <!-- search lịch sử tìm kiếm-->
                                     <div class="header__search-history" id="search-history" style="display: none;">
                                         <h3 class="header__search-history-heading">Tìm kiếm</h3>
                                         <ul class="header__search-history-list" id="content-search">
-                                            <li class="header__search-history-item"><a href="">luan</a></li>
-                                            <li class="header__search-history-item"><a href="">hán</a></li>
+                                            <li class="header__search-history-item"><a href="search?search=Thú cưng">Thú cưng</a></li>
+                                            <li class="header__search-history-item"><a href="search?search=Mèo ba tư">Mèo ba tư</a></li>
+                                            <li class="header__search-history-item"><a href="search?search=Chó Corgi">Chó Corgi</a></li>
                                         </ul>
                                     </div>
                                 </div>

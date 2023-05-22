@@ -1,5 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,8 +37,10 @@
 		    color: #f33a58;
 		}
     </style>
+   
 </head>
 <body>
+	
 	<form id="form" action="${idProduct>0 ? "save" : "add"}" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="idP" id ="idBook" value = "${idProduct}">
     <div class="main">

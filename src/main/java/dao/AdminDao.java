@@ -89,6 +89,7 @@ public class AdminDao {
         
         return list;
     } 
+    
     public static void main(String[] args) {
 		AdminDao dao = new AdminDao();
 		List<AdminProduct> list = dao.getAllProductSearch("cho");

@@ -1,7 +1,6 @@
 package model;
 
 import java.sql.Date;
-import java.util.List;
 
 public class Order {
 	private int idO;

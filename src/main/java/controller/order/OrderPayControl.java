@@ -2,10 +2,12 @@ package controller.order;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+import context.DbContext;
 import dao.AccountDao;
 import dao.DAO;
 import jakarta.servlet.ServletException;
@@ -15,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Account;
+import model.Address;
 import model.CartItem;
 import model.Order;
 import model.OrderDetails;
@@ -26,6 +29,7 @@ public class OrderPayControl extends HttpServlet {
     @Override 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//    Mua hàng thêm vào csld
     	HttpSession session = request.getSession();
     	Account a = (Account) session.getAttribute("account");
     	if(a == null) {
@@ -38,20 +42,37 @@ public class OrderPayControl extends HttpServlet {
     			CartSevice cartSevice = new CartSevice();
     			LocalDate localDate = LocalDate.now();
 		        Date date = java.sql.Date.valueOf(localDate);
+		        Connection connection = new DbContext().getConnection();
+                connection.setAutoCommit(false);
 		        synchronized (this) {
 		            try {
+		         
 		                // Thêm đơn hàng mới vào database
 		                int idO = daoA.addOrder(date, idA);
+		                
+		                
 		                if(idO == 0) {
-		                	request.getRequestDispatcher("error.jsp").forward(request, response);
+		                	connection.rollback();
+		                	response.sendRedirect("error.jsp");
+		                	return;
+		                }
+		                		                
+		                Address aRess = daoA.getAddress(idA);
+		                if(aRess == null) {
+		                	response.sendRedirect("error.jsp");
+		                	return;
+		                }
+		                int res = daoA.addOrderAddress(idO, aRess.getName(), aRess.getPhone(), aRess.getAddress());
+		                if(res == 0) {
+		                	connection.rollback();
+		                	response.sendRedirect("error.jsp");
 		                	return;
 		                }
 		                //mua ngay 
 		                String pay_idp = (String)session.getAttribute("pay-idp");
 		                String pay_quantity = (String)session.getAttribute("pay-quantity");
 		                if(pay_idp!= null && pay_quantity!=null && !pay_idp.equals("") && !pay_quantity.equals("")) {
-		                	try {
-								
+		                	try {							
 		                		DAO dao = new DAO();
 		                		Product product = dao.getProductById(pay_idp);
 		                		
@@ -60,9 +81,16 @@ public class OrderPayControl extends HttpServlet {
 		                		orderDetails.setIdP(product.getIdP());
 		                		orderDetails.setPrice(product.getPriceNew());
 		                		orderDetails.setAmount(Integer.parseInt(pay_quantity));
-		                		daoA.addOrderDetails(orderDetails);
+		                		int resful = daoA.addOrderDetails(orderDetails);
+		                		if(resful == 0) {
+				                	connection.rollback();
+				                	response.sendRedirect("error.jsp");
+				                	return;
+				                }
 							} catch (Exception e) {
-								request.getRequestDispatcher("error.jsp").forward(request, response);
+								connection.rollback();
+								response.sendRedirect("error.jsp");
+								return;
 							}
 		                	
 		                }else {
@@ -76,28 +104,36 @@ public class OrderPayControl extends HttpServlet {
 		                			orderDetails.setIdO(idO);
 		                			orderDetails.setIdP(i.getProduct().getIdP());
 		                			orderDetails.setPrice(i.getProduct().getPriceNew());
-		                			orderDetails.setAmount(i.getQuantity());
-		                			daoA.addOrderDetails(orderDetails);
-		                			
+		                			orderDetails.setAmount(i.getQuantity());		                			
+		                			int resful = daoA.addOrderDetails(orderDetails);
+			                		if(resful == 0) {
+					                	connection.rollback();
+					                	response.sendRedirect("error.jsp");
+					                	return;
+					                }
 		                			// Xóa giỏ hàng và lưu lại các mục chưa đặt hàng vào cookie
 		                			cartSevice.removeCookies(response);
 		                			cartSevice.saveCartItemsToCookies(response, listCItemsNot);
 		                		} catch (Exception e) {
-		                			request.getRequestDispatcher("error.jsp").forward(request, response);
+		                			connection.rollback();
+		                			response.sendRedirect("error.jsp");
+		                			return;
 		                		}
 		                	}
 		                }
 		                session.removeAttribute("pay-idp");
 		                session.removeAttribute("pay-quantity");
-		                
-		                response.sendRedirect("home");
+		                connection.commit();
+		                response.sendRedirect("/petshop/order");
 		            } catch (Exception e) {
-		            	request.getRequestDispatcher("error.jsp").forward(request, response);
+		            	connection.rollback();
+		            	response.sendRedirect("error.jsp");
+		            	return;
 		            }
 		        }
 		        
     		}catch (Exception e) {
-    			request.getRequestDispatcher("error.jsp").forward(request, response);
+    			response.sendRedirect("error.jsp");
 			}
 		} 
  

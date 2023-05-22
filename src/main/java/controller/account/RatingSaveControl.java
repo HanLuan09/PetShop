@@ -23,6 +23,7 @@ public class RatingSaveControl extends HttpServlet {
     	Account a = (Account) session.getAttribute("account");
     	if(a == null) {
     		response.sendRedirect("login");
+    		return;
     	}else {
     		String idO = request.getParameter("ido");
     		int idP = Integer.parseInt(request.getParameter("idp"));
@@ -35,10 +36,14 @@ public class RatingSaveControl extends HttpServlet {
     			String comment = request.getParameter("comment");
     			if(!comment.trim().equals("") || rating > 0) {
     				RatingDao daoRating = new RatingDao();
-    				daoRating.saveRatingProduct(idP, idA, idO, rating, comment, date);
+    				int res =daoRating.saveRatingProduct(idP, idA, idO, rating, comment, date);
+    				if(res == 0) {
+    					response.sendRedirect("error.jsp");
+    					return;
+    				}
     			}
     		} catch (Exception e) {
-    			request.getRequestDispatcher("error.jsp").forward(request, response);
+    			response.sendRedirect("error.jsp");
     		}
     		
     		response.sendRedirect("order-detail?idp="+idP+"&ido="+idO);

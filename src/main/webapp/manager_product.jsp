@@ -58,6 +58,7 @@
             
         </style>
     <body>
+   
     <div class="main">
     	<div class="YqIqug">
             <div class="contai">
@@ -67,13 +68,13 @@
                     </a>
                 </div>
                 <div class="col-sm-6" style="width: 65%">
-					<form action="manager-search" method="post">
+					<form action="manager" method="get">
                             <div class="header__search">    
                                 <div class="header__search-input__wrap">
                                     <div class="header__search-box">
                                         <span class="header__search-icon"></span>
                                         <div class="header__search-content">
-                                            <input name="search" type="search" value="${hsearch}" class="header__search-input" placeholder="Tìm kiếm tại đây"> 
+                                            <input oninput="searchName(this)" name="search" type="search" value="${hsearch}" class="header__search-input" placeholder="Tìm kiếm tại đây"> 
                                             <!-- search lịch sử tìm kiếm
                                             <div class="header__search-history">
                                                 <h3 class="header__search-history-heading">Lịch sử tìm kiếm</h3>
@@ -101,8 +102,35 @@
         <div class="container">
         	<div class="vtrWey"></div>
             <div class="table-wrapper" style="margin: 0">
-               
-                <table class="table table-striped table-hover">
+               <div class="row mt-4">            
+               		<c:if test="${not empty succesMess}">
+                	<div id="myAlert" class="col-12 alert alert-success alert-dismissible" role="alert">
+                		<span>${succesMess}</span>
+                		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                			<span aria-hidden="true">&times;</span>
+                		</button>
+                	</div>
+                	</c:if>                	
+                </div>
+                <script type="text/javascript">
+	                window.onbeforeunload = function() {
+	                    // Kiểm tra xem người dùng có nhấn nút trở về hay không
+	                    if (performance && performance.navigation.type === 2) {
+	                    	const div = document.querySelector('#myAlert');
+					        if (div !== 'undefined') {
+					            div.style.display = "none";
+					        }
+	                    }
+	                };
+	                $(document).ready(function() {
+	                    // Mờ dần đối tượng
+	                    $("#myAlert").fadeTo(2000, 500).slideUp(500, function(){
+	                        $("#myAlert").slideUp(500);
+	                    });
+	                });
+                </script>
+                
+                <table id="table-sp" class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>Mã</th>
@@ -115,15 +143,9 @@
                             <th>Trạng thái</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="content-tbody">
                         <c:forEach items="${listAminP}" var="o">
-                            <tr>
-                                <!--<td>
-                                    <span class="custom-checkbox">
-                                        <input type="checkbox" id="checkbox1" name="options[]" value="1">
-                                        <label for="checkbox1"></label>
-                                    </span>
-                                </td>-->
+                            <tr>                             
                                 <td>PET${o.idP}</td>
                                 <td>${o.nameP}</td>
                                 <td>${o.cate}</td>
@@ -131,8 +153,7 @@
                                 <td>${o.price} đ</td>
                                 <td>${o.discount}%</td>
                                 <td>${o.sumPrice}</td>
-                                <td>
-                                	
+                                <td>                              	
                                     <a href="edit?pid=${o.idP}"  class="btn blue-gradient" data-toggle="modal">Xem</a>
                                     <a href="#deleteEmployeeModal" class="delete btn btn-dark" data-toggle="modal" data-p-id="${o.idP}">Xóa</a>
                                 </td>
@@ -142,108 +163,26 @@
                 </table>
                 <div class="clearfix">
           
-                    <ul class="pagination" style="display: flex;">
-                    	<li class="page-item disabled"><a href="#"><i class="fa-solid fa-chevron-left"></i></a></li>
-                    	<div class="pagination" style ="display: flex; width: 270px; overflow: hidden; padding: 0 5px;">
-	                    	<c:forEach begin ="1" end = "${count}" var = "o">
-	                        	<li class="page-item active"><a href="#" class="page-link">${o}</a></li>
+                    <ul id ="paging" class="pagination" style="display: flex;">
+                    	<li class="page-item page-item--left"><a href="#"><i class="fa-solid fa-chevron-left"></i></a></li>
+                    	<div class="pagination" style ="display: flex; max-width: 270px; overflow: hidden; padding: 0 5px;">
+                    		<li class="page-item pading-item--number active" id="page-item--1"><a class="page-link">1</a></li>
+	                    	<c:forEach begin ="2" end = "${count}" var = "o">
+	                        	<li class="page-item pading-item--number"><a class="page-link">${o}</a></li>
 	                        </c:forEach>
                         </div>
-                        <li class="page-item"><a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a></li>
+                        <li class="page-item page-item--right"><a href="#" class="page-link"><i class="fa-solid fa-chevron-right"></i></a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        
-        <!-- Edit Modal HTML -->
-        <div id="addEmployeeModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="add" method="post">
-                        <div class="modal-header">						
-                            <h4 class="modal-title">Add Product</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">					
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input name="name" type="text" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Image</label>
-                                <input name="image" type="text" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Price</label>
-                                <input name="price" type="text" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Title</label>
-                                <textarea name="title" class="form-control" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea name="description" class="form-control" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Category</label>
-                                <select name="category" class="form-select" aria-label="Default select example">
-                                    <c:forEach items="${listC}" var="o">
-                                        <option value="${o.id}">${o.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-success" value="Add">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- Edit Modal HTML -->
-        <div id="editEmployeeModal" class="modal fade">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form>
-                        <div class="modal-header">						
-                            <h4 class="modal-title">Edit Employee</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        </div>
-                        <div class="modal-body">					
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Address</label>
-                                <textarea class="form-control" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="text" class="form-control" required>
-                            </div>					
-                        </div>
-                        <div class="modal-footer">
-                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                            <input type="submit" class="btn btn-info" value="Save">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <script src="./javascript/manager.js" type="text/javascript"></script>
         <!-- Delete Modal HTML -->
         <div id="deleteEmployeeModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form action="delete" method="post">
-                    	<input type="hidden" name="productId" value="${productId}"> 	
+                    	<input type="text" name="productId" value="${productId}"> 	
                         <div class="modal-header">						
                             <h4 class="modal-title">Xóa Sản Phẩm</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -257,7 +196,8 @@
                             <input type="submit" class="btn btn-danger" value="Xóa">
                         </div>
                     </form>
-                    <script>
+                  
+                    <script> 						 
 						 $(document).on("click", ".delete", function () {
 						     var pId = $(this).data('p-id');
 						     
@@ -267,7 +207,7 @@
                 </div>
             </div>
         </div>
-        <script src="javascrip/manager.js" type="text/javascript"></script>
+        
         </div>
     </div> 
     </body>

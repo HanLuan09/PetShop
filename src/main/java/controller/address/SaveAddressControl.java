@@ -22,12 +22,6 @@ import sevice.CartSevice;
 
 @WebServlet(name="SaveAddressControl", urlPatterns = {"/save-address"})
 public class SaveAddressControl extends HttpServlet {
-	@Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    	response.setContentType("text/html;charset=UTF-8");
-        
-    }  
     @Override 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -35,6 +29,7 @@ public class SaveAddressControl extends HttpServlet {
     	Account a = (Account) session.getAttribute("account");
     	if(a == null) {	
     		response.sendRedirect("login");
+    		return;
     	}
     	int idA = a.getIdA();
     	try { 
@@ -42,14 +37,21 @@ public class SaveAddressControl extends HttpServlet {
     		String phone = request.getParameter("phone");
     		String nameAddress = request.getParameter("address");
     		AccountDao daoAccount = new AccountDao();
-    		daoAccount.updateAddress(idA, name, phone, nameAddress);
+    		int res = daoAccount.updateAddress(idA, name, phone, nameAddress);
+    		if(res == 0) {
+    			request.setAttribute("messAddress", "Không thể thay đổi địa chỉ!");
+    			request.getRequestDispatcher("address").forward(request, response);
+    			return;
+    		}
     		String ipPSession = (String)session.getAttribute("pay-idp");
         	String quantitySession = (String)session.getAttribute("pay-quantity");
         	if(ipPSession!=null && quantitySession!=null) {
         		response.sendRedirect("/petshop/petshop-orders?idp="+ipPSession+"&quantity="+quantitySession);
+        		return;
         	}
         	else {
         		response.sendRedirect("/petshop/petshop-orders");
+        		return;
         	}
 		} catch (Exception e) {
 			request.setAttribute("messAddress", "Không thể thay đổi địa chỉ!");

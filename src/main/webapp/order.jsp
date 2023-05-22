@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/cart.css">
     <link rel="stylesheet" href="./css/gird.css">
+    <link rel="stylesheet" href="./css/product_details.css">
+    <link rel="stylesheet" href="./css/register_login.css">
     <link rel="stylesheet" href="./css/order.css">
     <link rel="stylesheet" href="./css/responsive.css">
 </head>
@@ -109,31 +111,7 @@
 	                                    </div>
 	                                </div>
 								</c:forEach>
-                                <div class="container_cart BjIo5w">
-                                    <div class="container_cart-wrap">
-                                        <div class="row sm-gutter">
-                                            <div class="col l-6 m-9 c-9" style="display: flex;">
-                                                <img style="height: 50px; width: 45px;" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp" alt="">
-                                                <span class="oEI3Ln">
-                                                    <span class="order-text-name" >Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo vThức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo Thức ăn cho mèo </span>
-                                                </span>
-                                            </div>
-                                            <div class="col l-2 m-3 c-3">
-                                                <div class="container_cart-list">
-                                                    <div><span class="order_text">*1</span></div>
-                                                    <div><span class="order_text">10000000 đ</span></div>  
-                                                </div>
-                                            </div>
-                                            <div class="col l-3 m-12 c-12">
-                                                <div class="container_cart-list">
-                                                    <span class="order_text">Thành tiền: </span>
-                                                    <span class="order_text-sum">${test}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                
                             </div>
                         </div>
                     </div>
@@ -148,10 +126,32 @@
                                         <span class="zDPGhr SzEjHI">Tổng giá tiền:</span>
                                         <span class="KoRB7y">${sumPrice} đ</span>
                                     </div>
+                                    
                                     <div>
                                         <span class="zDPGhr SzEjHI">Phương thức thanh toán:</span>
-                                        <span class="KoRB7y">Thanh toán khi nhận</span>
+                                        
                                     </div>
+                                    
+                                    <div class="auth-form__aside" style="margin-bottom: 10px">			                            
+			                            <div style="display: flex;">
+			                                <div class="auth-form__aside-address auth-form__aside-address-2 auth-form__aside-address--click">
+			                                    <spam class="auth-form__aside-home">Thanh toán khi nhận hàng</spam>
+			                                </div>
+			                                <c:if test="${addressCheck == 1}">
+				                                <a href="vnpayajax?amount=${sumPrice}">
+				                                    <div class="auth-form__aside-address auth-form__aside-address-2">
+				                                        <spam class="auth-form__aside-home">VN Pay</spam>
+				                                    </div>
+				                                </a>
+			                                </c:if>	   
+			                                <c:if test="${addressCheck == 0}">	                                
+				                                 <div id="checkAddress" class="auth-form__aside-address auth-form__aside-address-2">
+				                                      <spam class="auth-form__aside-home">VN Pay</spam>
+				                                 </div>			                                
+			                                </c:if>	                                
+			                            </div>
+			                        </div>
+			                        
                                 </div>
                             </div>
                         </div>
@@ -159,9 +159,18 @@
                             <div class="container_cart-wrap">
                                 <div class="row sm-gutter" style="display: flex; justify-content: space-between;">
                                     <div class="container__header-total" style="margin: auto 0;">Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân theo điều khoản của PetShop</div>
-                                    <c:if test="${addressCheck == 1}"><button class="btn btn--primary" onclick="location.href='/petshop/order-pay';">Đặt hàng</button></c:if>
+                                    <c:if test="${addressCheck == 1}"><button class="btn btn--primary" onclick="confirmOrder()">Đặt hàng</button></c:if>
                                     <c:if test="${addressCheck == 0}"><button class="btn btn--primary" onclick="location.href='/petshop/address';">Đặt hàng</button></c:if>
                                 </div>
+                                <script>
+									function confirmOrder() {
+									  if (confirm("Bạn có chắc chắn muốn đặt hàng?")) {
+									    // Người dùng đã xác nhận đặt hàng, chuyển đến trang /petshop/order-pay
+									    location.href = '/petshop/order-pay';
+									  }
+									  // Nếu người dùng không xác nhận, không làm gì cả
+									}
+								</script>
                             </div>
                         </div>
                     </div>
@@ -170,6 +179,37 @@
             </div>
             <jsp:include page="footer.jsp"/>
         </div>
+        <div id="add-to-cart-popup" class="hidden">
+            <div class="add-to-cart-icon">
+                <i class="fa-regular fa-circle-check"></i>
+            </div>
+            <div class="add-to-cart-text">
+                <p>Bạn chư thêm địa chỉ gia hàng.</p>
+            </div>
+        </div>
+        <script>
+            // Lấy phần tử thông báo pop-up
+			var popup = document.getElementById("add-to-cart-popup");
+			
+			// Hàm hiển thị thông báo pop-up
+			function showPopup() {
+			  // Hiển thị thông báo
+			  popup.classList.add("show");
+			
+			  // Sau 3 giây, ẩn thông báo
+			  setTimeout(function() {
+			    popup.classList.remove("show");
+			  }, 900);
+			}
+			
+			// Xử lý sự kiện thêm sản phẩm vào giỏ hàng
+			var addToCartButton = document.getElementById("checkAddress");
+			if(addToCartButton!=undefined){
+				addToCartButton.addEventListener("click", function() {
+				  showPopup();
+				});
+			}
+        </script>  
     </div>
 </body>
 </html>
