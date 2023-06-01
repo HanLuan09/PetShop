@@ -116,8 +116,11 @@
                                 <label for="file-input" class="custom-file-upload">
                                     Chọn ảnh
                                   </label>
-                                  <input name="image" type="file" id="file-input" accept=".jpg,.jpeg,.png" style="display:none;" value="${productId.imageP}">
-                                  <span class="form-message"></span>
+                                  <div style="position: relative;">
+	                                  <input name="image" type="file" id="file-input" accept=".jpg,.jpeg,.png" style="display:none;" value="${productId.imageP}">
+	                                  <input type="hidden" id="input-file" value="${productId.imageP}">
+	                                  <span class="form-message" style="position: absolute; top: 30px; left: -9rem; width: 200px;"></span>
+                                  </div>
                             </div>
                             <span style="display: flex; justify-content: center; margin-top: 5px; color: #EE4D20;" class ="form-message--file"></span>
                             <div class="container-img">
@@ -134,7 +137,7 @@
                       
                               reader.addEventListener("load", () => {
                                 previewImage.src = reader.result;
-                                // previewImage.style.backgroundImage= reader.result;
+                                document.getElementById("input-file").value = "input-file";
                                 previewImage.style.display = "block";
                               });
                       
@@ -146,7 +149,8 @@
             </div>
        </div>
        <footer class="footer">
-            <div class="footer_button">
+            <div class="footer_button" style="display: flex;">
+            	<button class="btn" type="button" onclick="location.href='/petshop/manager';" style="margin-right: 10px">Trở về</button>
             	<button class="btn btn--primary1" id="btn_add" type="submit">Add</button>
             	<button class="btn btn--primary" id="btn_save" type="submit">Save</button>
             	<button class="btn btn--primary2" id="btn_edit">Edit</button>
@@ -215,28 +219,14 @@
                 Validator.isRequired('#discount'),
                 Validator.isNumber("#price", 0),
                 Validator.isNumber("#amount", 0),
-                
+                Validator.isImage('#input-file'),
                 //Validator.isRequired('#file-input'),
                 //Validator.minLength('#password', 6),
                 
             ]
             
         });
-      	var previewTestImage = document.getElementById("preview-image");
-        var btnSave = document.getElementById("btn_add");
-        console.log(btnSave)
-		previewImage.addEventListener("load", function() {
-			document.querySelector(".form-message--file").innerText = ''
-        	//btnSave.disabled = false; // Bỏ disable nút "Save" để cho phép submit
-    	});
-	    btnSave.addEventListener("click", function(event) {
-	        if (!previewTestImage.complete || previewTestImage.naturalWidth === 0) {
-	        	document.querySelector(".form-message--file").innerText = 'Vui lòng chọn ảnh'
-	            event.preventDefault(); // Ngăn chặn sự kiện submit nếu hình ảnh chưa được hiển thị
-	        }else{
-	        	document.querySelector(".form-message--file").innerText = ''
-	        }
-	    });
+      	
         productSalary({
         	quainput: "#price", 
         	quantity: "0",

@@ -53,7 +53,7 @@
                             </div>
         
                             <div class="auth-form__controls">
-                                <a href="${sessionScope.previousUrl}" class="btn auth-form__controls-back btn--normal">Trở lại</a>
+                                <button onclick="location.href='${sessionScope.previousUrl}';" class="btn auth-form__controls-back btn--normal" type="button">Trở lại</button>
                                 <button class="btn btn--primary" type="submit">Đăng ký</button>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
 	                        </div>
 	    					
 	                        <div class="auth-form__controls">
-	                            <a href="${sessionScope.previousUrl}" class="btn auth-form__controls-back btn--normal">Trở lại</a>
+	                            <button onclick="location.href='${sessionScope.previousUrl}';" class="btn auth-form__controls-back btn--normal" type="button">Trở lại</button>
 	                            <button class="btn btn--primary" type="submit">Đăng nhập</button>
 	                        </div>
 	    

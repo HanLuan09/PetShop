@@ -367,6 +367,7 @@
             	      // Nếu nút được click là nút "Tất cả", hiển thị tất cả đánh giá
             	      $('.shopee-product-rating').show();           	              	   
             	      $('.container__header-btn').not(this).removeClass('container__header-btn--selecter'); // Loại bỏ class "container__header-btn-1" khỏi tất cả các nút khác
+            	      $(this).addClass('container__header-btn--selecter');
             	    } else {
             	      
             	      $('.container__header-btn').not(this).removeClass('container__header-btn--selecter');// loại bỏ
