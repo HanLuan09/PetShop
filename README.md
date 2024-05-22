@@ -11,7 +11,7 @@ chức năng của admin để quản sản phẩm.
 • Người dùng phải đăng ký tài khoản mới có thể đăng nhập và sử dụng tài
 khoản của họ để thực hiện những việc như: mua bán và đưa ra nhận xét
 đánh giá về sản phẩm.
-###### 1. Chức năng quản lý (Admin)
+##### 1. Chức năng quản lý (Admin)
 Đầu tiên sẽ có 1 trang hiện danh sách các đơn đặt hàng đang chờ được duyệt, và
 có một nút button để admin chuyển sang trang quản lý. Mỗi đơn đặt hàng sẽ có 1
 button để admin chuyển sang trang chi tiết đơn hàng. Ở đây admin sẽ có thể duyệt
@@ -21,7 +21,7 @@ dữ liệu. Admin có thể: thêm, sửa, xóa thông tin sản phẩm. Ở tr
 thể tìm kiếm và lọc sản phẩm.
 Trang chi tiết thông tin sản phẩm giúp admin có thể xem chi tiết sản phẩm, thêm
 sản phẩm và sửa sản phẩm.
-###### 2. Chức năng của người dùng (user).
+##### 2. Chức năng của người dùng (user).
 Người dùng có thể sử dụng trang web thư viện bán sách thông qua các chức năng
 chính:
 ➢ Đầu tiên người dùng sẽ thấy 1 trang chủ có danh sách tất cả các sản phẩm
